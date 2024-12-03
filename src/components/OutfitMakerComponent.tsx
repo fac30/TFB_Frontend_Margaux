@@ -15,6 +15,11 @@ export default function OutfitMakerComponent() {
     setShowMenu(false); // Close menu after item selection
   };
 
+  // Deletes an item from the canvas
+  const handleDeleteItem = (index: number) => {
+    setSelectedItems((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>Outfit Maker</h1>
@@ -28,7 +33,7 @@ export default function OutfitMakerComponent() {
       {showMenu && <CategoryMenu onItemSelect={handleItemSelect} />}
 
       {/* Canvas to display selected items */}
-      <Canvas items={selectedItems} />
+      <Canvas items={selectedItems} onDeleteItem={handleDeleteItem} />
     </div>
   );
 }

@@ -1,4 +1,10 @@
-export default function Canvas({ items }: { items: string[] }) {
+export default function Canvas({
+    items,
+    onDeleteItem,
+  }: {
+    items: string[];
+    onDeleteItem: (index: number) => void;
+  }) {
     return (
       <div
         style={{
@@ -14,8 +20,29 @@ export default function Canvas({ items }: { items: string[] }) {
           <p>No items selected yet. Start building your outfit!</p>
         ) : (
           items.map((item, index) => (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              {item}
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "10px",
+              }}
+            >
+              <span>{item}</span>
+              <button
+                onClick={() => onDeleteItem(index)}
+                style={{
+                  marginLeft: "10px",
+                  background: "red",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                X
+              </button>
             </div>
           ))
         )}
