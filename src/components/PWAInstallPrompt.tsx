@@ -11,7 +11,7 @@ export default function PWAInstallPrompt() {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault()
       deferredPrompt = e
-      setShowInstallButton(true)
+      setShowInstallButton(false)
     })
 
     window.addEventListener('appinstalled', () => {
