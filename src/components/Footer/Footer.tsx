@@ -1,9 +1,13 @@
+import { Box, Text, Center } from 'native-base';
+
 export default function Footer() {
   return (
-    <footer className="w-screen bottom-0 flex justify-center items-center h-8 text-white z-50">
-      <p className="text-center text-[2vw] sm:text-sm">
-        &copy; 2024 &nabla; Viatora Digital. All rights reserved.
-      </p>
-    </footer>
+    <Box bg="white" py={4} position="relative" bottom={0} width="100%">
+      <Center>
+        <Text color="gray.600">
+          © 2024 Inside My Closet. All rights reserved.
+        </Text>
+      </Center>
+    </Box>
   );
 }

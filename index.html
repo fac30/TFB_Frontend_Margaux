@@ -1,44 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- General -->
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Viatora Digital</title>
+    <title>Inside My Closet</title>
 
-    <!-- Mobile first tags -->
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Meta descriptions and keywords for SEO -->
-    <meta
-      name="description"
-      content="A digital agency with a passion for innovative web projects."
-    />
-    <meta
-      name="keywords"
-      content="web, apps, digital, content, websites, coding, programs, tools, designers, UI, UX"
-    />
+    <!-- 
+      PWA meta tags
+      Note: theme-color is not supported in Firefox and Opera, but is required for PWA in Chrome/Edge 
+    -->
+    <meta name="theme-color" content="#EC5E29">
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/masked-icon.svg" color="#EC5E29" />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
-    <!-- Open Graph for social media sharing -->
-    <meta property="og:title" content="Viatora Digital" />
-    <meta
-      property="og:description"
-      content="A digital agency with a passion for innovative web projects."
-    />
-    <meta property="og:image" content="/src/assets/logo.svg" />
-    <meta property="og:url" content="www.viatora.co.uk" />
-
-    <!-- Favicon and branding -->
-    <link rel="icon" href="/src/assets/favicon.svg" />
-    <link rel="apple-touch-icon" href="/src/assets/favicon.svg" />
-    <meta name="theme-color" content="#EC5E29" />
-
-    <!-- Scripts -->
-    <script type="module" src="/src/main.tsx" defer></script>
+    <!-- Meta descriptions -->
+    <meta name="description" content="Your digital wardrobe management platform" />
   </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
