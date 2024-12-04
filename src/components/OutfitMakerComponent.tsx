@@ -4,7 +4,7 @@ import Canvas from "./Canvas";
 
 export default function OutfitMakerComponent() {
   const [showMenu, setShowMenu] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<{ name: string; image: string }[]>([]);
+  const [selectedItems, setSelectedItems] = useState<{ name: string; image: string; x: number; y: number }[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
 
@@ -23,15 +23,31 @@ export default function OutfitMakerComponent() {
     setSelectedSubCategory(null);
   };
 
-  // Adds a selected item to the canvas
+  // Adds a selected item to the canvas with random position
   const handleItemSelect = (item: { name: string; image: string }) => {
-    setSelectedItems((prev) => [...prev, item]);
+    setSelectedItems((prev) => [
+      ...prev,
+      {
+        ...item,
+        x: Math.random() * 400, // Random position for x (within canvas width)
+        y: Math.random() * 300, // Random position for y (within canvas height)
+      },
+    ]);
     setShowMenu(false); // Close menu after item selection (if intended)
   };
 
   // Deletes an item from the canvas
   const handleDeleteItem = (index: number) => {
     setSelectedItems((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Updates item position after dragging
+  const handleUpdateItemPosition = (index: number, x: number, y: number) => {
+    setSelectedItems((prev) =>
+      prev.map((item, i) =>
+        i === index ? { ...item, x, y } : item
+      )
+    );
   };
 
   return (
@@ -67,7 +83,11 @@ export default function OutfitMakerComponent() {
       )}
 
       {/* Canvas to display selected items */}
-      <Canvas items={selectedItems} onDeleteItem={handleDeleteItem} />
+      <Canvas
+        items={selectedItems}
+        onDeleteItem={handleDeleteItem}
+        onUpdateItemPosition={handleUpdateItemPosition}
+      />
     </div>
   );
 }
