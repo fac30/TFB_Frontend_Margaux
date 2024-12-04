@@ -77,8 +77,8 @@ const Canvas: React.FC<CanvasProps> = ({ items, onDeleteItem, onUpdateItemPositi
     <div
       className="canvas-container"
       style={{
-        width: "500px", // Fixed width
-        height: "400px", // Fixed height
+        width: "450px", // Fixed width
+        height: "350px", // Fixed height
         border: "1px solid #ddd", // Optional for clarity
         overflow: "hidden", // Prevent items from overflowing
         position: "relative", // Allows absolute positioning of items
