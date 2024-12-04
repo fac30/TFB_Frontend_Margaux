@@ -15,8 +15,8 @@ const categories: Record<
 > = {
   Tops: {
     TShirts: [
-      { name: "Red T-Shirt", image: "/images/red-tshirt.png" },
-      { name: "Blue T-Shirt", image: "/images/blue-tshirt.png" },
+      { name: "Red T-Shirt", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/465751/item/goods_17_465751_3x4.jpg?width=400" },
+      { name: "Blue T-Shirt", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/465751/item/goods_61_465751_3x4.jpg?width=400" },
     ],
     Hoodies: [
       { name: "Grey Hoodie", image: "/images/grey-hoodie.png" },

@@ -13,9 +13,11 @@ export default function OutfitMakerComponent() {
   const [selectedItems, setSelectedItems] = useState<{ name: string; image: string; x: number; y: number }[]>([]);
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]); // State to store saved outfits
   const [showSavedOutfits, setShowSavedOutfits] = useState(false); // State to toggle views
+  const [expandedOutfitId, setExpandedOutfitId] = useState<string | null>(null); // To track the expanded outfit
+  const [saveConfirmation, setSaveConfirmation] = useState(false); // Confirmation state
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
-  const [savedConfirmation, setSavedConfirmation] = useState(false); // State for showing confirmation
 
   // Toggles the visibility of the category menu
   const toggleMenu = () => setShowMenu((prev) => !prev);
@@ -42,7 +44,7 @@ export default function OutfitMakerComponent() {
         y: Math.random() * 300, // Random position for y (within canvas height)
       },
     ]);
-    setShowMenu(false); // Close menu after item selection
+    setShowMenu(false); // Close menu after item selection (if intended)
   };
 
   // Deletes an item from the canvas
@@ -69,12 +71,13 @@ export default function OutfitMakerComponent() {
     setSelectedItems([]); // Clear selected items after saving
 
     // Show confirmation message
-    setSavedConfirmation(true);
+    setSaveConfirmation(true);
+    setTimeout(() => setSaveConfirmation(false), 2000); // Hide after 2 seconds
+  };
 
-    // Hide confirmation after 3 seconds
-    setTimeout(() => {
-      setSavedConfirmation(false);
-    }, 3000);
+  // Handle expanding a saved outfit
+  const handleExpandOutfit = (id: string) => {
+    setExpandedOutfitId((prevId) => (prevId === id ? null : id)); // Toggle expand/collapse
   };
 
   // Toggle between create outfit view and saved outfits view
@@ -108,13 +111,38 @@ export default function OutfitMakerComponent() {
       {showSavedOutfits ? (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
           {savedOutfits.map((outfit) => (
-            <div key={outfit.id} style={{ width: "100px", textAlign: "center" }}>
+            <div
+              key={outfit.id}
+              style={{
+                width: "100px",
+                textAlign: "center",
+                cursor: "pointer",
+                border: "1px solid #ddd",
+                padding: "10px",
+              }}
+              onClick={() => handleExpandOutfit(outfit.id)}
+            >
               <img
                 src={outfit.items[0]?.image} // Show first item as preview (you can modify this)
                 alt={outfit.items[0]?.name}
                 style={{ width: "80px", height: "80px", objectFit: "cover" }}
               />
               <p>{outfit.items.length} items</p>
+              {/* Expand the outfit if it's the selected one */}
+              {expandedOutfitId === outfit.id && (
+                <div>
+                  {outfit.items.map((item, index) => (
+                    <div key={index} style={{ marginBottom: "10px" }}>
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                      />
+                      <p>{item.name}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -157,12 +185,13 @@ export default function OutfitMakerComponent() {
             onUpdateItemPosition={handleUpdateItemPosition}
           />
 
-          {/* Save Outfit Button */}
+          {/* Button to save the outfit */}
           <button
             onClick={handleSaveOutfit}
             style={{
               display: "block",
-              margin: "20px auto",
+              margin: "0 auto",
+              marginTop: "20px",
               padding: "10px 20px",
               backgroundColor: "#28a745",
               color: "#fff",
@@ -175,19 +204,10 @@ export default function OutfitMakerComponent() {
           </button>
 
           {/* Confirmation message */}
-          {savedConfirmation && (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "10px",
-                backgroundColor: "#28a745",
-                color: "#fff",
-                borderRadius: "5px",
-                marginTop: "20px",
-              }}
-            >
-              Outfit Saved Successfully!
-            </div>
+          {saveConfirmation && (
+            <p style={{ textAlign: "center", color: "green", marginTop: "10px" }}>
+              Outfit saved successfully!
+            </p>
           )}
         </>
       )}
