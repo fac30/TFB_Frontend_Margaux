@@ -9,44 +9,10 @@ interface CategoryMenuProps {
   setSelectedSubCategory: (subCategory: string | null) => void;
 }
 
-// const categories = {
-//   Tops: {
-//     TShirts: [
-//       { name: "Red T-Shirt", image: "/images/red-tshirt.png" },
-//       { name: "Blue T-Shirt", image: "/images/blue-tshirt.png" },
-//     ],
-//     Hoodies: [
-//       { name: "Grey Hoodie", image: "/images/grey-hoodie.png" },
-//       { name: "Black Hoodie", image: "/images/black-hoodie.png" },
-//     ],
-//   },
-//   Bottoms: {
-//     Jeans: [
-//       { name: "Blue Jeans", image: "/images/blue-jeans.png" },
-//       { name: "Black Jeans", image: "/images/black-jeans.png" },
-//     ],
-//     Shorts: [
-//       { name: "Denim Shorts", image: "/images/denim-shorts.png" },
-//       { name: "Khaki Shorts", image: "/images/khaki-shorts.png" },
-//     ],
-//   },
-//   Shoes: {
-//     Sneakers: [
-//       { name: "White Sneakers", image: "/images/white-sneakers.png" },
-//       { name: "Black Sneakers", image: "/images/black-sneakers.png" },
-//     ],
-//     Boots: [
-//       { name: "Brown Boots", image: "/images/brown-boots.png" },
-//       { name: "Black Boots", image: "/images/black-boots.png" },
-//     ],
-//   },
-// };
-
-const categories: {
-  [key in 'Tops' | 'Bottoms' | 'Shoes']: {
-    [subCategory: string]: { name: string; image: string }[];
-  };
-} = {
+const categories: Record<
+  "Tops" | "Bottoms" | "Shoes",
+  Record<string, { name: string; image: string }[]>
+> = {
   Tops: {
     TShirts: [
       { name: "Red T-Shirt", image: "/images/red-tshirt.png" },
@@ -78,7 +44,6 @@ const categories: {
     ],
   },
 };
-
 
 const CategoryMenu: React.FC<CategoryMenuProps> = ({
   selectedCategory,
@@ -116,27 +81,18 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
         Back to Categories
       </button>
       <ul style={{ listStyle: "none", padding: 0 }}>
-        {/* {Object.keys(categories[selectedCategory!]).map((subCategory) => (
-          <li key={subCategory}>
-            <button
-              style={{ margin: "10px", padding: "10px", cursor: "pointer" }}
-              onClick={() => setSelectedSubCategory(subCategory)}
-            >
-              {subCategory}
-            </button>
-          </li>
-        ))} */}
-        {Object.keys(categories[selectedCategory as 'Tops' | 'Bottoms' | 'Shoes']).map((subCategory) => (
-  <li key={subCategory}>
-    <button
-      style={{ margin: "10px", padding: "10px", cursor: "pointer" }}
-      onClick={() => setSelectedSubCategory(subCategory)}
-    >
-      {subCategory}
-    </button>
-  </li>
-))}
-
+        {Object.keys(categories[selectedCategory as "Tops" | "Bottoms" | "Shoes"]).map(
+          (subCategory) => (
+            <li key={subCategory}>
+              <button
+                style={{ margin: "10px", padding: "10px", cursor: "pointer" }}
+                onClick={() => setSelectedSubCategory(subCategory)}
+              >
+                {subCategory}
+              </button>
+            </li>
+          )
+        )}
       </ul>
     </div>
   );
@@ -151,7 +107,9 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({
         Back to {selectedCategory}
       </button>
       <ul style={{ listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap" }}>
-        {categories[selectedCategory!][selectedSubCategory!].map((item) => (
+        {categories[selectedCategory as "Tops" | "Bottoms" | "Shoes"][
+          selectedSubCategory!
+        ].map((item) => (
           <li key={item.name} style={{ margin: "10px" }}>
             <img
               src={item.image}
