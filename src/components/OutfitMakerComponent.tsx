@@ -13,11 +13,12 @@ export default function OutfitMakerComponent() {
   const [selectedItems, setSelectedItems] = useState<{ name: string; image: string; x: number; y: number }[]>([]);
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]); // State to store saved outfits
   const [showSavedOutfits, setShowSavedOutfits] = useState(false); // State to toggle views
-  const [expandedOutfitId, setExpandedOutfitId] = useState<string | null>(null); // To track the expanded outfit
   const [saveConfirmation, setSaveConfirmation] = useState(false); // Confirmation state
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
+
+  const [modalOutfit, setModalOutfit] = useState<SavedOutfit | null>(null); // State for modal outfit
 
   // Toggles the visibility of the category menu
   const toggleMenu = () => setShowMenu((prev) => !prev);
@@ -75,11 +76,6 @@ export default function OutfitMakerComponent() {
     setTimeout(() => setSaveConfirmation(false), 2000); // Hide after 2 seconds
   };
 
-  // Handle expanding a saved outfit
-  const handleExpandOutfit = (id: string) => {
-    setExpandedOutfitId((prevId) => (prevId === id ? null : id)); // Toggle expand/collapse
-  };
-
   // Toggle between create outfit view and saved outfits view
   const toggleSavedOutfitsView = () => {
     setShowSavedOutfits((prev) => !prev);
@@ -120,7 +116,7 @@ export default function OutfitMakerComponent() {
                 border: "1px solid #ddd",
                 padding: "10px",
               }}
-              onClick={() => handleExpandOutfit(outfit.id)}
+              onClick={() => setModalOutfit(outfit)} // Open modal on click
             >
               <img
                 src={outfit.items[0]?.image} // Show first item as preview (you can modify this)
@@ -128,23 +124,66 @@ export default function OutfitMakerComponent() {
                 style={{ width: "80px", height: "80px", objectFit: "cover" }}
               />
               <p>{outfit.items.length} items</p>
-              {/* Expand the outfit if it's the selected one */}
-              {expandedOutfitId === outfit.id && (
-                <div>
-                  {outfit.items.map((item, index) => (
-                    <div key={index} style={{ marginBottom: "10px" }}>
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        style={{ width: "50px", height: "50px", objectFit: "cover" }}
-                      />
-                      <p>{item.name}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
+
+          {/* Modal */}
+          {modalOutfit && (
+            <div
+              style={{
+                position: "fixed",
+                top: "0",
+                left: "0",
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000,
+              }}
+              onClick={() => setModalOutfit(null)} // Close modal on overlay click
+            >
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  padding: "20px",
+                  borderRadius: "5px",
+                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
+                  maxWidth: "400px",
+                  maxHeight: "80%",
+                  overflowY: "auto",
+                }}
+                onClick={(e) => e.stopPropagation()} // Prevent modal close on content click
+              >
+                <h2>Outfit Details</h2>
+                {modalOutfit.items.map((item, index) => (
+                  <div key={index} style={{ marginBottom: "10px" }}>
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                    />
+                    <p>{item.name}</p>
+                  </div>
+                ))}
+                <button
+                  onClick={() => setModalOutfit(null)} // Close modal button
+                  style={{
+                    marginTop: "10px",
+                    padding: "10px 20px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <>
