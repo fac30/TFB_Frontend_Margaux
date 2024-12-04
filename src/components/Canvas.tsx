@@ -2,7 +2,7 @@ export default function Canvas({
     items,
     onDeleteItem,
   }: {
-    items: string[];
+    items: { name: string; image: string }[];
     onDeleteItem: (index: number) => void;
   }) {
     return (
@@ -29,7 +29,16 @@ export default function Canvas({
                 marginBottom: "10px",
               }}
             >
-              <span>{item}</span>
+              <img
+                src={item.image}
+                alt={item.name}
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  objectFit: "cover",
+                  border: "1px solid gray",
+                }}
+              />
               <button
                 onClick={() => onDeleteItem(index)}
                 style={{
