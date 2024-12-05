@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CategoryMenu from "./CategoryMenu";
 import Canvas from "./Canvas";
+import { Button } from "native-base";
 
 // Define a type for saved outfits
 interface SavedOutfit {
@@ -85,23 +86,19 @@ export default function OutfitMakerComponent() {
     <div style={{ padding: "20px" }}>
       <h1 style={{ textAlign: "center" }}>Outfit Maker</h1>
 
-      {/* Button to toggle between Create Outfit and Saved Outfits views */}
-      <button
-        onClick={toggleSavedOutfitsView}
-        style={{
-          display: "block",
-          margin: "0 auto",
-          marginBottom: "20px",
-          padding: "10px 20px",
-          backgroundColor: "#007bff",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        {showSavedOutfits ? "Back to Outfit Creation" : "View Saved Outfits"}
-      </button>
+{/* Button to toggle between Create Outfit and Saved Outfits views */}
+
+<Button
+onPress={toggleSavedOutfitsView}
+bgColor="primary.500"
+size="lg"
+_text={{ color: "black" }}
+mb={4}
+>
+{showSavedOutfits ? "Back to Outfit Creation" : "View Saved Outfits"}
+</Button>
+
+
 
       {/* Show Saved Outfits Gallery if toggled */}
       {showSavedOutfits ? (
