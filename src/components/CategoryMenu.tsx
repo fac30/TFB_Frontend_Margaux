@@ -19,28 +19,28 @@ const categories: Record<
       { name: "Blue T-Shirt", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/465751/item/goods_61_465751_3x4.jpg?width=400" },
     ],
     Hoodies: [
-      { name: "Grey Hoodie", image: "/images/grey-hoodie.png" },
-      { name: "Black Hoodie", image: "/images/black-hoodie.png" },
+      { name: "Grey Hoodie", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/475855/sub/goods_475855_sub14_3x4.jpg?width=400" },
+      { name: "Black Hoodie", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/456261/item/goods_09_456261_3x4.jpg?width=400" },
     ],
   },
   Bottoms: {
     Jeans: [
-      { name: "Blue Jeans", image: "/images/blue-jeans.png" },
-      { name: "Black Jeans", image: "/images/black-jeans.png" },
+      { name: "Blue Jeans", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/464744/item/goods_64_464744_3x4.jpg?width=400" },
+      { name: "Black Jeans", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/471374/sub/goods_471374_sub14_3x4.jpg?width=400" },
     ],
     Shorts: [
-      { name: "Denim Shorts", image: "/images/denim-shorts.png" },
-      { name: "Khaki Shorts", image: "/images/khaki-shorts.png" },
+      { name: "Denim Shorts", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/464945001/sub/goods_464945001_sub14_3x4.jpg?width=400" },
+      { name: "Khaki Shorts", image: "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/467052/item/goods_33_467052_3x4.jpg?width=400" },
     ],
   },
   Shoes: {
     Sneakers: [
-      { name: "White Sneakers", image: "/images/white-sneakers.png" },
-      { name: "Black Sneakers", image: "/images/black-sneakers.png" },
+      { name: "White Sneakers", image: "https://d2ob0iztsaxy5v.cloudfront.net/product/340740/3407401060_zm.jpg" },
+      { name: "Black Sneakers", image: "https://d2ob0iztsaxy5v.cloudfront.net/product/190032/1900327270_zm.jpg" },
     ],
     Boots: [
-      { name: "Brown Boots", image: "/images/brown-boots.png" },
-      { name: "Black Boots", image: "/images/black-boots.png" },
+      { name: "Brown Boots", image: "https://d2ob0iztsaxy5v.cloudfront.net/product/149501/1495016020_zm.jpg" },
+      { name: "Black Boots", image: "https://d2ob0iztsaxy5v.cloudfront.net/product/141179/1411797060_zm.jpg" },
     ],
   },
 };
