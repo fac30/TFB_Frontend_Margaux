@@ -98,9 +98,8 @@ mb={4}
 {showSavedOutfits ? "Back to Outfit Creation" : "View Saved Outfits"}
 </Button>
 
+{/* Show Saved Outfits Gallery if toggled */}
 
-
-      {/* Show Saved Outfits Gallery if toggled */}
       {showSavedOutfits ? (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
           {savedOutfits.map((outfit) => (
@@ -164,20 +163,19 @@ mb={4}
                     <p>{item.name}</p>
                   </div>
                 ))}
-                <button
-                  onClick={() => setModalOutfit(null)} // Close modal button
-                  style={{
-                    marginTop: "10px",
-                    padding: "10px 20px",
-                    backgroundColor: "#007bff",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                  }}
+
+                {/* Close modal button */}
+
+                <Button
+                onPress={() => setModalOutfit(null)} // Close modal button
+                bgColor="primary.500"
+                size="lg"
+                _text={{ color: "black" }}
+                mb={4}
                 >
                   Close
-                </button>
+                </Button>
+
               </div>
             </div>
           )}
@@ -185,22 +183,15 @@ mb={4}
       ) : (
         <>
           {/* Button to create a new outfit */}
-          <button
-            onClick={toggleMenu}
-            style={{
-              display: "block",
-              margin: "0 auto",
-              marginBottom: "20px",
-              padding: "10px 20px",
-              backgroundColor: "#007bff",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
+          <Button
+          onPress={toggleMenu}
+          bgColor="primary.500" 
+          size="lg"
+          _text={{ color: "black" }}
+          mb={4}
           >
             + Create Your Outfit
-          </button>
+          </Button>
 
           {/* Show the category menu when toggled */}
           {showMenu && (
@@ -222,22 +213,16 @@ mb={4}
           />
 
           {/* Button to save the outfit */}
-          <button
-            onClick={handleSaveOutfit}
-            style={{
-              display: "block",
-              margin: "0 auto",
-              marginTop: "20px",
-              padding: "10px 20px",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
+
+          <Button
+          onPress={handleSaveOutfit}
+          bgColor="primary.500"
+          size="lg"
+          _text={{ color: "black" }}
+          mb={4}
           >
             Save Outfit
-          </button>
+          </Button>
 
           {/* Confirmation message */}
           {saveConfirmation && (
