@@ -4,7 +4,7 @@ import ChatInputBox from "./ChatInputBox";
 
 export default function ChatBotContainer(){
     return (
-        <Box h="100%" w="100%" position="relative">
+        <Box h="100%" w="100%" position="relative" backgroundColor="">
             <VStack h="100%" space={4}>
                 <Box flex={1}>
                     <ChatHistory/>

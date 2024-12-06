@@ -35,7 +35,7 @@ export default function MainContent({
         w="100%"
         position="absolute"
         bottom={0}
-        bg="blue.500"
+        bg="#67635E"
         justifyContent="space-around"
         p={4}
       >
@@ -43,6 +43,8 @@ export default function MainContent({
           onPress={() => setActiveComponent("Component1")}
           colorScheme="light"
           variant={activeComponent === "Component1" ? "solid" : "outline"}
+          bg={activeComponent === "Component1" ? "#BDBDBD" : "white"}
+          _text={{ color: "#333333" }}
         >
           Button 1
         </Button>
@@ -50,6 +52,8 @@ export default function MainContent({
           onPress={() => setActiveComponent("Component2")}
           colorScheme="light"
           variant={activeComponent === "Component2" ? "solid" : "outline"}
+          bg={activeComponent === "Component2" ? "#BDBDBD" : "white"}
+          _text={{ color: "#333333" }}
         >
           Button 2
         </Button>
@@ -57,6 +61,8 @@ export default function MainContent({
           onPress={() => setActiveComponent("Component3")}
           colorScheme="light"
           variant={activeComponent === "Component3" ? "solid" : "outline"}
+          bg={activeComponent === "Component3" ? "#BDBDBD" : "white"}
+          _text={{ color: "#333333" }}
         >
           Button 3
         </Button>
