@@ -1,17 +1,10 @@
 import { Box, Text } from "native-base";
-import { useState } from "react";
 
-export default function ChatHistory(){
-    const [message, setMessage] = useState<{message: string, sender: string}[]>([{
-        message: "Hello, how can I help you today?",
-        sender: "bot"
-    },
-    {
-        message: "Hello, I'm after some help please",
-        sender: "user"
-    }
-]);
+interface ChatHistoryProps {
+    messages: {message: string, sender: string}[];
+}
 
+export default function ChatHistory({ messages }: ChatHistoryProps) {
     const botMessageStyle = {
         backgroundColor: '#E8E8E8',
         padding: 10,
@@ -43,7 +36,7 @@ export default function ChatHistory(){
             borderRadius={10}
             shadow={9}
         >
-         {message.map((msg, index) => (
+         {messages.map((msg, index) => (
             <Text 
                 style={msg.sender === "bot" ? botMessageStyle : userMessageStyle} 
                 key={index}

@@ -1,14 +1,36 @@
 import { Box, Input, Button } from "native-base";
+import { useState } from "react";
 
-export default function ChatInputBox(){
+interface ChatInputBoxProps {
+    onSendMessage: (message: string) => void;
+}
+
+export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
+    const [inputMessage, setInputMessage] = useState("");
+
+    const handleSend = () => {
+        if (inputMessage.trim()) {
+            onSendMessage(inputMessage);
+            setInputMessage(""); // Clear input after sending
+        }
+    };
+
     return (
         <Box>
             <Input
-                bg="white"
+                value={inputMessage}
+                onChangeText={setInputMessage}
                 minHeight={50}
                 placeholder="Type your message here"
                 InputRightElement={
-                    <Button size="md" marginRight={1} rounded="5" w="120" h="full">
+                    <Button 
+                        size="md" 
+                        marginRight={1} 
+                        rounded="5" 
+                        w="120" 
+                        h="full"
+                        onPress={handleSend}
+                    >
                         Send
                     </Button>
                 }
