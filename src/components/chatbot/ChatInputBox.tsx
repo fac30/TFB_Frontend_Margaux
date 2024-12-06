@@ -11,7 +11,7 @@ export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
     const handleSend = () => {
         if (inputMessage.trim()) {
             onSendMessage(inputMessage);
-            setInputMessage(""); // Clear input after sending
+            setInputMessage(""); 
         }
     };
 
@@ -30,6 +30,9 @@ export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
                         w="120" 
                         h="full"
                         onPress={handleSend}
+                        bg="primary.500"
+                        _hover={{ bg: "primary.700" }}
+                        _text={{ color: "white" }}
                     >
                         Send
                     </Button>

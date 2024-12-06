@@ -35,7 +35,7 @@ export default function MainContent({
         w="100%"
         position="absolute"
         bottom={0}
-        bg="#67635E"
+        bg="primary.700"
         justifyContent="space-around"
         p={2}
       >

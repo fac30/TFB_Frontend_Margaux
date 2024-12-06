@@ -8,7 +8,7 @@ export const theme = extendTheme({
       200: '#D3CEC4',
       300: '#B8B2A7',
       400: '#A39E93',
-      500: '#8A847A',  // Main brand color
+      500: '#5D5851',  // Main brand color
       600: '#6F6A62',
       700: '#555049',
       800: '#3B3731',
