@@ -3,7 +3,7 @@
 import { Box, Button, VStack, HStack, Text } from "native-base";
 import ClosetComponent from "../components/ClosetComponent";
 import WardrobeComponent from "./OutfitMakerComponent";
-import EcoAdviceComponent from "../components/EcoAdviceComponent";
+import EcoAdviceComponent from "../components/eco-advice/EcoAdviceComponent";
 
 export default function MainContent({
   activeComponent,
