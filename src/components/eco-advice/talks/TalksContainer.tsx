@@ -1,6 +1,7 @@
-import { Box, Text } from "native-base";
+import { Box, VStack } from "native-base";
 import { parseDoc } from "../../../utils/parse-doc";
 import { useEffect, useState } from "react";
+import ReactMarkdown from 'react-markdown';
 
 export default function TalksContainer() {
     const [talks, setTalks] = useState<string>("");
@@ -17,7 +18,13 @@ export default function TalksContainer() {
 
     return (
         <Box>
-            <Text>{talks}</Text>
+            <h1>Talks</h1>
+            <Box maxH="80vh" overflow="auto">
+                <VStack space={4}>
+                    <ReactMarkdown>{talks}</ReactMarkdown>
+                </VStack>
+            </Box>
         </Box>
     );
 }
+
