@@ -1,11 +1,17 @@
 import ChatBotContainer from "./chatbot/ChatBotContainer"
-import TalksContainer from "./talks/TalksContainer"
+import TalksContainer from "./TalksContainer"
 import { useState } from "react"
 import { VStack, Button, Center } from "native-base";
+import ThriftingComponent from "./ThriftingComponent"
+import UpscalingComponent from "./UpscalingComponent"
 
 export default function EcoAdviceComponent() {
     const [selectedComponent, setSelectedComponent] = useState<'talks' | 'chat' | 'clothes' | 'upscaling' | 'thrifting' | null>(null);
     
+    const handleBack = () => {
+        setSelectedComponent(null);
+    };
+
     return (
         <>
             {!selectedComponent && (
@@ -15,6 +21,7 @@ export default function EcoAdviceComponent() {
                             onPress={() => setSelectedComponent('clothes')}
                             bg="primary.700"
                             _hover={{ bg: "primary.800" }}
+                            shadow={3}
                         >
                             Clothes Swaps
                         </Button>
@@ -22,6 +29,7 @@ export default function EcoAdviceComponent() {
                             onPress={() => setSelectedComponent('upscaling')}
                             bg="primary.700"
                             _hover={{ bg: "primary.800" }}
+                            shadow={3}
                         >
                             Upscaling
                         </Button>
@@ -29,6 +37,7 @@ export default function EcoAdviceComponent() {
                             onPress={() => setSelectedComponent('thrifting')}
                             bg="primary.700"
                             _hover={{ bg: "primary.800" }}
+                            shadow={3}
                         >
                             Thrifting
                         </Button>
@@ -36,6 +45,7 @@ export default function EcoAdviceComponent() {
                             onPress={() => setSelectedComponent('talks')}
                             bg="primary.700"
                             _hover={{ bg: "primary.800" }}
+                            shadow={3}
                         >
                             Talks
                         </Button>
@@ -43,17 +53,18 @@ export default function EcoAdviceComponent() {
                             onPress={() => setSelectedComponent('chat')}
                             bg="primary.700"
                             _hover={{ bg: "primary.800" }}
+                            shadow={3}
                         >
                             Have A Question ?
                         </Button>
                     </VStack>
                 </Center>
             )}
-            {selectedComponent === 'talks' && <TalksContainer />}
-            {selectedComponent === 'chat' && <ChatBotContainer />}
+            {selectedComponent === 'talks' && <TalksContainer onBack={handleBack} />}
+            {selectedComponent === 'chat' && <ChatBotContainer onBack={handleBack} />}
             {selectedComponent === 'clothes' && <div>Clothes Swaps Content Coming Soon</div>}
-            {selectedComponent === 'upscaling' && <div>Upscaling Content Coming Soon</div>}
-            {selectedComponent === 'thrifting' && <div>Thrifting Content Coming Soon</div>}
+            {selectedComponent === 'upscaling' && <UpscalingComponent onBack={handleBack} />}
+            {selectedComponent === 'thrifting' && <ThriftingComponent onBack={handleBack} />}
         </>
     )
 }
