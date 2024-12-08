@@ -4,6 +4,7 @@ import { useState } from "react"
 import { VStack, Button, Center } from "native-base";
 import ThriftingComponent from "./ThriftingComponent"
 import UpscalingComponent from "./UpscalingComponent"
+import ClothingSwaps from "./ClothingSwaps"
 
 export default function EcoAdviceComponent() {
     const [selectedComponent, setSelectedComponent] = useState<'talks' | 'chat' | 'clothes' | 'upscaling' | 'thrifting' | null>(null);
@@ -62,7 +63,7 @@ export default function EcoAdviceComponent() {
             )}
             {selectedComponent === 'talks' && <TalksContainer onBack={handleBack} />}
             {selectedComponent === 'chat' && <ChatBotContainer onBack={handleBack} />}
-            {selectedComponent === 'clothes' && <div>Clothes Swaps Content Coming Soon</div>}
+            {selectedComponent === 'clothes' && <ClothingSwaps onBack={handleBack} />}
             {selectedComponent === 'upscaling' && <UpscalingComponent onBack={handleBack} />}
             {selectedComponent === 'thrifting' && <ThriftingComponent onBack={handleBack} />}
         </>
