@@ -1,7 +1,7 @@
 import ChatBotContainer from "./chatbot/ChatBotContainer"
 import TalksContainer from "./TalksContainer"
 import { useState } from "react"
-import { VStack, Button, Center } from "native-base";
+import { VStack, Button, Center, Text } from "native-base";
 import ThriftingComponent from "./ThriftingComponent"
 import UpscalingComponent from "./UpscalingComponent"
 import ClothingSwaps from "./ClothingSwaps"

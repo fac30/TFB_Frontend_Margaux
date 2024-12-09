@@ -41,6 +41,7 @@ export const theme = extendTheme({
   components: {
     Button: {
       defaultProps: {
+        color: 'white',
         _hover: {
           bg: 'accent.600'
         }

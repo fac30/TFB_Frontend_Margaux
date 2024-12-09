@@ -25,10 +25,10 @@ export default function ThriftingComponent() {
     }, []);
 
     return (
-        <Box>
+        <Box fontFamily={'body'} padding={4}>
             <h1>Thrifting</h1>
             <Box maxH="80vh" overflow="auto">
-                <VStack space={4}>
+                <VStack  space={4}>
                     {isLoading && <Spinner size="lg" />}
                     {error && <Box color="red.500">{error}</Box>}
                     {!isLoading && !error && <ReactMarkdown>{thriftingContent}</ReactMarkdown>}
