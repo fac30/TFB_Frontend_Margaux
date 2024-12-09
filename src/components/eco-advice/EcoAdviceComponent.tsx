@@ -5,10 +5,27 @@ import { VStack, Button, Center, Text } from "native-base";
 import ThriftingComponent from "./ThriftingComponent"
 import UpscalingComponent from "./UpscalingComponent"
 import ClothingSwaps from "./ClothingSwaps"
+import { theme } from "../../utils/native-base-config";
+import ButtonComponent from "../common/ButtonComponent";
+
+type ComponentType = 'talks' | 'chat' | 'clothes' | 'upscaling' | 'thrifting';
+
+interface ButtonConfig {
+    id: ComponentType;
+    label: string;
+}
 
 export default function EcoAdviceComponent() {
-    const [selectedComponent, setSelectedComponent] = useState<'talks' | 'chat' | 'clothes' | 'upscaling' | 'thrifting' | null>(null);
+    const [selectedComponent, setSelectedComponent] = useState<ComponentType | null>(null);
     
+    const buttons: ButtonConfig[] = [
+        { id: 'clothes', label: 'Clothes Swaps' },
+        { id: 'upscaling', label: 'Upscaling' },
+        { id: 'thrifting', label: 'Thrifting' },
+        { id: 'talks', label: 'Talks' },
+        { id: 'chat', label: 'Have A Question ?' },
+    ];
+
     const handleBack = () => {
         setSelectedComponent(null);
     };
@@ -16,48 +33,15 @@ export default function EcoAdviceComponent() {
     return (
         <>
             {!selectedComponent && (
-                <Center w="100%">
+                <Center w="100%" bg={theme.colors.primary[50]}>
                     <VStack space={8} w="90%" maxW="300px">
-                        <Button 
-                            onPress={() => setSelectedComponent('clothes')}
-                            bg="primary.700"
-                            _hover={{ bg: "primary.800" }}
-                            shadow={3}
-                        >
-                            Clothes Swaps
-                        </Button>
-                        <Button 
-                            onPress={() => setSelectedComponent('upscaling')}
-                            bg="primary.700"
-                            _hover={{ bg: "primary.800" }}
-                            shadow={3}
-                        >
-                            Upscaling
-                        </Button>
-                        <Button 
-                            onPress={() => setSelectedComponent('thrifting')}
-                            bg="primary.700"
-                            _hover={{ bg: "primary.800" }}
-                            shadow={3}
-                        >
-                            Thrifting
-                        </Button>
-                        <Button 
-                            onPress={() => setSelectedComponent('talks')}
-                            bg="primary.700"
-                            _hover={{ bg: "primary.800" }}
-                            shadow={3}
-                        >
-                            Talks
-                        </Button>
-                        <Button 
-                            onPress={() => setSelectedComponent('chat')}
-                            bg="primary.700"
-                            _hover={{ bg: "primary.800" }}
-                            shadow={3}
-                        >
-                            Have A Question ?
-                        </Button>
+                        {buttons.map((button) => (
+                            <ButtonComponent 
+                                key={button.id}
+                                onPress={() => setSelectedComponent(button.id)}
+                                label={button.label}
+                            />
+                        ))}
                     </VStack>
                 </Center>
             )}

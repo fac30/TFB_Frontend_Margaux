@@ -50,5 +50,9 @@ export default defineConfig({
   define: {
     __DEV__: JSON.stringify(true),
     Platform: JSON.stringify({ OS: 'web' })
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 5174
   }
 });

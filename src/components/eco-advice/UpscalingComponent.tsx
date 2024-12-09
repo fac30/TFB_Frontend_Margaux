@@ -25,7 +25,7 @@ export default function UpscalingComponent() {
     }, []);
 
     return (
-        <Box>
+        <Box fontFamily={'body'} padding={2} marginBottom={10}>
             <h1>Upscaling</h1>
             <Box maxH="80vh" overflow="auto">
                 <VStack space={4}>

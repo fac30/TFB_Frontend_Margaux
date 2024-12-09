@@ -10,7 +10,7 @@ export default function TalksContainer() {
 
     useEffect(() => {
         setIsLoading(true);
-        parseDoc("https://docs.google.com/document/d/e/2PACX-1vTM38NkUYuw_7y4ShBcd778IQwIoAA1epXrODKRdlE8pebaxIhnqKuuew4SlGl46qluhfILP9Pf11nk/pub")
+        parseDoc("https://docs.google.com/document/d/e/2PACX-1vTxqRL1IeIdiqAp9QoBtdVY135Hq7PA2BkMooZRGDQ9GWdCnGJGvaWsEJ8RYw-7QGihXj5tI_CFtxXB/pub")
             .then((content) => {
                 setTalks(content);
                 setError(null);
@@ -25,7 +25,7 @@ export default function TalksContainer() {
     }, []);
 
     return (
-        <Box>
+        <Box fontFamily={'body'} padding={2} marginBottom={10}>
             <h1>Talks</h1>
             <Box maxH="80vh" overflow="auto">
                 <VStack space={4}>

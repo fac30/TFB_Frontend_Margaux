@@ -7,7 +7,7 @@ import { theme } from './utils/native-base-config';
 function App() {
   return (
     <NativeBaseProvider theme={theme}>
-      <Box flex={1} bg="white">
+      <Box flex={1} bg={theme.colors.gray[50]}>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />

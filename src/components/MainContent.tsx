@@ -4,6 +4,7 @@ import { Box, Button, VStack, HStack, Text } from "native-base";
 import ClosetComponent from "../components/ClosetComponent";
 import WardrobeComponent from "./OutfitMakerComponent";
 import EcoAdviceComponent from "../components/eco-advice/EcoAdviceComponent";
+import { theme } from "../utils/native-base-config";
 
 export default function MainContent({
   activeComponent,
@@ -25,7 +26,7 @@ export default function MainContent({
     );
 
   return (
-    <Box w="100%" h="100vh" bg="white" safeArea>
+    <Box w="100%" h="100vh" bg={theme.colors.gray[100]} safeArea>
       <VStack space={4} flex={1} justifyContent="center" alignItems="center">
         {renderComponent()}
       </VStack>
