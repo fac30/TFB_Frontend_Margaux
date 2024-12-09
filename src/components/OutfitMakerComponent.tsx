@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CategoryMenu from "./CategoryMenu";
 import Canvas from "./Canvas";
-import { Button } from "native-base";
+import { Box , Button } from "native-base";
 
 // Define a type for saved outfits
 interface SavedOutfit {
@@ -83,8 +83,27 @@ export default function OutfitMakerComponent() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1 style={{ textAlign: "center" }}>Outfit Maker</h1>
+
+//   <Box
+//   alignItems="center"
+//   justifyContent="space-between"
+//   flex={1}
+//   margin={4} // Adjust margin to ensure spacing
+//   w="100%" h="100vh" bg="white" safeArea
+// >
+
+<Box 
+
+w="100%" 
+maxW="100vw" 
+overflow="hidden"
+px={2} // reduced padding for mobile
+>
+
+    <div style={{ padding: "0px", backgroundColor: "white", border: "black 5px solid", width: "100%", maxWidth: "1200px", margin: "0 auto" }}>
+      
+      
+<h1 style={{ textAlign: "center" }}>Outfit Maker</h1>
 
 {/* Button to toggle between Create Outfit and Saved Outfits views */}
 
@@ -135,7 +154,6 @@ mb={4}
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1000,
               }}
               onClick={() => setModalOutfit(null)} // Close modal on overlay click
@@ -206,12 +224,23 @@ mb={4}
           )}
 
           {/* Canvas to display selected items */}
+
+          <Box
+          w="100%"
+          h="50%" // Maintain space even when hidden
+          style={{
+            display: showMenu ? 'none' : 'flex',
+            opacity: showMenu ? 0 : 1,
+          }}
+          >
+        
           <Canvas
             items={selectedItems}
             onDeleteItem={handleDeleteItem}
             onUpdateItemPosition={handleUpdateItemPosition}
           />
 
+         </Box>
           {/* Button to save the outfit */}
 
           <Button
@@ -233,5 +262,6 @@ mb={4}
         </>
       )}
     </div>
+    </Box>
   );
 }
