@@ -100,7 +100,7 @@ overflow="hidden"
 px={2} // reduced padding for mobile
 >
 
-    <div style={{ padding: "0px", backgroundColor: "white", border: "black 5px solid", width: "100%", maxWidth: "1200px", margin: "0 auto" }}>
+    <div style={{ padding: "10px", backgroundColor: "white", width: "auto", maxWidth: "1200px", margin: "auto" }}>
       
       
 <h1 style={{ textAlign: "center" }}>Outfit Maker</h1>
@@ -164,7 +164,7 @@ mb={4}
                   padding: "20px",
                   borderRadius: "5px",
                   boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
-                  maxWidth: "400px",
+                  maxWidth: "600px",
                   maxHeight: "80%",
                   overflowY: "auto",
                 }}
