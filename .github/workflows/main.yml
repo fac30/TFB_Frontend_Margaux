@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - DevOps
+      - feat/**
 
 jobs:
   deploy:
