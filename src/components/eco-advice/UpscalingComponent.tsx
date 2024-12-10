@@ -2,6 +2,7 @@ import { Box, VStack, Spinner } from "native-base";
 import { parseDoc } from "../../utils/parse-doc";
 import { useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
+import { theme } from "native-base";
 
 export default function UpscalingComponent() {
     const [upscalingContent, setUpscalingContent] = useState<string>("");
@@ -25,9 +26,9 @@ export default function UpscalingComponent() {
     }, []);
 
     return (
-        <Box fontFamily={'body'} padding={2} marginBottom={10}>
+        <Box fontFamily={'body'} padding={2} marginBottom={10} bg={theme.colors.gray[100]}>
             <h1>Upscaling</h1>
-            <Box maxH="80vh" overflow="auto">
+            <Box maxH="80vh" overflow="auto" padding={4}>
                 <VStack space={4}>
                     {isLoading && <Spinner size="lg" />}
                     {error && <Box color="red.500">{error}</Box>}

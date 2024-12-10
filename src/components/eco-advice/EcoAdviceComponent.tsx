@@ -1,7 +1,7 @@
 import ChatBotContainer from "./chatbot/ChatBotContainer"
 import TalksContainer from "./TalksContainer"
 import { useState } from "react"
-import { VStack, Button, Center, Text } from "native-base";
+import { VStack, Center } from "native-base";
 import ThriftingComponent from "./ThriftingComponent"
 import UpscalingComponent from "./UpscalingComponent"
 import ClothingSwaps from "./ClothingSwaps"
@@ -26,10 +26,6 @@ export default function EcoAdviceComponent() {
         { id: 'chat', label: 'Have A Question ?' },
     ];
 
-    const handleBack = () => {
-        setSelectedComponent(null);
-    };
-
     return (
         <>
             {!selectedComponent && (
@@ -45,11 +41,11 @@ export default function EcoAdviceComponent() {
                     </VStack>
                 </Center>
             )}
-            {selectedComponent === 'talks' && <TalksContainer onBack={handleBack} />}
-            {selectedComponent === 'chat' && <ChatBotContainer onBack={handleBack} />}
-            {selectedComponent === 'clothes' && <ClothingSwaps onBack={handleBack} />}
-            {selectedComponent === 'upscaling' && <UpscalingComponent onBack={handleBack} />}
-            {selectedComponent === 'thrifting' && <ThriftingComponent onBack={handleBack} />}
+            {selectedComponent === 'talks' && <TalksContainer />}
+            {selectedComponent === 'chat' && <ChatBotContainer />}
+            {selectedComponent === 'clothes' && <ClothingSwaps />}
+            {selectedComponent === 'upscaling' && <UpscalingComponent />}
+            {selectedComponent === 'thrifting' && <ThriftingComponent />}
         </>
     )
 }

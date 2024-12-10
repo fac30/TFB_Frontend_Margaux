@@ -10,8 +10,8 @@ export default function ChatHistory({ messages }: ChatHistoryProps) {
         padding: 10,
         margin: 5,
         borderRadius: 8,
-        maxWidth: '70%',
-        alignSelf: 'flex-start'
+        maxWidth: '70%' as const,
+        alignSelf: 'flex-start' as const
     };
 
     const userMessageStyle = {
@@ -19,8 +19,8 @@ export default function ChatHistory({ messages }: ChatHistoryProps) {
         padding: 10,
         margin: 5,
         borderRadius: 8,
-        maxWidth: '70%',
-        alignSelf: 'flex-end'
+        maxWidth: '70%' as const,
+        alignSelf: 'flex-end' as const
     };
 
     return (
@@ -28,13 +28,13 @@ export default function ChatHistory({ messages }: ChatHistoryProps) {
             bg="white"
             borderColor="#67635E"
             position="relative"
-            top={8}
-            width="80%"
-            height="80%"
-            marginLeft="auto"
-            marginRight="auto"
             borderRadius={10}
             shadow={9}
+            top={8}
+            width="80%"
+            height="78%"
+            marginLeft="auto"
+            marginRight="auto"
         >
          {messages.map((msg, index) => (
             <Text 
