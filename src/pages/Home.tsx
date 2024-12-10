@@ -3,6 +3,7 @@
 import { Box, Button, VStack, Text } from "native-base";
 import { useState } from "react";
 import MainContent from "../components/MainContent";
+import { theme } from "../utils/native-base-config";
 
 export default function Home() {
   // State to track if the user has entered
@@ -10,7 +11,7 @@ export default function Home() {
   const [activeComponent, setActiveComponent] = useState("Component1");
 
   return (
-    <Box w="100%" h="100vh" bg="white" safeArea justifyContent="center" alignItems="center">
+    <Box w="100%" h="100vh" bg={theme.colors.gray[50]} safeArea justifyContent="center" alignItems="center">
       {hasEntered ? (
         <MainContent activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
       ) : (
