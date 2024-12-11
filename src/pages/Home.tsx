@@ -1,12 +1,11 @@
 "use client";
 
-import { Box, VStack, Image, Pressable } from "native-base";
+import { Box } from "native-base";
 import { useState } from "react";
 import MainContent from "../components/MainContent";
-import logo from "../assets/images/logo.svg";
+import PWAInstallPrompt from "../components/PWAInstallPrompt";
 
 export default function Home() {
-  const [hasEntered, setHasEntered] = useState(false);
   const [activeComponent, setActiveComponent] = useState("");
 
   const handleComponentChange = (component: string) => {
@@ -23,34 +22,11 @@ export default function Home() {
       alignItems="center"
       position="relative"
     >
-      {hasEntered ? (
-        <MainContent
-          activeComponent={activeComponent}
-          setActiveComponent={handleComponentChange}
-        />
-      ) : (
-        <VStack
-          space={4}
-          flex={1}
-          justifyContent="center"
-          alignItems="center"
-          bg="primary.200"
-          p={6}
-        >
-          <Pressable
-            onPress={() => setHasEntered(true)}
-            _hover={{ opacity: 0.8 }}
-          >
-            <Image
-              source={{
-                uri: logo,
-              }}
-              alt="Inside My Closet Logo"
-              size="2xl"
-            />
-          </Pressable>
-        </VStack>
-      )}
+      <MainContent
+        activeComponent={activeComponent}
+        setActiveComponent={handleComponentChange}
+      />
+      {!activeComponent && <PWAInstallPrompt centered />}
     </Box>
   );
 }

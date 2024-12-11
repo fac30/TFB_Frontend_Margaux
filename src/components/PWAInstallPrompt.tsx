@@ -1,32 +1,45 @@
-import { Box, Button, Text, useToast } from 'native-base'
+import { Box, Button, Text, useToast, Image, VStack } from 'native-base'
 import { useState, useEffect } from 'react'
 
-let deferredPrompt: any
+interface PWAInstallPromptProps {
+  centered: boolean;
+}
 
-export default function PWAInstallPrompt() {
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
+let deferredPrompt: BeforeInstallPromptEvent | null = null;
+
+export default function PWAInstallPrompt(props: PWAInstallPromptProps) {
+  const { centered } = props;
   const [showInstallButton, setShowInstallButton] = useState(false)
   const toast = useToast()
 
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
+    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       e.preventDefault()
       deferredPrompt = e
-      setShowInstallButton(false)
-    })
+      setShowInstallButton(true)
+    }
 
-    window.addEventListener('appinstalled', () => {
+    const handleAppInstalled = () => {
       toast.show({
         description: 'App installed successfully!',
         placement: 'top'
       })
       setShowInstallButton(false)
-    })
+    }
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener)
+    window.addEventListener('appinstalled', handleAppInstalled)
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', () => {})
-      window.removeEventListener('appinstalled', () => {})
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener)
+      window.removeEventListener('appinstalled', handleAppInstalled)
     }
-  }, [])
+  }, [toast])
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -42,24 +55,44 @@ export default function PWAInstallPrompt() {
 
   return (
     <Box 
-      position="fixed" 
-      bottom="xl" 
-      right="xl" 
-      p="xl" 
-      bg="primary.100" 
-      shadow="md" 
-      borderRadius="lg"
+      position={centered ? "absolute" : "fixed"}
+      top={centered ? "50%" : "auto"}
+      left={centered ? "50%" : "auto"}
+      bottom={centered ? "auto" : "xl"}
+      right={centered ? "auto" : "xl"}
+      style={{ transform: centered ? 'translate(-50%, -50%)' : 'none' }}
+      bg="primary.200"
+      zIndex={2}
     >
-      <Text mb="md" color="primary.200" fontSize="md">
-        Install Inside My Closet app?
-      </Text>
-      <Button 
-        onPress={handleInstallClick}
-        size="md"
-        _hover={{ bg: "primary.300" }}
+      <VStack 
+        space={4} 
+        alignItems="center" 
+        bg="primary.200"
+        p="xl"
       >
-        Install
-      </Button>
+        <Image 
+          source={{
+            uri: "/pwa-512x512.png"
+          }}
+          alt="Inside My Closet Logo"
+          size="xl"
+          borderRadius="full"
+        />
+        <Text color="primary.100" fontSize="md" textAlign="center">
+          Install Inside My Closet app?
+        </Text>
+        <Button
+          onPress={handleInstallClick}
+          bg="primary.200"
+          borderColor="primary.100"
+          borderWidth={1}
+          _text={{ color: "primary.100" }}
+          _hover={{ borderColor: "black", bg: "primary.200" }}
+          w="100%"
+        >
+          Install
+        </Button>
+      </VStack>
     </Box>
   )
 } 
