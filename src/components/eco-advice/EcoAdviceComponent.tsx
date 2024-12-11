@@ -15,13 +15,26 @@ interface ButtonConfig {
 }
 
 interface EcoAdviceComponentProps {
-    onRegisterBack: (backFn: () => void) => void;
+    onRegisterBack: (backFn: () => boolean) => void;
     setActiveComponent: (component: string) => void;
 }
 
-export default function EcoAdviceComponent({ onRegisterBack, setActiveComponent }: EcoAdviceComponentProps) {
+export default function EcoAdviceComponent({ setActiveComponent, onRegisterBack }: EcoAdviceComponentProps) {
     const [selectedComponent, setSelectedComponent] = useState<ComponentType | null>(null);
-    
+
+    // Handle back navigation
+    useEffect(() => {
+        const handleBack = () => {
+            if (selectedComponent) {
+                setSelectedComponent(null);
+                return true; // Indicate we handled the back action
+            }
+            return false; // Let parent handle the back action
+        };
+
+        onRegisterBack(handleBack);
+    }, [selectedComponent, onRegisterBack]);
+
     const buttons: ButtonConfig[] = [
         { id: 'clothes', label: 'Clothes Swaps' },
         { id: 'upscaling', label: 'Upscaling' },
@@ -29,21 +42,6 @@ export default function EcoAdviceComponent({ onRegisterBack, setActiveComponent 
         { id: 'talks', label: 'Talks' },
         { id: 'chat', label: 'Have A Question ?' },
     ];
-
-    useEffect(() => {
-        // Register back function
-        const handleBack = () => {
-            if (selectedComponent) {
-                // If we're in a sustainable sub-component, go back to sustainable menu
-                setSelectedComponent(null);
-                return true; // Indicate that we handled the back action
-            }
-            // If we're at the sustainable menu, go back to main menu
-            return false; // Indicate that parent should handle back action
-        };
-
-        onRegisterBack(handleBack);
-    }, [selectedComponent, onRegisterBack]);
 
     return (
         <Box 

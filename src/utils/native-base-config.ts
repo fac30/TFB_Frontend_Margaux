@@ -113,13 +113,53 @@ export const theme = extendTheme({
       }
     },
     Button: {
+      baseStyle: {
+        borderRadius: 'md',
+        _icon: {
+          color: 'primary.100'
+        }
+      },
       defaultProps: {
-        bg: 'primary.200',
-        borderColor: 'primary.100',
-        borderWidth: 1,
-        _hover: { bg: 'primary.300' },
-        _text: { color: 'primary.100' }
-      }
+        variant: 'outline',
+      },
+      variants: {
+        outline: {
+          bg: 'transparent',
+          borderWidth: 1,
+          borderColor: 'primary.100',
+          _text: {
+            color: 'primary.100',
+          },
+          _hover: {
+            borderColor: 'black',
+            bg: 'transparent',
+          },
+          _pressed: {
+            bg: 'transparent',
+          },
+          _focus: {
+            bg: 'transparent',
+          },
+        },
+        solid: {
+          bg: 'primary.100',
+          borderWidth: 1,
+          borderColor: 'primary.100',
+          _text: {
+            color: 'primary.200',
+          },
+          _hover: {
+            borderColor: 'black',
+            bg: 'primary.100',
+          },
+          _pressed: {
+            bg: 'primary.100',
+          },
+          _focus: {
+            bg: 'primary.100',
+          },
+        },
+      },
     },
     Image: {
       defaultProps: {
@@ -144,6 +184,19 @@ export const theme = extendTheme({
       defaultProps: {
         bg: 'primary.200',
         showsHorizontalScrollIndicator: false
+      }
+    },
+    Icon: {
+      defaultProps: {
+        color: 'primary.100',
+        size: 'md'
+      }
+    },
+    IconButton: {
+      defaultProps: {
+        _icon: {
+          color: 'primary.100'
+        }
       }
     }
   }
