@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CategoryMenu from "./CategoryMenu";
 import Canvas from "./Canvas";
 import { Box , Button } from "native-base";
