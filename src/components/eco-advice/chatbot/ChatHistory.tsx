@@ -1,4 +1,5 @@
 import { Box, Text } from "native-base";
+import { FlexAlignType } from "react-native";
 
 interface ChatHistoryProps {
     messages: {message: string, sender: string}[];
@@ -6,44 +7,55 @@ interface ChatHistoryProps {
 
 export default function ChatHistory({ messages }: ChatHistoryProps) {
     const botMessageStyle = {
-        backgroundColor: '#E8E8E8',
-        padding: 10,
-        margin: 5,
+        bg: "primary.200",
+        p: 2,
+        m: 1,
         borderRadius: 8,
-        maxWidth: '70%' as const,
-        alignSelf: 'flex-start' as const
+        maxW: { base: "85%", md: "70%" },
+        alignSelf: "flex-start" as FlexAlignType,
+        borderColor: "primary.100",
+        borderWidth: 1
     };
 
     const userMessageStyle = {
-        backgroundColor: '#DCF8C6',
-        padding: 10,
-        margin: 5,
+        bg: "primary.200",
+        p: 2,
+        m: 1,
         borderRadius: 8,
-        maxWidth: '70%' as const,
-        alignSelf: 'flex-end' as const
+        maxW: { base: "85%", md: "70%" },
+        alignSelf: "flex-end" as FlexAlignType,
+        borderColor: "primary.100",
+        borderWidth: 1
     };
 
     return (
         <Box
-            bg="white"
-            borderColor="#67635E"
-            position="relative"
+            bg="primary.200"
+            borderColor="primary.100"
+            borderWidth={1}
             borderRadius={10}
             shadow={9}
-            top={8}
-            width="80%"
-            height="78%"
-            marginLeft="auto"
-            marginRight="auto"
+            width={{ base: "95%", md: "90%" }}
+            height={{ base: "calc(100% - 60px)", md: "calc(100% - 80px)" }}
+            marginX="auto"
+            p={{ base: 2, md: 4 }}
+            overflow="auto"
+            display="flex"
+            flexDirection="column"
         >
-         {messages.map((msg, index) => (
-            <Text 
-                style={msg.sender === "bot" ? botMessageStyle : userMessageStyle} 
-                key={index}
-            >
-                {msg.message}
-            </Text>
-         ))}
+            {messages.map((msg, index) => (
+                <Box
+                    key={index}
+                    {...(msg.sender === "bot" ? botMessageStyle : userMessageStyle)}
+                >
+                    <Text 
+                        color="primary.100"
+                        fontSize={{ base: "sm", md: "md" }}
+                    >
+                        {msg.message}
+                    </Text>
+                </Box>
+            ))}
         </Box>
-    )
+    );
 }

@@ -15,29 +15,60 @@ export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
         }
     };
 
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }
+    };
+
     return (
-        <Box>
+        <Box 
+            bg="primary.200" 
+            p={{ base: 1, md: 2 }}
+            borderRadius="md"
+            borderColor="primary.100"
+            borderWidth={1}
+            width={{ base: "95%", md: "90%" }}
+            mx="auto"
+        >
             <Input
                 value={inputMessage}
                 onChangeText={setInputMessage}
-                minHeight={50}
-                placeholder="Type your message here"
+                onKeyPress={handleKeyPress}
+                placeholder="Type your message here..."
+                color="primary.100"
+                borderColor="primary.100"
+                _focus={{
+                    borderColor: "primary.100",
+                    bg: "primary.200"
+                }}
+                _hover={{
+                    borderColor: "primary.100"
+                }}
+                fontSize={{ base: "sm", md: "md" }}
+                py={{ base: 1, md: 2 }}
                 InputRightElement={
                     <Button 
-                        size="md" 
+                        size={{ base: "sm", md: "md" }}
                         marginRight={1} 
-                        rounded="5" 
-                        w="120" 
+                        rounded="md" 
+                        w={{ base: "16", md: "20" }}
                         h="full"
                         onPress={handleSend}
-                        bg="primary.500"
-                        _hover={{ bg: "primary.700" }}
-                        _text={{ color: "white" }}
+                        bg="primary.200"
+                        borderColor="primary.100"
+                        borderWidth={1}
+                        _hover={{ bg: "primary.200" }}
+                        _text={{ 
+                            color: "primary.100",
+                            fontSize: { base: "sm", md: "md" }
+                        }}
                     >
                         Send
                     </Button>
                 }
             />
         </Box>
-    )
+    );
 }

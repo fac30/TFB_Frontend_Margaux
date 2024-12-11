@@ -1,27 +1,49 @@
 "use client";
 
-import { Box, Button, VStack, Text } from "native-base";
+import { Box, VStack, Image, Pressable } from "native-base";
 import { useState } from "react";
 import MainContent from "../components/MainContent";
-import { theme } from "../utils/native-base-config";
+import logo from "../assets/images/logo.svg";
 
 export default function Home() {
-  // State to track if the user has entered
   const [hasEntered, setHasEntered] = useState(false);
-  const [activeComponent, setActiveComponent] = useState("Component1");
+  const [activeComponent, setActiveComponent] = useState("");
 
   return (
-    <Box w="100%" h="100vh" bg={theme.colors.gray[50]} safeArea justifyContent="center" alignItems="center">
+    <Box
+      w="100%"
+      h="100vh"
+      bg="primary.200"
+      safeArea
+      justifyContent="center"
+      alignItems="center"
+    >
       {hasEntered ? (
-        <MainContent activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
+        <MainContent
+          activeComponent={activeComponent}
+          setActiveComponent={setActiveComponent}
+        />
       ) : (
-        <VStack space={4} flex={1} justifyContent="center" alignItems="center">
-          <Text fontSize="2xl" mb={4}>
-            Welcome to Inside My Closet!
-          </Text>
-          <Button onPress={() => setHasEntered(true)} colorScheme="blue">
-            Enter
-          </Button>
+        <VStack
+          space={4}
+          flex={1}
+          justifyContent="center"
+          alignItems="center"
+          bg="primary.200"
+          p={6}
+        >
+          <Pressable
+            onPress={() => setHasEntered(true)}
+            _hover={{ opacity: 0.8 }}
+          >
+            <Image
+              source={{
+                uri: logo,
+              }}
+              alt="Inside My Closet Logo"
+              size="2xl"
+            />
+          </Pressable>
         </VStack>
       )}
     </Box>
