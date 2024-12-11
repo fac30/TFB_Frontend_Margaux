@@ -72,7 +72,10 @@ export default function MainContent({
           _icon={{
             color: "primary.100",
           }}
-          opacity={activeComponent ? 1 : 0.7}
+          _disabled={{
+            opacity: 1,
+            borderColor: "primary.100"
+          }}
           isDisabled={!activeComponent}
         >
           <svg
