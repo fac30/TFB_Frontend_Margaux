@@ -30,20 +30,20 @@ export default function EcoAdviceComponent({ onRegisterBack, setActiveComponent 
         { id: 'chat', label: 'Have A Question ?' },
     ];
 
-    // Register the back function with the parent component
     useEffect(() => {
-        // Define the back function
+        // Register back function
         const handleBack = () => {
             if (selectedComponent) {
+                // If we're in a sustainable sub-component, go back to sustainable menu
                 setSelectedComponent(null);
-            } else {
-                setActiveComponent(""); // Return to main page when in sustainable menu
+                return true; // Indicate that we handled the back action
             }
+            // If we're at the sustainable menu, go back to main menu
+            return false; // Indicate that parent should handle back action
         };
 
-        // Register it with the parent
         onRegisterBack(handleBack);
-    }, [selectedComponent, onRegisterBack, setActiveComponent]); // Include dependencies
+    }, [selectedComponent, onRegisterBack]);
 
     return (
         <Box 
@@ -54,6 +54,8 @@ export default function EcoAdviceComponent({ onRegisterBack, setActiveComponent 
             display="flex"
             justifyContent="center"
             alignItems="center"
+            position="relative"
+            zIndex={1}
         >
             {!selectedComponent ? (
                 <Center>

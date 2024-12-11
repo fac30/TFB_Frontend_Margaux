@@ -2,9 +2,9 @@ import { Box, Text, Center } from 'native-base';
 
 export default function Footer() {
   return (
-    <Box bg="white" py={4} position="relative" bottom={0} width="100%">
+    <Box bg="primary.100" py="xl" position="relative" bottom={0} width="100%" shadow="xs">
       <Center>
-        <Text color="gray.600">
+        <Text color="primary.200" fontSize="sm">
           © 2024 Inside My Closet. All rights reserved.
         </Text>
       </Center>

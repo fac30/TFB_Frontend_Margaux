@@ -7,19 +7,17 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <Box safeAreaTop bg="white" px={4} shadow={1}>
-      <HStack justifyContent="space-between" alignItems="center" h={16}>
+    <Box safeAreaTop bg="primary.100" px="2xl" shadow="sm">
+      <HStack justifyContent="space-between" alignItems="center" h="2xl">
         <Pressable onPress={() => navigate('/')}>
           <Image
             source={{
-              uri: '/pwa-192x192.png'  // Using the smaller logo version for better performance
+              uri: '/pwa-192x192.png'
             }}
             alt="Inside My Closet"
-            size="sm"  // You can adjust this size: "xs", "sm", "md", "lg", "xl", "2xl"
-            resizeMode="contain"
+            size="md"
           />
         </Pressable>
-        {/* Add navigation items here later */}
       </HStack>
     </Box>
   );

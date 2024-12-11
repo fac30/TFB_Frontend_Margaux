@@ -41,9 +41,23 @@ export default function PWAInstallPrompt() {
   if (!showInstallButton) return null
 
   return (
-    <Box position="fixed" bottom={4} right={4} p={4} bg="white" shadow={2} rounded="md">
-      <Text mb={2} color="black">Install Inside My Closet app?</Text>
-      <Button onPress={handleInstallClick}>
+    <Box 
+      position="fixed" 
+      bottom="xl" 
+      right="xl" 
+      p="xl" 
+      bg="primary.100" 
+      shadow="md" 
+      borderRadius="lg"
+    >
+      <Text mb="md" color="primary.200" fontSize="md">
+        Install Inside My Closet app?
+      </Text>
+      <Button 
+        onPress={handleInstallClick}
+        size="md"
+        _hover={{ bg: "primary.300" }}
+      >
         Install
       </Button>
     </Box>

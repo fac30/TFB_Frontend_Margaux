@@ -1,10 +1,10 @@
 "use client";
 
 import { Box, HStack, Button } from "native-base";
+import { useState, useCallback } from "react";
 import ClosetComponent from "./ClosetComponent";
 import OutfitMakerComponent from "./OutfitMakerComponent";
 import EcoAdviceComponent from "./eco-advice/EcoAdviceComponent";
-import { useCallback, useState } from "react";
 
 interface MainContentProps {
   activeComponent: string;
@@ -12,21 +12,20 @@ interface MainContentProps {
 }
 
 export default function MainContent({ activeComponent, setActiveComponent }: MainContentProps) {
-  const [backFunction, setBackFunction] = useState<(() => void) | null>(null);
+  const [registeredBackHandler, setRegisteredBackHandler] = useState<() => boolean>(() => () => false);
 
-  const handleComponentChange = (componentName: string) => {
-    setActiveComponent(componentName === activeComponent ? "" : componentName);
-  };
-
-  const handleRegisterBack = useCallback((backFn: () => void) => {
-    setBackFunction(() => backFn);
-  }, []);
-
-  const onBackPress = () => {
-    if (backFunction) {
-      backFunction();
+  const handleBack = useCallback(() => {
+    // First try the registered back handler
+    const wasHandled = registeredBackHandler();
+    // If not handled by child component, go back to main menu
+    if (!wasHandled) {
+      setActiveComponent("");
     }
-  };
+  }, [registeredBackHandler, setActiveComponent]);
+
+  const handleRegisterBack = useCallback((backFn: () => boolean) => {
+    setRegisteredBackHandler(() => backFn);
+  }, []);
 
   return (
     <Box w="100%" h="100vh" bg="primary.200" safeArea>
@@ -51,17 +50,18 @@ export default function MainContent({ activeComponent, setActiveComponent }: Mai
         p={4}
         borderTopWidth={1}
         borderTopColor="primary.100"
+        zIndex={1}
       >
         {/* Back Button */}
         <Button
-          onPress={onBackPress}
+          onPress={handleBack}
           bg="primary.200"
           borderColor="primary.100"
           borderWidth={1}
           _hover={{ bg: "primary.200" }}
           aria-label="Go back"
-          opacity={backFunction ? 1 : 0.5}
-          isDisabled={!backFunction}
+          opacity={activeComponent ? 1 : 0.5}
+          isDisabled={!activeComponent}
         >
           <svg width="59" height="39" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15 18L9 12L15 6" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -70,7 +70,7 @@ export default function MainContent({ activeComponent, setActiveComponent }: Mai
 
         {/* Closet Button */}
         <Button
-          onPress={() => handleComponentChange("Component1")}
+          onPress={() => setActiveComponent("Component1")}
           bg="primary.200"
           borderColor="primary.100"
           borderWidth={1}
@@ -87,7 +87,7 @@ export default function MainContent({ activeComponent, setActiveComponent }: Mai
 
         {/* Outfit Maker Button */}
         <Button
-          onPress={() => handleComponentChange("Component2")}
+          onPress={() => setActiveComponent("Component2")}
           bg="primary.200"
           borderColor="primary.100"
           borderWidth={1}
@@ -102,7 +102,7 @@ export default function MainContent({ activeComponent, setActiveComponent }: Mai
 
         {/* Eco Advice Button */}
         <Button
-          onPress={() => handleComponentChange("Component3")}
+          onPress={() => setActiveComponent("Component3")}
           bg="primary.200"
           borderColor="primary.100"
           borderWidth={1}

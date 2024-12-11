@@ -23,77 +23,82 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
 
   return (
     <VStack 
-      space={4} 
+      space={2} 
       bg="primary.200" 
       borderColor="primary.100"
       borderWidth={1}
       borderRadius="md"
-      p={4}
       h="100%"
     >
       {/* Categories */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <HStack space={2}>
-          {categories.map((category) => (
-            <Pressable
-              key={category.name}
-              onPress={() => {
-                setSelectedCategory(category.name);
-                setSelectedSubcategory(category.subcategories[0].name);
-              }}
-            >
-              <Box
-                bg={selectedCategory === category.name ? "primary.100" : "primary.200"}
-                px={4}
-                py={2}
-                borderRadius="md"
-                borderWidth={1}
-                borderColor="primary.100"
-              >
-                <Text
-                  color={selectedCategory === category.name ? "primary.200" : "primary.100"}
-                  fontWeight="medium"
-                >
-                  {category.name}
-                </Text>
-              </Box>
-            </Pressable>
-          ))}
-        </HStack>
-      </ScrollView>
-
-      {/* Subcategories */}
-      {currentCategory && (
+      <Box p={2} borderBottomWidth={1} borderBottomColor="primary.100">
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <HStack space={2}>
-            {currentCategory.subcategories.map((subcategory) => (
+            {categories.map((category) => (
               <Pressable
-                key={subcategory.name}
-                onPress={() => setSelectedSubcategory(subcategory.name)}
+                key={category.name}
+                onPress={() => {
+                  setSelectedCategory(category.name);
+                  setSelectedSubcategory(category.subcategories[0].name);
+                }}
               >
                 <Box
-                  bg={selectedSubcategory === subcategory.name ? "primary.100" : "primary.200"}
-                  px={4}
-                  py={2}
+                  bg={selectedCategory === category.name ? "primary.100" : "primary.200"}
+                  px={3}
+                  py={1}
                   borderRadius="md"
                   borderWidth={1}
                   borderColor="primary.100"
                 >
                   <Text
-                    color={selectedSubcategory === subcategory.name ? "primary.200" : "primary.100"}
+                    color={selectedCategory === category.name ? "primary.200" : "primary.100"}
                     fontWeight="medium"
+                    fontSize="sm"
                   >
-                    {subcategory.name}
+                    {category.name}
                   </Text>
                 </Box>
               </Pressable>
             ))}
           </HStack>
         </ScrollView>
+      </Box>
+
+      {/* Subcategories */}
+      {currentCategory && (
+        <Box p={2} borderBottomWidth={1} borderBottomColor="primary.100">
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <HStack space={2}>
+              {currentCategory.subcategories.map((subcategory) => (
+                <Pressable
+                  key={subcategory.name}
+                  onPress={() => setSelectedSubcategory(subcategory.name)}
+                >
+                  <Box
+                    bg={selectedSubcategory === subcategory.name ? "primary.100" : "primary.200"}
+                    px={3}
+                    py={1}
+                    borderRadius="md"
+                    borderWidth={1}
+                    borderColor="primary.100"
+                  >
+                    <Text
+                      color={selectedSubcategory === subcategory.name ? "primary.200" : "primary.100"}
+                      fontWeight="medium"
+                      fontSize="sm"
+                    >
+                      {subcategory.name}
+                    </Text>
+                  </Box>
+                </Pressable>
+              ))}
+            </HStack>
+          </ScrollView>
+        </Box>
       )}
 
       {/* Items Grid */}
-      <ScrollView flex={1}>
+      <ScrollView flex={1} p={2}>
         <Box
           display="flex"
           flexDirection="row"
@@ -110,7 +115,7 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
               })}
             >
               <Box
-                m={2}
+                m={1}
                 p={2}
                 borderWidth={1}
                 borderColor="primary.100"
@@ -121,16 +126,16 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                 <Image
                   source={{ uri: item.image }}
                   alt={item.name}
-                  size="md"
-                  width="100px"
-                  height="100px"
+                  size="sm"
+                  width="80px"
+                  height="80px"
                   resizeMode="contain"
                 />
                 <Text
                   color="primary.100"
-                  fontSize="sm"
+                  fontSize="xs"
                   textAlign="center"
-                  mt={2}
+                  mt={1}
                 >
                   {item.name}
                 </Text>

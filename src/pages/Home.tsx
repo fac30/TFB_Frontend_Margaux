@@ -9,6 +9,10 @@ export default function Home() {
   const [hasEntered, setHasEntered] = useState(false);
   const [activeComponent, setActiveComponent] = useState("");
 
+  const handleComponentChange = (component: string) => {
+    setActiveComponent(component);
+  };
+
   return (
     <Box
       w="100%"
@@ -17,11 +21,12 @@ export default function Home() {
       safeArea
       justifyContent="center"
       alignItems="center"
+      position="relative"
     >
       {hasEntered ? (
         <MainContent
           activeComponent={activeComponent}
-          setActiveComponent={setActiveComponent}
+          setActiveComponent={handleComponentChange}
         />
       ) : (
         <VStack
