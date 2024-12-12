@@ -13,15 +13,14 @@ export default function ButtonComponent({ onPress, label }: ButtonComponentProps
             borderColor="primary.100"
             borderWidth={1}
             _hover={{
+                bg: "primary.200",
                 borderColor: "amber.400",
-                color: "amber.400",
                 _text: { color: "amber.400" }
             }}
             _focus={{
+                bg: "primary.200",
                 borderColor: "amber.400",
-                color: "amber.400",
-                _text: { color: "amber.400" },
-                bg: "transparent"
+                _text: { color: "amber.400" }
             }}
             _text={{ color: "primary.100" }}
             w="100%"

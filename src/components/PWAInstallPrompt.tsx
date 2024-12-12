@@ -1,5 +1,6 @@
-import { Box, Button, Text, useToast, Image, VStack } from 'native-base'
+import { Box, useToast, Image, VStack } from 'native-base'
 import { useState, useEffect } from 'react'
+import ButtonComponent from './common/ButtonComponent'
 
 interface PWAInstallPromptProps {
   centered: boolean;
@@ -61,48 +62,29 @@ export default function PWAInstallPrompt(props: PWAInstallPromptProps) {
       bottom={centered ? "auto" : "xl"}
       right={centered ? "auto" : "xl"}
       style={{ transform: centered ? 'translate(-50%, -50%)' : 'none' }}
-      bg="primary.200"
+      bg="primary.100"
+      borderRadius="md"
+      shadow="2"
       zIndex={2}
     >
       <VStack 
         space={4} 
         alignItems="center" 
-        bg="primary.200"
-        p="xl"
+        bg="primary.100"
+        p="4"
       >
         <Image 
           source={{
             uri: "/pwa-512x512.png"
           }}
           alt="Inside My Closet Logo"
-          size="xl"
+          size="md"
           borderRadius="full"
         />
-        <Text color="primary.100" fontSize="md" textAlign="center">
-          Install Inside My Closet app?
-        </Text>
-        <Button
+        <ButtonComponent
           onPress={handleInstallClick}
-          bg="primary.200"
-          borderColor="primary.100"
-          borderWidth={1}
-          _hover={{
-            borderColor: "amber.400",
-            color: "amber.400",
-            _text: { color: "amber.400" }
-          }}
-          _focus={{
-            borderColor: "amber.400",
-            color: "amber.400",
-            _text: { color: "amber.400" },
-            bg: "transparent"
-          }}
-          _text={{ color: "primary.100" }}
-          w="100%"
-          py={4}
-        >
-          Install App
-        </Button>
+          label="Install App"
+        />
       </VStack>
     </Box>
   )
