@@ -16,10 +16,9 @@ interface ButtonConfig {
 
 interface EcoAdviceComponentProps {
     onRegisterBack: (backFn: () => boolean) => void;
-    setActiveComponent: (component: string) => void;
 }
 
-export default function EcoAdviceComponent({ setActiveComponent, onRegisterBack }: EcoAdviceComponentProps) {
+export default function EcoAdviceComponent({ onRegisterBack }: EcoAdviceComponentProps) {
     const [selectedComponent, setSelectedComponent] = useState<ComponentType | null>(null);
 
     // Handle back navigation
@@ -40,7 +39,7 @@ export default function EcoAdviceComponent({ setActiveComponent, onRegisterBack 
         { id: 'upscaling', label: 'Upscaling' },
         { id: 'thrifting', label: 'Thrifting' },
         { id: 'talks', label: 'Talks' },
-        { id: 'chat', label: 'Have A Question ?' },
+        { id: 'chat', label: 'Chat with us' },
     ];
 
     return (

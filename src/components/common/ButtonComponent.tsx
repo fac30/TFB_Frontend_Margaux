@@ -12,7 +12,17 @@ export default function ButtonComponent({ onPress, label }: ButtonComponentProps
             bg="primary.200"
             borderColor="primary.100"
             borderWidth={1}
-            _hover={{ bg: "primary.200" }}
+            _hover={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" }
+            }}
+            _focus={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" },
+                bg: "transparent"
+            }}
             _text={{ color: "primary.100" }}
             w="100%"
             py={4}

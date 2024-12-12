@@ -47,7 +47,7 @@ export default function ChatBotContainer() {
                     fontSize={{ base: "xl", md: "2xl" }}
                     mb={2}
                 >
-                    Have A Question?
+                    Need help?
                 </Heading>
                 <Box 
                     flex={1} 

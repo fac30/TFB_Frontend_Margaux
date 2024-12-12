@@ -47,7 +47,6 @@ export default function MainContent({
         {activeComponent === "Component2" && <OutfitMakerComponent />}
         {activeComponent === "Component3" && (
           <EcoAdviceComponent
-            setActiveComponent={setActiveComponent}
             onRegisterBack={handleRegisterBack}
           />
         )}
@@ -118,6 +117,10 @@ export default function MainContent({
             _icon={{
               color: "primary.200",
             }}
+            _focus={{
+              opacity: 0.8,
+              bg: "transparent"
+            }}
           >
             <svg
               width="34"
@@ -154,6 +157,10 @@ export default function MainContent({
             _icon={{
               color: "primary.200",
             }}
+            _focus={{
+              opacity: 0.8,
+              bg: "transparent"
+            }}
           >
             <svg
               width="34"
@@ -189,6 +196,10 @@ export default function MainContent({
             p={["2", "3", "4"]}
             _icon={{
               color: "primary.200",
+            }}
+            _focus={{
+              opacity: 0.8,
+              bg: "transparent"
             }}
           >
             <svg

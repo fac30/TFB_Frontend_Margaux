@@ -13,7 +13,8 @@ import {
 import { useState } from "react";
 import { CloseIcon } from "native-base";
 import { categories } from "../data/categories";
-import { PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
+import { PencilIcon as HeroPencil, TrashIcon as HeroTrash } from "@heroicons/react/16/solid";
+import { Icon } from "native-base";
 
 interface ClothingItem {
   name: string;
@@ -27,12 +28,20 @@ interface SavedOutfit {
   date: string;
 }
 
+const PencilIcon = (props: any) => (
+  <Icon as={HeroPencil} size={5} {...props} />
+);
+
+const TrashIcon = (props: any) => (
+  <Icon as={HeroTrash} size={5} {...props} />
+);
+
 export default function OutfitMakerComponent() {
   const [selectedItems, setSelectedItems] = useState<ClothingItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]);
   const [showSavedOutfits, setShowSavedOutfits] = useState(false);
-  const [saveButtonText, setSaveButtonText] = useState("Save Collection");
+  const [saveButtonText, setSaveButtonText] = useState("Save");
 
   const handleAddItem = (item: ClothingItem) => {
     if (selectedItems.length >= 6) {
@@ -64,8 +73,8 @@ export default function OutfitMakerComponent() {
       setSaveButtonText("Saved!");
 
       setTimeout(() => {
-        setSaveButtonText("Save Collection");
-      }, 3000);
+        setSaveButtonText("Save");
+      }, 1500);
     } else {
       return;
     }
@@ -127,9 +136,18 @@ export default function OutfitMakerComponent() {
               borderColor="primary.100"
               borderWidth={1}
               _text={{ color: "primary.100" }}
-              _hover={{ borderColor: "black" }}
+              _hover={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" }
+              }}
+              _focus={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" },
+                bg: "transparent"
+              }}
               _pressed={{}}
-              _focus={{}}
             >
               {category.name}
             </Button>
@@ -239,9 +257,14 @@ export default function OutfitMakerComponent() {
                       bg="primary.200"
                       variant="unstyled"
                       rounded="full"
-                      _hover={{}}
-                      _pressed={{}}
-                      _focus={{}}
+                      _hover={{
+                        bg: "transparent",
+                        _icon: { color: "amber.400" }
+                      }}
+                      _focus={{
+                        bg: "transparent",
+                        _icon: { color: "amber.400" }
+                      }}
                     />
                   </Box>
                 ))}
@@ -258,7 +281,17 @@ export default function OutfitMakerComponent() {
             borderColor="primary.100"
             borderWidth={1}
             _text={{ color: "primary.100" }}
-            _hover={{ borderColor: "black" }}
+            _hover={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" }
+            }}
+            _focus={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" },
+                bg: "transparent"
+            }}
             _pressed={{
               bg: "primary.200",
               _text: { color: "primary.100" }
@@ -273,12 +306,21 @@ export default function OutfitMakerComponent() {
             borderColor="primary.100"
             borderWidth={1}
             _text={{ color: "primary.100" }}
-            _hover={{ borderColor: "black" }}
+            _hover={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" }
+            }}
+            _focus={{
+                borderColor: "amber.400",
+                color: "amber.400",
+                _text: { color: "amber.400" },
+                bg: "transparent"
+            }}
             _pressed={{}}
-            _focus={{}}
             w="45%"
           >
-            View Collections
+            View
           </Button>
         </HStack>
 
@@ -299,7 +341,14 @@ export default function OutfitMakerComponent() {
             >
               <Modal.CloseButton 
                 _icon={{ color: "primary.100" }}
-                _hover={{}}
+                _hover={{
+                  bg: "transparent",
+                  _icon: { color: "amber.400" }
+                }}
+                _focus={{
+                  bg: "transparent",
+                  _icon: { color: "amber.400" }
+                }}
                 onPress={handleCloseModal}
               />
               <Modal.Header bg="primary.200" borderBottomWidth={0}>
@@ -329,17 +378,35 @@ export default function OutfitMakerComponent() {
                           </Text>
                           <HStack space={2}>
                             <IconButton
-                              icon={<PencilIcon style={{ width: 20, height: 20, color: "#395D51" }} />}
+                              icon={<PencilIcon />}
                               onPress={() => {
                                 setSelectedItems(outfit.items);
                                 handleCloseModal();
                               }}
                               variant="ghost"
+                              _icon={{ color: "primary.100" }}
+                              _hover={{
+                                bg: "transparent",
+                                _icon: { color: "amber.400" }
+                              }}
+                              _focus={{
+                                bg: "transparent",
+                                _icon: { color: "amber.400" }
+                              }}
                             />
                             <IconButton
-                              icon={<TrashIcon style={{ width: 20, height: 20, color: "#395D51" }} />}
+                              icon={<TrashIcon />}
                               onPress={() => handleDeleteOutfit(index)}
                               variant="ghost"
+                              _icon={{ color: "primary.100" }}
+                              _hover={{
+                                bg: "transparent",
+                                _icon: { color: "amber.400" }
+                              }}
+                              _focus={{
+                                bg: "transparent",
+                                _icon: { color: "amber.400" }
+                              }}
                             />
                           </HStack>
                         </HStack>

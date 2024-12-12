@@ -86,11 +86,22 @@ export default function PWAInstallPrompt(props: PWAInstallPromptProps) {
           bg="primary.200"
           borderColor="primary.100"
           borderWidth={1}
+          _hover={{
+            borderColor: "amber.400",
+            color: "amber.400",
+            _text: { color: "amber.400" }
+          }}
+          _focus={{
+            borderColor: "amber.400",
+            color: "amber.400",
+            _text: { color: "amber.400" },
+            bg: "transparent"
+          }}
           _text={{ color: "primary.100" }}
-          _hover={{ borderColor: "black", bg: "primary.200" }}
           w="100%"
+          py={4}
         >
-          Install
+          Install App
         </Button>
       </VStack>
     </Box>
