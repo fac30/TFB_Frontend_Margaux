@@ -8,7 +8,6 @@ import {
   Image, 
   IconButton, 
   Pressable, 
-  Center, 
   Button,
   Modal 
 } from "native-base";
@@ -34,6 +33,7 @@ export default function OutfitMakerComponent() {
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]);
   const [showSavedOutfits, setShowSavedOutfits] = useState(false);
   const toast = useToast();
+  const [saveButtonText, setSaveButtonText] = useState("Save Collection");
 
   const handleAddItem = (item: ClothingItem) => {
     if (selectedItems.length >= 6) {
@@ -69,34 +69,23 @@ export default function OutfitMakerComponent() {
 
   const currentCategory = categories.find(cat => cat.name === selectedCategory);
 
-  const handleSaveOutfit = () => {
-    if (selectedItems.length === 0) {
-      toast.show({
-        description: "Please add items to your outfit first",
-        placement: "bottom",
-        duration: 2000,
-        bg: "primary.200",
-        color: "primary.100",
-        bottom: 90,
-      });
+  const handleSaveCollection = () => {
+    if (selectedItems.length > 0) {
+      const newOutfit: SavedOutfit = {
+        items: [...selectedItems],
+        date: new Date().toLocaleDateString()
+      };
+
+      setSavedOutfits(prev => [...prev, newOutfit]);
+      setSelectedItems([]);
+      setSaveButtonText("Saved!");
+
+      setTimeout(() => {
+        setSaveButtonText("Save Collection");
+      }, 3000);
+    } else {
       return;
     }
-
-    const newOutfit: SavedOutfit = {
-      items: [...selectedItems],
-      date: new Date().toLocaleDateString()
-    };
-
-    setSavedOutfits(prev => [...prev, newOutfit]);
-    setSelectedItems([]);
-    toast.show({
-      description: "Outfit saved successfully",
-      placement: "bottom",
-      duration: 2000,
-      bg: "primary.200",
-      color: "primary.100",
-      bottom: 90,
-    });
   };
 
   const handleViewCollections = () => {
@@ -285,17 +274,19 @@ export default function OutfitMakerComponent() {
         {/* Save and View Collections Buttons */}
         <HStack space={4} w="100%" justifyContent="center" mt={4}>
           <Button
-            onPress={handleSaveOutfit}
+            onPress={handleSaveCollection}
             bg="primary.200"
             borderColor="primary.100"
             borderWidth={1}
             _text={{ color: "primary.100" }}
             _hover={{ borderColor: "black" }}
-            _pressed={{}}
-            _focus={{}}
+            _pressed={{
+              bg: "primary.200",
+              _text: { color: "primary.100" }
+            }}
             w="45%"
           >
-            Save Collection
+            {saveButtonText}
           </Button>
           <Button
             onPress={handleViewCollections}
