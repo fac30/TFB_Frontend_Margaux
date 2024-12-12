@@ -3,11 +3,21 @@ import { extendTheme } from 'native-base'
 export const theme = extendTheme({
   colors: {
     primary: {
-      50: '#E8E4DE',
-      100: '#FFFFFF',
-      200: '#8B7355',
-      300: '#8B7355',
+      50: '#F5F2EA',
+      100: '#395D51',
+      200: '#E8E4D9',
+      300: '#2F4F44',
     }
+  },
+  fonts: {
+    heading: 'Arial, sans-serif',
+    body: 'Arial, sans-serif',
+    mono: 'Arial, sans-serif',
+  },
+  fontWeights: {
+    normal: 600,
+    medium: 700,
+    bold: 900,
   },
   fontSizes: {
     xs: 12,
@@ -81,13 +91,15 @@ export const theme = extendTheme({
     Text: {
       defaultProps: {
         color: 'primary.100',
-        fontSize: 'md'
+        fontSize: 'md',
+        textTransform: 'uppercase'
       }
     },
     Heading: {
       defaultProps: {
         color: 'primary.100',
-        fontSize: '2xl'
+        fontSize: '2xl',
+        textTransform: 'uppercase'
       }
     },
     ReactMarkdown: {

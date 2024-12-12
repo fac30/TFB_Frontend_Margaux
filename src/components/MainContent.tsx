@@ -65,11 +65,11 @@ export default function MainContent({
         borderTopColor="primary.100"
         zIndex={1}
       >
-        {/* Back Button with Label */}
+        {/* Back Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={2}>
-              Back
+            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+              back
             </Text>
           )}
           <Button
@@ -80,7 +80,7 @@ export default function MainContent({
             }}
             _disabled={{
               opacity: 1,
-              borderColor: "primary.100"
+              borderColor: "primary.100",
             }}
             isDisabled={!activeComponent}
           >
@@ -102,11 +102,11 @@ export default function MainContent({
           </Button>
         </Box>
 
-        {/* Closet Button with Label */}
+        {/* Closet Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={2}>
-              My Closet
+            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+              closet
             </Text>
           )}
           <Button
@@ -137,11 +137,11 @@ export default function MainContent({
           </Button>
         </Box>
 
-        {/* Outfit Maker Button with Label */}
+        {/* Outfit Maker Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={2}>
-              Outfit Maker
+            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+              outfit
             </Text>
           )}
           <Button
@@ -172,11 +172,11 @@ export default function MainContent({
           </Button>
         </Box>
 
-        {/* Eco Advice Button with Label */}
+        {/* Eco Advice Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={2}>
-              Sustainable Stuff
+            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+              eco stuff
             </Text>
           )}
           <Button
