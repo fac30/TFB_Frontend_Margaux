@@ -171,6 +171,22 @@ export const theme = extendTheme({
             bg: 'primary.100',
           },
         },
+        ghost: {
+          bg: 'transparent',
+          borderWidth: 0,
+          _text: {
+            color: 'primary.200',
+          },
+          _hover: {
+            bg: 'rgba(255,255,255,0.1)',
+          },
+          _pressed: {
+            bg: 'rgba(255,255,255,0.2)',
+          },
+          _focus: {
+            bg: 'transparent',
+          },
+        },
       },
     },
     Image: {

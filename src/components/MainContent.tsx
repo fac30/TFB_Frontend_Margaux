@@ -58,12 +58,13 @@ export default function MainContent({
         w="100%"
         position="fixed"
         bottom={0}
-        bg="primary.200"
+        bg="primary.100"
         justifyContent="space-around"
         p={4}
         borderTopWidth={1}
-        borderTopColor="primary.100"
+        borderTopColor="primary.200"
         zIndex={1}
+        space={0}
       >
         {/* Back Button */}
         <Box alignItems="center">
@@ -74,19 +75,20 @@ export default function MainContent({
           )}
           <Button
             onPress={handleBack}
-            variant="outline"
+            variant="ghost"
+            p={["2", "3", "4"]}
             _icon={{
-              color: "primary.100",
+              color: "primary.200",
             }}
             _disabled={{
               opacity: 1,
-              borderColor: "primary.100",
+              color: "primary.200",
             }}
             isDisabled={!activeComponent}
           >
             <svg
-              width="59"
-              height="39"
+              width="34"
+              height="34"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -111,14 +113,15 @@ export default function MainContent({
           )}
           <Button
             onPress={() => handleComponentChange("Component1")}
-            variant="outline"
+            variant="ghost"
+            p={["2", "3", "4"]}
             _icon={{
-              color: "primary.100",
+              color: "primary.200",
             }}
           >
             <svg
-              width="59"
-              height="39"
+              width="34"
+              height="34"
               viewBox="0 0 30 48"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -146,14 +149,15 @@ export default function MainContent({
           )}
           <Button
             onPress={() => handleComponentChange("Component2")}
-            variant="outline"
+            variant="ghost"
+            p={["2", "3", "4"]}
             _icon={{
-              color: "primary.100",
+              color: "primary.200",
             }}
           >
             <svg
-              width="59"
-              height="39"
+              width="34"
+              height="34"
               viewBox="0 0 33 47"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -176,19 +180,20 @@ export default function MainContent({
         <Box alignItems="center">
           {!activeComponent && (
             <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
-              eco stuff
+              eco
             </Text>
           )}
           <Button
             onPress={() => handleComponentChange("Component3")}
-            variant="outline"
+            variant="ghost"
+            p={["2", "3", "4"]}
             _icon={{
-              color: "primary.100",
+              color: "primary.200",
             }}
           >
             <svg
-              width="59"
-              height="39"
+              width="34"
+              height="34"
               viewBox="0 0 29 42"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
