@@ -23,6 +23,7 @@ interface ClothingItem {
   subcategory: string;
 }
 
+
 interface SavedOutfit {
   items: ClothingItem[];
   date: string;

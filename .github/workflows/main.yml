@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - DevOps
+      - feat/**
+      - outfit-component-responsivenss
 
 jobs:
   deploy:
