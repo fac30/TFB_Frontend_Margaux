@@ -72,6 +72,12 @@ export default function OutfitMakerComponent() {
       setSelectedItems([]);
       setSaveButtonText("Saved!");
 
+      // Force button state reset
+      const button = document.activeElement as HTMLElement;
+      if (button) {
+        button.blur();
+      }
+
       setTimeout(() => {
         setSaveButtonText("Save");
       }, 1500);
@@ -282,18 +288,17 @@ export default function OutfitMakerComponent() {
             borderWidth={1}
             _text={{ color: "primary.100" }}
             _hover={{
-                borderColor: "amber.400",
-                color: "amber.400",
-                _text: { color: "amber.400" }
+              borderColor: "amber.400",
+              _text: { color: "amber.400" }
             }}
             _focus={{
-                borderColor: "amber.400",
-                color: "amber.400",
-                _text: { color: "amber.400" },
-                bg: "transparent"
+              borderColor: "primary.100",
+              _text: { color: "primary.100" },
+              bg: "transparent"
             }}
             _pressed={{
               bg: "primary.200",
+              borderColor: "primary.100",
               _text: { color: "primary.100" }
             }}
             w="45%"
