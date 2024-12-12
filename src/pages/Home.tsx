@@ -26,7 +26,7 @@ export default function Home() {
         activeComponent={activeComponent}
         setActiveComponent={handleComponentChange}
       />
-      {!activeComponent && <PWAInstallPrompt centered />}
+      {!activeComponent && <PWAInstallPrompt />}
     </Box>
   );
 }

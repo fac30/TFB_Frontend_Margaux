@@ -1,10 +1,7 @@
-import { Box, useToast } from 'native-base'
+import { Box, HStack, Icon, Text, VStack } from 'native-base'
 import { useState, useEffect } from 'react'
 import ButtonComponent from './common/ButtonComponent'
-
-interface PWAInstallPromptProps {
-  centered: boolean;
-}
+import { IoShare } from 'react-icons/io5'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -13,83 +10,108 @@ interface BeforeInstallPromptEvent extends Event {
 
 let deferredPrompt: BeforeInstallPromptEvent | null = null;
 
-export default function PWAInstallPrompt(props: PWAInstallPromptProps) {
-  const { centered } = props;
+export default function PWAInstallPrompt() {
   const [showInstallButton, setShowInstallButton] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
-  const toast = useToast()
+  const [buttonText, setButtonText] = useState<string | JSX.Element>('')
 
   useEffect(() => {
-    // Check if device is iOS
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as Window & typeof globalThis & { MSStream?: unknown }).MSStream;
-    setIsIOS(isIOSDevice);
-
-    // Show install button immediately for iOS
+    
     if (isIOSDevice) {
+      setIsIOS(true);
       setShowInstallButton(true);
+      setButtonText(
+        <HStack space={1} alignItems="center" justifyContent="center">
+          <Text>Tap</Text>
+          <Icon as={IoShare} size="sm" />
+          <Text>to install</Text>
+        </HStack>
+      );
+      return;
     }
 
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-      console.log('beforeinstallprompt fired');
       e.preventDefault()
       deferredPrompt = e
       setShowInstallButton(true)
+      setButtonText("Install App")
     }
 
     const handleAppInstalled = () => {
-      console.log('appinstalled fired');
-      toast.show({
-        description: 'App installed successfully!',
-        placement: 'top'
-      })
       setShowInstallButton(false)
     }
 
-    console.log('Adding PWA event listeners');
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener)
     window.addEventListener('appinstalled', handleAppInstalled)
 
     return () => {
-      console.log('Removing PWA event listeners');
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener)
       window.removeEventListener('appinstalled', handleAppInstalled)
     }
-  }, [toast])
+  }, [])
 
   const handleInstallClick = async () => {
     if (isIOS) {
-      toast.show({
-        description: 'To install, tap the Share button below and then "Add to Home Screen"',
-        placement: 'top',
-        duration: 5000
-      })
-      return;
+      setButtonText(
+        <VStack space={1} alignItems="center" justifyContent="center">
+          <HStack space={1} alignItems="center">
+            <Text>Tap</Text>
+            <Icon as={IoShare} size="sm" />
+            <Text>then "Add</Text>
+          </HStack>
+          <Text>to Home Screen"</Text>
+        </VStack>
+      )
+
+      const timer = setTimeout(() => {
+        setButtonText(
+          <HStack space={1} alignItems="center" justifyContent="center">
+            <Text>Tap</Text>
+            <Icon as={IoShare} size="sm" />
+            <Text>to install</Text>
+          </HStack>
+        )
+      }, 3000)
+
+      return () => clearTimeout(timer);
     }
 
-    if (deferredPrompt) {
-      deferredPrompt.prompt()
-      const { outcome } = await deferredPrompt.userChoice
-      if (outcome === 'accepted') {
-        deferredPrompt = null
-      }
+    if (!deferredPrompt) return;
+
+    await deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      deferredPrompt = null;
     }
   }
 
-  if (!showInstallButton) return null
+  if (!showInstallButton) return null;
 
   return (
     <Box 
-      position={centered ? "absolute" : "fixed"}
-      top={centered ? "50%" : "auto"}
-      left={centered ? "50%" : "auto"}
-      bottom={centered ? "auto" : "xl"}
-      right={centered ? "auto" : "xl"}
-      style={{ transform: centered ? 'translate(-50%, -50%)' : 'none' }}
+      position="fixed"
+      bottom="120px"
+      left="50%"
+      style={{ transform: 'translateX(-50%)' }}
+      width="auto"
+      maxW="350px"
+      zIndex={999}
+      mb={6}
     >
       <ButtonComponent
         onPress={handleInstallClick}
-        label={isIOS ? "Install via Share Menu" : "Install App"}
+        label={buttonText}
+        style={{ 
+          whiteSpace: 'normal', 
+          height: 'auto', 
+          minHeight: '48px',
+          padding: '12px 24px',
+          margin: '8px',
+          width: '100%'
+        }}
       />
     </Box>
   )
-} 
+}
