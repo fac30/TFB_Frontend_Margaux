@@ -3,7 +3,6 @@ import {
   VStack, 
   HStack, 
   Text, 
-  useToast, 
   ScrollView, 
   Image, 
   IconButton, 
@@ -14,6 +13,7 @@ import {
 import { useState } from "react";
 import { CloseIcon } from "native-base";
 import { categories } from "../data/categories";
+import { PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
 
 interface ClothingItem {
   name: string;
@@ -32,31 +32,14 @@ export default function OutfitMakerComponent() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]);
   const [showSavedOutfits, setShowSavedOutfits] = useState(false);
-  const toast = useToast();
   const [saveButtonText, setSaveButtonText] = useState("Save Collection");
 
   const handleAddItem = (item: ClothingItem) => {
     if (selectedItems.length >= 6) {
-      toast.show({
-        description: "Maximum 6 items allowed in an outfit",
-        placement: "bottom",
-        duration: 2000,
-        bg: "primary.200",
-        color: "primary.100",
-        bottom: 90,
-      });
       return;
     }
 
     if (selectedItems.some(selected => selected.name === item.name)) {
-      toast.show({
-        description: "This item is already in your outfit",
-        placement: "bottom",
-        duration: 2000,
-        bg: "primary.200",
-        color: "primary.100",
-        bottom: 90,
-      });
       return;
     }
 
@@ -93,14 +76,6 @@ export default function OutfitMakerComponent() {
       setShowSavedOutfits(true);
     } catch (error) {
       console.error('Error showing collections:', error);
-      toast.show({
-        description: "Unable to view collections. Please try again.",
-        placement: "bottom",
-        duration: 2000,
-        bg: "primary.200",
-        color: "primary.100",
-        bottom: 90,
-      });
     }
   };
 
@@ -110,6 +85,10 @@ export default function OutfitMakerComponent() {
     } catch (error) {
       console.error('Error closing modal:', error);
     }
+  };
+
+  const handleDeleteOutfit = (index: number) => {
+    setSavedOutfits(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -344,9 +323,26 @@ export default function OutfitMakerComponent() {
                         p={4}
                         mb={4}
                       >
-                        <Text color="primary.100" mb={2}>
-                          Saved on: {outfit.date}
-                        </Text>
+                        <HStack justifyContent="space-between" alignItems="center" mb={2}>
+                          <Text color="primary.100">
+                            Saved on: {outfit.date}
+                          </Text>
+                          <HStack space={2}>
+                            <IconButton
+                              icon={<PencilIcon style={{ width: 20, height: 20, color: "#395D51" }} />}
+                              onPress={() => {
+                                setSelectedItems(outfit.items);
+                                handleCloseModal();
+                              }}
+                              variant="ghost"
+                            />
+                            <IconButton
+                              icon={<TrashIcon style={{ width: 20, height: 20, color: "#395D51" }} />}
+                              onPress={() => handleDeleteOutfit(index)}
+                              variant="ghost"
+                            />
+                          </HStack>
+                        </HStack>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                           <HStack space={3}>
                             {outfit.items.map((item, itemIndex) => (
