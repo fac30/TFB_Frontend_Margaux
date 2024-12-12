@@ -1,4 +1,4 @@
-import { Box, useToast, Image, VStack } from 'native-base'
+import { Box, useToast } from 'native-base'
 import { useState, useEffect } from 'react'
 import ButtonComponent from './common/ButtonComponent'
 
@@ -16,16 +16,28 @@ let deferredPrompt: BeforeInstallPromptEvent | null = null;
 export default function PWAInstallPrompt(props: PWAInstallPromptProps) {
   const { centered } = props;
   const [showInstallButton, setShowInstallButton] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
   const toast = useToast()
 
   useEffect(() => {
+    // Check if device is iOS
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as Window & typeof globalThis & { MSStream?: unknown }).MSStream;
+    setIsIOS(isIOSDevice);
+
+    // Show install button immediately for iOS
+    if (isIOSDevice) {
+      setShowInstallButton(true);
+    }
+
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+      console.log('beforeinstallprompt fired');
       e.preventDefault()
       deferredPrompt = e
       setShowInstallButton(true)
     }
 
     const handleAppInstalled = () => {
+      console.log('appinstalled fired');
       toast.show({
         description: 'App installed successfully!',
         placement: 'top'
@@ -33,16 +45,27 @@ export default function PWAInstallPrompt(props: PWAInstallPromptProps) {
       setShowInstallButton(false)
     }
 
+    console.log('Adding PWA event listeners');
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener)
     window.addEventListener('appinstalled', handleAppInstalled)
 
     return () => {
+      console.log('Removing PWA event listeners');
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener)
       window.removeEventListener('appinstalled', handleAppInstalled)
     }
   }, [toast])
 
   const handleInstallClick = async () => {
+    if (isIOS) {
+      toast.show({
+        description: 'To install, tap the Share button below and then "Add to Home Screen"',
+        placement: 'top',
+        duration: 5000
+      })
+      return;
+    }
+
     if (deferredPrompt) {
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
@@ -62,30 +85,11 @@ export default function PWAInstallPrompt(props: PWAInstallPromptProps) {
       bottom={centered ? "auto" : "xl"}
       right={centered ? "auto" : "xl"}
       style={{ transform: centered ? 'translate(-50%, -50%)' : 'none' }}
-      bg="primary.100"
-      borderRadius="md"
-      shadow="2"
-      zIndex={2}
     >
-      <VStack 
-        space={4} 
-        alignItems="center" 
-        bg="primary.100"
-        p="4"
-      >
-        <Image 
-          source={{
-            uri: "/pwa-512x512.png"
-          }}
-          alt="Inside My Closet Logo"
-          size="md"
-          borderRadius="full"
-        />
-        <ButtonComponent
-          onPress={handleInstallClick}
-          label="Install App"
-        />
-      </VStack>
+      <ButtonComponent
+        onPress={handleInstallClick}
+        label={isIOS ? "Install via Share Menu" : "Install App"}
+      />
     </Box>
   )
 } 
