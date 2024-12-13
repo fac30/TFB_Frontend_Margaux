@@ -7,6 +7,7 @@ on:
       - DevOps
       - feat/**
       - outfit-component-responsivenss
+      - splash-page
 
 jobs:
   deploy:
