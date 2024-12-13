@@ -1,7 +1,6 @@
 import { Box, NativeBaseProvider } from 'native-base';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import PWAInstallPrompt from './components/PWAInstallPrompt';
 import { theme } from './utils/native-base-config';
 
 function App() {
@@ -13,7 +12,6 @@ function App() {
             <Route path="/" element={<Home />} />
           </Routes>
         </Router>
-        <PWAInstallPrompt />
       </Box>
     </NativeBaseProvider>
   );

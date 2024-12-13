@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, VStack } from "native-base";
+import { Box, VStack, Heading } from "native-base";
 import ChatHistory from "./ChatHistory";
 import ChatInputBox from "./ChatInputBox";
 
@@ -10,22 +10,66 @@ export default function ChatBotContainer() {
     }]);
 
     const handleSendMessage = (message: string) => {
-        setMessages([...messages, {
-            message: message,
+        setMessages(prev => [...prev, {
+            message,
             sender: "user"
         }]);
+
+        // Simulate bot response
+        setTimeout(() => {
+            setMessages(prev => [...prev, {
+                message: "Thanks for your message! I'll get back to you soon.",
+                sender: "bot"
+            }]);
+        }, 1000);
     };
 
     return (
-        <Box h="100%" w="100%" position="relative" backgroundColor="">
-            <VStack h="100%" space={4}>
-                <Box flex={1}>
+        <Box 
+            w="100%" 
+            h="calc(100vh - 120px)"
+            bg="primary.200"
+            display="flex"
+            flexDirection="column"
+            position="relative"
+            overflow="hidden"
+            pb={20}
+        >
+            <VStack 
+                flex={1} 
+                space={2} 
+                bg="primary.200" 
+                p={4}
+            >
+                <Heading 
+                    color="primary.100" 
+                    textAlign="center"
+                    fontSize={{ base: "xl", md: "2xl" }}
+                    mb={2}
+                >
+                    Need help?
+                </Heading>
+                <Box 
+                    flex={1} 
+                    display="flex"
+                    flexDirection="column"
+                    position="relative"
+                    overflow="hidden"
+                >
                     <ChatHistory messages={messages} />
-                </Box>
-                <Box position="absolute" bottom={20} left={1} right={1}>
-                    <ChatInputBox onSendMessage={handleSendMessage} />
+                    <Box 
+                        position="absolute"
+                        bottom={0}
+                        left={0}
+                        right={0}
+                        px={4}
+                        pb={4}
+                        bg="primary.200"
+                    >
+                        <ChatInputBox onSendMessage={handleSendMessage} />
+                    </Box>
                 </Box>
             </VStack>
         </Box>
-    )
+    );
 }

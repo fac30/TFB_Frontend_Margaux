@@ -22,10 +22,12 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Type Checking */
-    "types": [
-      "vite/client",
-      "vite-plugin-pwa/client"
-    ]
+    "types": ["vite/client", "vite-plugin-pwa/client"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
