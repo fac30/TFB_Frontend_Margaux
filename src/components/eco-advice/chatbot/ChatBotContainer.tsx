@@ -1,27 +1,52 @@
 import { useState } from "react";
 import { Box, VStack, Heading } from "native-base";
-import { generateChatResponse } from "../../../utils/openai"; // Import the function
+import { Message } from "../../../utils/types";
+import { generateChatResponse } from "../../../utils/openai";
 import ChatHistory from "./ChatHistory";
 import ChatInputBox from "./ChatInputBox";
 
 export default function ChatBotContainer() {
-    const [messages, setMessages] = useState<{ message: string; sender: string }[]>([
-        { message: "Hello, how can I help you today?", sender: "bot" },
-    ]);
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSendMessage = async (message: string) => {
-        setMessages((prev) => [...prev, { message, sender: "user" }]);
-
+    const handleSendMessage = async (content: string) => {
+        if (!content.trim()) return;
+        
+        setIsLoading(true);
         try {
-            // Simplified call to get a response from OpenAI
-            const botMessage = await generateChatResponse(message);
-            setMessages((prev) => [...prev, { message: botMessage, sender: "bot" }]);
+            // Add user message
+            const newMessage: Message = {
+                role: 'user',
+                content: content.trim(),
+                timestamp: new Date(),
+            };
+            setMessages(prev => [...prev, newMessage]);
+            
+            // Get AI response
+            const response = await generateChatResponse([
+                ...messages, // Include conversation history
+                newMessage
+            ]);
+            
+            // Add AI response
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: response.message,
+                timestamp: new Date(),
+            }]);
         } catch (error) {
             console.error("Error generating response:", error);
-            setMessages((prev) => [
-                ...prev,
-                { message: "Oops, something went wrong. Please try again.", sender: "bot" },
-            ]);
+            
+            // Add error message
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: error instanceof Error 
+                    ? `I apologise, but I encountered an error: ${error.message}. Please try again.`
+                    : "I apologise, but I'm having trouble connecting to the chat service. Please try again later.",
+                timestamp: new Date(),
+            }]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -45,10 +70,32 @@ export default function ChatBotContainer() {
                 >
                     Need help?
                 </Heading>
-                <Box flex={1} display="flex" flexDirection="column" position="relative" overflow="hidden">
-                    <ChatHistory messages={messages} />
-                    <Box position="absolute" bottom={0} left={0} right={0} px={4} pb={4} bg="primary.200">
-                        <ChatInputBox onSendMessage={handleSendMessage} />
+                <Box 
+                    flex={1} 
+                    display="flex" 
+                    flexDirection="column" 
+                    position="relative" 
+                    overflow="hidden"
+                >
+                    <ChatHistory 
+                        messages={messages.map(msg => ({
+                            message: msg.content,
+                            sender: msg.role === 'assistant' ? 'bot' : 'user'
+                        }))} 
+                    />
+                    <Box 
+                        position="absolute" 
+                        bottom={0} 
+                        left={0} 
+                        right={0} 
+                        px={4} 
+                        pb={4} 
+                        bg="primary.200"
+                    >
+                        <ChatInputBox 
+                            onSendMessage={handleSendMessage} 
+                            isLoading={isLoading}
+                        />
                     </Box>
                 </Box>
             </VStack>

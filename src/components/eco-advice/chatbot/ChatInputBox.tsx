@@ -1,15 +1,16 @@
-import { Box, Input, Button } from "native-base";
+import { Box, Input, Button, Spinner } from "native-base";
 import { useState } from "react";
 
 interface ChatInputBoxProps {
     onSendMessage: (message: string) => void;
+    isLoading?: boolean;
 }
 
-export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
+export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatInputBoxProps) {
     const [inputMessage, setInputMessage] = useState("");
 
     const handleSend = () => {
-        if (inputMessage.trim()) {
+        if (inputMessage.trim() && !isLoading) {
             onSendMessage(inputMessage);
             setInputMessage(""); 
         }
@@ -35,10 +36,11 @@ export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
             <Input
                 value={inputMessage}
                 onChangeText={setInputMessage}
-                onKeyPress={handleKeyPress}
+                onPress={handleKeyPress}
                 placeholder="Type your message here..."
                 color="primary.100"
                 borderColor="primary.100"
+                isDisabled={isLoading}
                 _focus={{
                     borderColor: "amber.400",
                     bg: "primary.200"
@@ -59,6 +61,7 @@ export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
                         bg="primary.200"
                         borderColor="primary.100"
                         borderWidth={1}
+                        isDisabled={isLoading || !inputMessage.trim()}
                         _hover={{
                             borderColor: "amber.400",
                             _text: { color: "amber.400" }
@@ -78,7 +81,7 @@ export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
                             fontSize: { base: "sm", md: "md" }
                         }}
                     >
-                        Send
+                        {isLoading ? <Spinner size="sm" color="primary.100" /> : "Send"}
                     </Button>
                 }
             />

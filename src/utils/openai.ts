@@ -1,31 +1,56 @@
-import OpenAI from "openai";
+import { Message } from './types';
 
-// Ensure the environment variable is accessible
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+export const generateChatResponse = async (messages: Message[]) => {
+    try {
+        // Get the latest user message
+        const latestMessage = messages[messages.length - 1];
 
-if (!apiKey) {
-    throw new Error("Missing VITE_OPENAI_API_KEY in environment variables");
-}
+        const requestBody = {
+            message: latestMessage.content,
+        };
 
-// Initialize the OpenAI client
-const openai = new OpenAI({
-    apiKey, // Use the API key from the environment variable
-});
-
-const generateChatResponse = async (userQuestion: string) => {
-    // Send the user's question as a "system" message
-    const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo", // Or "gpt-4" if you have access
-        messages: [
-            {
-                role: "system",
-                content: userQuestion, // Pass the user question directly
+        const response = await fetch('http://localhost:5045/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-        ],
-    });
-
-    // Return the response content from the AI
-    return completion.choices[0]?.message?.content || "Sorry, I didn't understand that.";
+            body: JSON.stringify(requestBody),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => null);
+            console.error('API Error Details:', errorData);
+            throw new Error(`Server responded with status ${response.status}. Please try again.`);
+        }
+        
+        const data = await response.json();
+        console.log('API Response:', data); // Debug log to see the response structure
+        
+        // More flexible response handling
+        if (data) {
+            // If the response is directly a string
+            if (typeof data === 'string') {
+                return { message: data };
+            }
+            
+            // If the response has a message property
+            if (data.message) {
+                return data;
+            }
+            
+            // If the response has a response property
+            if (data.response) {
+                return { message: data.response };
+            }
+            
+            // If the response is an object but doesn't match expected format
+            console.error('Unexpected response format:', data);
+            return { message: JSON.stringify(data) };
+        }
+        
+        throw new Error('No data received from server');
+    } catch (error) {
+        console.error('Chat error:', error);
+        throw error;
+    }
 };
-
-export { generateChatResponse };
