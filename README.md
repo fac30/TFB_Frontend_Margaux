@@ -112,6 +112,4 @@ The eco-advice page interfaces with OpenAI's API for additional functionality:
 
 - Ensure all Google Docs are set to auto-publish to maintain current content
 - Only use published sharing links from authorised product owners
-- Keep OpenAI endpoint URLs secure and never commit them directly to the repository
-- Consider using environment variables for sensitive URLs and endpoints
 ```
