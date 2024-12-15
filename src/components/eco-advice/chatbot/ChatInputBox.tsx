@@ -30,13 +30,13 @@ export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatI
             borderRadius="md"
             borderColor="primary.100"
             borderWidth={1}
-            width={{ base: "95%", md: "90%" }}
+            width={{ base: "100%", md: "90%" }}
             mx="auto"
         >
             <Input
                 value={inputMessage}
                 onChangeText={setInputMessage}
-                onPress={handleKeyPress}
+                onKeyPress={handleKeyPress}
                 placeholder="Type your message here..."
                 color="primary.100"
                 borderColor="primary.100"

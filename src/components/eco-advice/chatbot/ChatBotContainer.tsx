@@ -6,7 +6,11 @@ import ChatHistory from "./ChatHistory";
 import ChatInputBox from "./ChatInputBox";
 
 export default function ChatBotContainer() {
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([{
+        role: 'assistant',
+        content: "Hello! I'm your eco-friendly assistant. How can I help you today with sustainable fashion advice?",
+        timestamp: new Date(),
+    }]);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSendMessage = async (content: string) => {
@@ -53,7 +57,7 @@ export default function ChatBotContainer() {
     return (
         <Box
             w="100%"
-            h="calc(100vh - 120px)"
+            h="calc(100vh - 5px)"
             bg="primary.200"
             display="flex"
             flexDirection="column"
