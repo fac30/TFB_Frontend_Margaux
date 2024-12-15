@@ -1,10 +1,5 @@
 import { Button } from "native-base";
-
-interface ButtonComponentProps {
-    onPress: () => void;
-    label: string | JSX.Element;
-    style?: any;
-}
+import { ButtonComponentProps } from "../../utils/types";
 
 export default function ButtonComponent({ onPress, label, style }: ButtonComponentProps) {
     return (

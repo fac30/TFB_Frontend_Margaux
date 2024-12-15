@@ -1,10 +1,7 @@
 import { Box, Input, Button, Spinner } from "native-base";
 import { useState } from "react";
-
-interface ChatInputBoxProps {
-    onSendMessage: (message: string) => void;
-    isLoading?: boolean;
-}
+import { NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
+import { ChatInputBoxProps } from "../../../utils/types";
 
 export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatInputBoxProps) {
     const [inputMessage, setInputMessage] = useState("");
@@ -16,9 +13,8 @@ export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatI
         }
     };
 
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
+    const handleKeyPress = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+        if (e.nativeEvent.key === 'Enter') {
             handleSend();
         }
     };

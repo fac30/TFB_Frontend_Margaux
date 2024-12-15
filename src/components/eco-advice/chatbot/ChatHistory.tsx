@@ -1,11 +1,17 @@
 import { Box, Text } from "native-base";
 import { FlexAlignType } from "react-native";
-
-interface ChatHistoryProps {
-    messages: {message: string, sender: string}[];
-}
+import { useEffect, useRef } from "react";
+import { ChatHistoryProps } from "../../../utils/types";
 
 export default function ChatHistory({ messages }: ChatHistoryProps) {
+    const scrollViewRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (scrollViewRef.current) {
+            scrollViewRef.current.scrollTop = scrollViewRef.current.scrollHeight;
+        }
+    }, [messages]);
+
     const botMessageStyle = {
         bg: "primary.200",
         p: 2,
@@ -30,6 +36,7 @@ export default function ChatHistory({ messages }: ChatHistoryProps) {
 
     return (
         <Box
+            ref={scrollViewRef}
             bg="primary.200"
             borderColor="primary.100"
             borderWidth={1}

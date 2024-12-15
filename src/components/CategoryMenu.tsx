@@ -1,13 +1,7 @@
 import { Box, Text, Pressable, Image, ScrollView, VStack, HStack } from "native-base";
 import { useState } from "react";
 import { categories } from "../data/categories";
-
-interface ClothingItem {
-  name: string;
-  image: string;
-  category: string;
-  subcategory: string;
-}
+import { ClothingItem } from "../utils/types";
 
 interface CategoryMenuProps {
   categories: typeof categories;
@@ -121,7 +115,6 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                 borderColor="primary.100"
                 borderRadius="md"
                 bg="primary.200"
-                _hover={{ opacity: 0.8 }}
               >
                 <Image
                   source={{ uri: item.image }}
