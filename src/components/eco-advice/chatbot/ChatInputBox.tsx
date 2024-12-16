@@ -1,20 +1,23 @@
-import { Box, Input, Button, Spinner } from "native-base";
+import { Box, Input, Button } from "native-base";
 import { useState } from "react";
-import { NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
-import { ChatInputBoxProps } from "../../../utils/types";
 
-export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatInputBoxProps) {
+interface ChatInputBoxProps {
+    onSendMessage: (message: string) => void;
+}
+
+export default function ChatInputBox({ onSendMessage }: ChatInputBoxProps) {
     const [inputMessage, setInputMessage] = useState("");
 
     const handleSend = () => {
-        if (inputMessage.trim() && !isLoading) {
+        if (inputMessage.trim()) {
             onSendMessage(inputMessage);
             setInputMessage(""); 
         }
     };
 
-    const handleKeyPress = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-        if (e.nativeEvent.key === 'Enter') {
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
             handleSend();
         }
     };
@@ -26,7 +29,7 @@ export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatI
             borderRadius="md"
             borderColor="primary.100"
             borderWidth={1}
-            width={{ base: "100%", md: "90%" }}
+            width={{ base: "95%", md: "90%" }}
             mx="auto"
         >
             <Input
@@ -36,7 +39,6 @@ export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatI
                 placeholder="Type your message here..."
                 color="primary.100"
                 borderColor="primary.100"
-                isDisabled={isLoading}
                 _focus={{
                     borderColor: "amber.400",
                     bg: "primary.200"
@@ -57,7 +59,6 @@ export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatI
                         bg="primary.200"
                         borderColor="primary.100"
                         borderWidth={1}
-                        isDisabled={isLoading || !inputMessage.trim()}
                         _hover={{
                             borderColor: "amber.400",
                             _text: { color: "amber.400" }
@@ -77,7 +78,7 @@ export default function ChatInputBox({ onSendMessage, isLoading = false }: ChatI
                             fontSize: { base: "sm", md: "md" }
                         }}
                     >
-                        {isLoading ? <Spinner size="sm" color="primary.100" /> : "Send"}
+                        Send
                     </Button>
                 }
             />
