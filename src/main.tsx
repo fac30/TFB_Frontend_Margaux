@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { NativeBaseProvider } from "native-base";
