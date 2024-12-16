@@ -7,120 +7,185 @@ export default function ClosetComponent() {
   // Adjust container styles for responsiveness
   const containerStyle = {
     paddingX: width < 768 ? 4 : 16, // Small padding on mobile, larger on desktop
-    maxWidth: "1200px", // Prevent content from becoming too wide
+    maxWidth: "1200px",
     marginX: "auto",
   };
 
   return (
     <Box
       flex={1}
-      bg="#F2F1E6"
       justifyContent="center"
       alignItems="center"
       {...containerStyle}
     >
       {/* Title */}
       <Text
-        fontSize={{ base: "2xl", md: "4xl" }} 
+        fontSize={{ base: "2xl", md: "4xl" }}
         fontWeight="bold"
         color="#395D51"
-        mb={6}
+        mb={4}
+        style={{ textTransform: "uppercase", letterSpacing: 1 }}
       >
-        MY CLOSET
+        my closet
       </Text>
 
-      {/* Closet Grid */}
+      {/* Wardrobe Container */}
       <VStack
-        space={4}
+        borderWidth={8}
+        space={0}
         width="100%"
-        maxWidth={{ base: "800px", md: "1000px" }} 
+        borderColor="#5E5E5E"
+        bg="#FFFFFF"
       >
-        {/* Top Row: Tops & Jumpers */}
-        <HStack
-          space={4}
-          width="100%"
-          flex={{ base: 1, md: 1 }} 
-        >
+        {/* Top Row */}
+        <HStack space={0} width="100%" height="20%">
           <Box
             flex={1}
-            height={{ base: "100px", md: "150px" }}
-            bg="#5E5E5E"
+            bg="#FFFFFF"
             justifyContent="center"
             alignItems="center"
-            borderRadius={4}
+            borderRightWidth={6}
+            borderBottomWidth={6}
+            borderColor="#5E5E5E"
           >
-            <Text color="white" fontSize={{ base: "md", md: "lg" }}>
-              TOPS
+            <Text color="#4A4A4A" fontSize="sm" textAlign="center">
+              tops
             </Text>
           </Box>
           <Box
             flex={1}
-            height={{ base: "100px", md: "150px" }}
-            bg="#5E5E5E"
+            bg="#FFFFFF"
             justifyContent="center"
             alignItems="center"
-            borderRadius={4}
+            borderBottomWidth={6}
+            borderColor="#5E5E5E"
           >
-            <Text color="white" fontSize={{ base: "md", md: "lg" }}>
-              JUMPERS
+            <Text color="#4A4A4A" fontSize="sm" textAlign="center">
+              jumpers
             </Text>
           </Box>
         </HStack>
 
-        {/* Middle Row: Dresses/Skirts & Jackets/Coats */}
-        <HStack
-          space={4}
-          width="100%"
-          flex={{ base: 2, md: 1.5 }} 
-        >
+        {/* Middle Row */}
+        <HStack space={0} width="100%">
+          {/* Dresses/Skirts Section */}
+          <VStack
+            flex={1}
+            height="250px"
+            borderRightWidth={6}
+            borderColor="#5E5E5E"
+          >
+            <Box
+              flex={2}
+              bg="#FFFFFF"
+              justifyContent="center"
+              alignItems="center"
+              borderColor="#5E5E5E"
+            >
+              <Text color="#4A4A4A" fontSize="sm" textAlign="center">
+                dresses/ skirts
+              </Text>
+              <Box
+                position="absolute"
+                bottom={160}
+                height="4px"
+                width="100%"
+                bg="#B0B0B0"
+              ></Box>
+            </Box>
+
+            {/* Drawer Section */}
+            <Box
+              flex={0.6} // Remaining space for the drawer
+              bg="#5E5E5E"
+              borderTopWidth={6}
+              borderColor="#5E5E5E"
+              position="relative"
+            >
+              {/* Drawer Handles */}
+              <Box
+                position="absolute"
+                top="15%"
+                height="2px"
+                width="80%"
+                bg="#FFFFFF"
+                alignSelf="center"
+              ></Box>
+              <Box
+                position="absolute"
+                top="35%"
+                height="2px"
+                width="80%"
+                bg="#FFFFFF"
+                alignSelf="center"
+              ></Box>
+              <Box
+                position="absolute"
+                top="55%"
+                height="2px"
+                width="80%"
+                bg="#FFFFFF"
+                alignSelf="center"
+              ></Box>
+              <Box
+                position="absolute"
+                top="75%"
+                height="2px"
+                width="80%"
+                bg="#FFFFFF"
+                alignSelf="center"
+              ></Box>
+            </Box>
+          </VStack>
+
+          {/* Jackets/Coats Section */}
           <Box
             flex={1}
-            height={{ base: "200px", md: "250px" }}
-            bg="#5E5E5E"
+            height="250px"
+            bg="#FFFFFF"
             justifyContent="center"
             alignItems="center"
-            borderRadius={4}
+            borderBottomWidth={2}
+            borderColor="#5E5E5E"
           >
-            <Text
-              color="white"
-              fontSize={{ base: "md", md: "lg" }}
-              textAlign="center"
-            >
-              DRESSES/ SKIRTS
+            <Text color="#4A4A4A" fontSize="sm" textAlign="center">
+              jackets/ coats
             </Text>
-          </Box>
-          <Box
-            flex={1}
-            height={{ base: "200px", md: "250px" }}
-            bg="#5E5E5E"
-            justifyContent="center"
-            alignItems="center"
-            borderRadius={4}
-          >
-            <Text
-              color="white"
-              fontSize={{ base: "md", md: "lg" }}
-              textAlign="center"
-            >
-              JACKETS/ COATS
-            </Text>
+            <Box
+              position="absolute"
+              bottom={232}
+              height="4px"
+              width="100%"
+              bg="#B0B0B0"
+            ></Box>
           </Box>
         </HStack>
 
-        {/* Bottom Row: Trousers */}
+        {/* Bottom Row */}
         <Box
-          width="100%"
-          height={{ base: "100px", md: "150px" }} 
-          bg="#5E5E5E"
+          height="90px"
+          bg="#FFFFFF"
           justifyContent="center"
           alignItems="center"
-          borderRadius={4}
+          borderTopWidth={3}
+          borderColor="#5E5E5E"
         >
-          <Text color="white" fontSize={{ base: "md", md: "lg" }}>
-            TROUSERS
+          <Text color="#4A4A4A" fontSize="sm" textAlign="center">
+            trousers
           </Text>
         </Box>
+
+        {/* Bottom Drawer Lines */}
+        <Box
+          width="100%"
+          height="130px"
+          borderTopWidth={4}
+          borderColor="#5E5E5E"
+          position="relative"
+        ></Box>
       </VStack>
     </Box>
   );
 }
+
+
