@@ -73,4 +73,43 @@ This project is licensed under the Unlicense - see the LICENSE file for details.
 ### Acknowledgments:
 - **Font**: Inter by Google Fonts
 - **Icons**: Heroicons
+
+## Eco-Advice Page Configuration
+
+### Google Docs Integration
+
+The eco-advice articles are dynamically rendered from Google Docs. To set up new articles:
+
+1. Create your article in Google Docs
+2. Set sharing permissions:
+   - Click 'Share' in the top right
+   - Select 'Publish to web'
+   - Enable auto-republish option
+   - Copy the published URL
+
+### Article Component Setup
+
+Each article is rendered using the `parseDoc` function. To add or modify articles:
+
+1. Locate the article component in the codebase
+2. Find the `parseDoc` function
+3. Insert the published Google Docs URL:
+   ```javascript
+   parseDoc('YOUR_PUBLISHED_GOOGLE_DOC_URL_HERE')
+   ```
+
+### OpenAI Configuration
+
+The eco-advice page interfaces with OpenAI's API for additional functionality:
+
+1. Navigate to `utils/openai.js`
+2. On line 11, update the OpenAI endpoint URL:
+   ```javascript
+   const OPENAI_API_ENDPOINT = 'YOUR_OPENAI_ENDPOINT_URL'
+   ```
+
+### Important Notes
+
+- Ensure all Google Docs are set to auto-publish to maintain current content
+- Only use published sharing links from authorised product owners
 ```
