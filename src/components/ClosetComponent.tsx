@@ -20,63 +20,88 @@ export default function ClosetComponent() {
       {...containerStyle}
     >
       {/* Title */}
-      <Text fontSize="4xl" fontWeight="bold" color="#395D51" mb={6}>
+      <Text
+        fontSize={{ base: "2xl", md: "4xl" }} 
+        fontWeight="bold"
+        color="#395D51"
+        mb={6}
+      >
         MY CLOSET
       </Text>
 
       {/* Closet Grid */}
-      <VStack space={2} width="100%" maxWidth="800px">
+      <VStack
+        space={4}
+        width="100%"
+        maxWidth={{ base: "800px", md: "1000px" }} 
+      >
         {/* Top Row: Tops & Jumpers */}
-        <HStack space={2} width="100%" flex={1}>
+        <HStack
+          space={4}
+          width="100%"
+          flex={{ base: 1, md: 1 }} 
+        >
           <Box
             flex={1}
-            height="100px"
+            height={{ base: "100px", md: "150px" }}
             bg="#5E5E5E"
             justifyContent="center"
             alignItems="center"
             borderRadius={4}
           >
-            <Text color="white" fontSize="lg">
+            <Text color="white" fontSize={{ base: "md", md: "lg" }}>
               TOPS
             </Text>
           </Box>
           <Box
             flex={1}
-            height="100px"
+            height={{ base: "100px", md: "150px" }}
             bg="#5E5E5E"
             justifyContent="center"
             alignItems="center"
             borderRadius={4}
           >
-            <Text color="white" fontSize="lg">
+            <Text color="white" fontSize={{ base: "md", md: "lg" }}>
               JUMPERS
             </Text>
           </Box>
         </HStack>
 
         {/* Middle Row: Dresses/Skirts & Jackets/Coats */}
-        <HStack space={2} width="100%" flex={2}>
+        <HStack
+          space={4}
+          width="100%"
+          flex={{ base: 2, md: 1.5 }} 
+        >
           <Box
             flex={1}
-            height="200px"
+            height={{ base: "200px", md: "250px" }}
             bg="#5E5E5E"
             justifyContent="center"
             alignItems="center"
             borderRadius={4}
           >
-            <Text color="white" fontSize="lg" textAlign="center">
+            <Text
+              color="white"
+              fontSize={{ base: "md", md: "lg" }}
+              textAlign="center"
+            >
               DRESSES/ SKIRTS
             </Text>
           </Box>
           <Box
             flex={1}
-            height="200px"
+            height={{ base: "200px", md: "250px" }}
             bg="#5E5E5E"
             justifyContent="center"
             alignItems="center"
             borderRadius={4}
           >
-            <Text color="white" fontSize="lg" textAlign="center">
+            <Text
+              color="white"
+              fontSize={{ base: "md", md: "lg" }}
+              textAlign="center"
+            >
               JACKETS/ COATS
             </Text>
           </Box>
@@ -85,18 +110,17 @@ export default function ClosetComponent() {
         {/* Bottom Row: Trousers */}
         <Box
           width="100%"
-          height="100px"
+          height={{ base: "100px", md: "150px" }} 
           bg="#5E5E5E"
           justifyContent="center"
           alignItems="center"
           borderRadius={4}
         >
-          <Text color="white" fontSize="lg">
+          <Text color="white" fontSize={{ base: "md", md: "lg" }}>
             TROUSERS
           </Text>
         </Box>
       </VStack>
-
     </Box>
   );
 }
