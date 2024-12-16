@@ -6,7 +6,17 @@ import ThriftingComponent from "./ThriftingComponent"
 import UpscalingComponent from "./UpscalingComponent"
 import ClothingSwaps from "./ClothingSwaps"
 import ButtonComponent from "../common/ButtonComponent";
-import { ComponentType, ButtonConfig, EcoAdviceComponentProps } from "../../utils/types";
+
+type ComponentType = 'talks' | 'chat' | 'clothes' | 'upscaling' | 'thrifting';
+
+interface ButtonConfig {
+    id: ComponentType;
+    label: string;
+}
+
+interface EcoAdviceComponentProps {
+    onRegisterBack: (backFn: () => boolean) => void;
+}
 
 export default function EcoAdviceComponent({ onRegisterBack }: EcoAdviceComponentProps) {
     const [selectedComponent, setSelectedComponent] = useState<ComponentType | null>(null);

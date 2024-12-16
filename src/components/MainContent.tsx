@@ -5,7 +5,11 @@ import ClosetComponent from "./ClosetComponent";
 import OutfitMakerComponent from "./OutfitMakerComponent";
 import EcoAdviceComponent from "./eco-advice/EcoAdviceComponent";
 import { useState, useCallback } from "react";
-import { MainContentProps } from "../utils/types";
+
+interface MainContentProps {
+  activeComponent: string;
+  setActiveComponent: (component: string) => void;
+}
 
 export default function MainContent({
   activeComponent,

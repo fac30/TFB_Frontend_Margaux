@@ -15,7 +15,13 @@ import { CloseIcon } from "native-base";
 import { categories } from "../data/categories";
 import { PencilIcon as HeroPencil, TrashIcon as HeroTrash } from "@heroicons/react/16/solid";
 import { Icon } from "native-base";
-import { ClothingItem } from "../utils/types";
+
+interface ClothingItem {
+  name: string;
+  image: string;
+  category: string;
+  subcategory: string;
+}
 
 
 interface SavedOutfit {
