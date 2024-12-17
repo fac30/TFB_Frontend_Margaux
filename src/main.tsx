@@ -3,9 +3,9 @@ import { createRoot } from "react-dom/client";
 import { NativeBaseProvider } from "native-base";
 import App from "./App";
 import { theme } from "./utils/native-base-config";
-import { fetchData } from "./supbaseClient";
+ 
 
-fetchData();
+ 
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
