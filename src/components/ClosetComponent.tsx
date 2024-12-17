@@ -1,5 +1,6 @@
 import { Box, Text, VStack, HStack } from "native-base";
 import { useWindowDimensions } from "react-native";
+import CameraFunctionality from "../components/CameraFunctionality";
 
 export default function ClosetComponent() {
   const { width } = useWindowDimensions();
@@ -26,6 +27,7 @@ export default function ClosetComponent() {
         mb={4}
         style={{ textTransform: "uppercase", letterSpacing: 1 }}
       >
+        <CameraFunctionality />
         my closet
       </Text>
 
