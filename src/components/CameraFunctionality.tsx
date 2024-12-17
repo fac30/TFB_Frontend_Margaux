@@ -1,47 +1,31 @@
 import { Box, Button, Image, Text, VStack, Spinner } from "native-base";
 import { useState } from "react";
-import supabase from "../supbaseClient"; // Adjust the path as needed
+import { uploadImage } from "../functions/upload"; // Import the upload function
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
 
 export default function CameraFunctionality() {
-  const [uploading, setUploading] = useState(false); // Upload status
-  const [uploadSuccess, setUploadSuccess] = useState(false); // Success status
-  const [selectedImage, setSelectedImage] = useState<string | null>(null); // Selected image preview
-  const [file, setFile] = useState<File | null>(null); // The selected file
+  const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
-  // Handle file selection and immediate upload
   const handleFileSelection = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-      try {
-        setUploading(true);
-        setUploadSuccess(false);
-        setFile(selectedFile);
-        const imageUrl = URL.createObjectURL(selectedFile);
-        setSelectedImage(imageUrl);
+      setUploading(true);
+      setUploadSuccess(false);
+      setFile(selectedFile);
+      const imageUrl = URL.createObjectURL(selectedFile);
+      setSelectedImage(imageUrl);
 
-        // Upload file to Supabase
-        const { error } = await supabase.storage
-          .from("photo_link") // Replace with your Supabase bucket name
-          .upload(`images/${selectedFile.name}`, selectedFile);
-
-        if (error) throw error;
-
-        setUploadSuccess(true); // Mark as successful
-        console.log("Image uploaded successfully:", selectedFile.name);
-      } catch (error) {
-        console.error("Upload failed:", error.message);
-        alert("Image upload failed!");
-      } finally {
-        setUploading(false);
-      }
+      const success = await uploadImage(selectedFile); // Use the upload function
+      setUploadSuccess(success);
+      setUploading(false);
     }
   };
 
-  // Handle confirmation of upload (clicking Submit)
   const handleSubmit = () => {
     alert("Image uploaded successfully!");
-    // Reset states after successful upload
     setUploadSuccess(false);
     setSelectedImage(null);
     setFile(null);
@@ -50,10 +34,6 @@ export default function CameraFunctionality() {
   return (
     <Box flex={1} bg="primary.200" safeArea alignItems="center" pb="80px">
       <VStack space={4} w="100%" maxW="400px" px={4} alignItems="center">
-        {/* Header */}
-        
-
-        {/* Hidden File Input */}
         <input
           type="file"
           accept="image/*"
@@ -61,8 +41,6 @@ export default function CameraFunctionality() {
           style={{ display: "none" }}
           id="file-input"
         />
-
-        {/* Add/Upload Icon */}
         <Box mt={4} w="100%" alignItems="center">
           {uploading ? (
             <Spinner color="amber.400" size="lg" />
@@ -77,8 +55,6 @@ export default function CameraFunctionality() {
             />
           )}
         </Box>
-
-        {/* Image Preview */}
         {selectedImage && uploadSuccess && (
           <Box mt={4}>
             <Image
@@ -91,8 +67,6 @@ export default function CameraFunctionality() {
             />
           </Box>
         )}
-
-        {/* Submit Button */}
         {uploadSuccess && (
           <Box mt={4} w="100%" alignItems="center">
             <Button
