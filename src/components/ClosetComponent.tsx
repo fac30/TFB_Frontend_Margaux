@@ -1,9 +1,20 @@
+import { useState } from 'react';
 import { Box, Text, VStack, HStack } from "native-base";
-import { useWindowDimensions } from "react-native";
-import CameraFunctionality from "../components/CameraFunctionality";
+import { useWindowDimensions, TouchableOpacity } from "react-native";
+// import PopUpGallery from "./popUpGallery";
 
 export default function ClosetComponent() {
   const { width } = useWindowDimensions();
+
+  // State to control the pop-up gallery
+  const [, setModalVisible] = useState(false);
+  const [, setSelectedCategory] = useState<string | null>(null);
+
+  // Function to open the gallery
+  const openGallery = (category: string) => {
+    setSelectedCategory(category);
+    setModalVisible(true);
+  };
 
   // Adjust container styles for responsiveness
   const containerStyle = {
@@ -27,7 +38,6 @@ export default function ClosetComponent() {
         mb={4}
         style={{ textTransform: "uppercase", letterSpacing: 1 }}
       >
-        <CameraFunctionality />
         my closet
       </Text>
 
@@ -50,9 +60,11 @@ export default function ClosetComponent() {
             borderBottomWidth={6}
             borderColor="#5E5E5E"
           >
-            <Text color="#4A4A4A" fontSize="sm" textAlign="center">
-              tops
-            </Text>
+            <TouchableOpacity onPress={() => openGallery("Tops")}>
+              <Text color="#4A4A4A" fontSize="sm" textAlign="center">
+                tops
+              </Text>
+            </TouchableOpacity>
           </Box>
           <Box
             flex={1}
