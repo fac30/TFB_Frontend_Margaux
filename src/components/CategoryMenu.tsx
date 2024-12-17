@@ -1,4 +1,12 @@
-import { Box, Text, Pressable, Image, ScrollView, VStack, HStack } from "native-base";
+import {
+  Box,
+  Text,
+  Pressable,
+  Image,
+  ScrollView,
+  VStack,
+  HStack,
+} from "native-base";
 import { useState } from "react";
 import { categories } from "../data/categories";
 
@@ -14,17 +22,26 @@ interface CategoryMenuProps {
   onSelectItem: (item: ClothingItem) => void;
 }
 
-export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuProps) {
+export default function CategoryMenu({
+  categories,
+  onSelectItem,
+}: CategoryMenuProps) {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
-  const [selectedSubcategory, setSelectedSubcategory] = useState(categories[0].subcategories[0].name);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(
+    categories[0].subcategories[0].name
+  );
 
-  const currentCategory = categories.find(cat => cat.name === selectedCategory);
-  const currentSubcategory = currentCategory?.subcategories.find(sub => sub.name === selectedSubcategory);
+  const currentCategory = categories.find(
+    (cat) => cat.name === selectedCategory
+  );
+  const currentSubcategory = currentCategory?.subcategories.find(
+    (sub) => sub.name === selectedSubcategory
+  );
 
   return (
-    <VStack 
-      space={2} 
-      bg="primary.200" 
+    <VStack
+      space={2}
+      bg="primary.200"
       borderColor="primary.100"
       borderWidth={1}
       borderRadius="md"
@@ -43,7 +60,11 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                 }}
               >
                 <Box
-                  bg={selectedCategory === category.name ? "primary.100" : "primary.200"}
+                  bg={
+                    selectedCategory === category.name
+                      ? "primary.100"
+                      : "primary.200"
+                  }
                   px={3}
                   py={1}
                   borderRadius="md"
@@ -51,7 +72,11 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                   borderColor="primary.100"
                 >
                   <Text
-                    color={selectedCategory === category.name ? "primary.200" : "primary.100"}
+                    color={
+                      selectedCategory === category.name
+                        ? "primary.200"
+                        : "primary.100"
+                    }
                     fontWeight="medium"
                     fontSize="sm"
                   >
@@ -75,7 +100,11 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                   onPress={() => setSelectedSubcategory(subcategory.name)}
                 >
                   <Box
-                    bg={selectedSubcategory === subcategory.name ? "primary.100" : "primary.200"}
+                    bg={
+                      selectedSubcategory === subcategory.name
+                        ? "primary.100"
+                        : "primary.200"
+                    }
                     px={3}
                     py={1}
                     borderRadius="md"
@@ -83,7 +112,11 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                     borderColor="primary.100"
                   >
                     <Text
-                      color={selectedSubcategory === subcategory.name ? "primary.200" : "primary.100"}
+                      color={
+                        selectedSubcategory === subcategory.name
+                          ? "primary.200"
+                          : "primary.100"
+                      }
                       fontWeight="medium"
                       fontSize="sm"
                     >
@@ -108,11 +141,13 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
           {currentSubcategory?.items.map((item, index) => (
             <Pressable
               key={index}
-              onPress={() => onSelectItem({
-                ...item,
-                category: selectedCategory,
-                subcategory: selectedSubcategory
-              })}
+              onPress={() =>
+                onSelectItem({
+                  ...item,
+                  category: selectedCategory,
+                  subcategory: selectedSubcategory,
+                })
+              }
             >
               <Box
                 m={1}
