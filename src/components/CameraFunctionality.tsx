@@ -3,7 +3,7 @@ import { useState } from "react";
 import supabase from "../supbaseClient"; // Adjust the path as needed
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
 
-export default function ClosetComponent() {
+export default function CameraFunctionality() {
   const [uploading, setUploading] = useState(false); // Upload status
   const [uploadSuccess, setUploadSuccess] = useState(false); // Success status
   const [selectedImage, setSelectedImage] = useState<string | null>(null); // Selected image preview
@@ -51,9 +51,7 @@ export default function ClosetComponent() {
     <Box flex={1} bg="primary.200" safeArea alignItems="center" pb="80px">
       <VStack space={4} w="100%" maxW="400px" px={4} alignItems="center">
         {/* Header */}
-        <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold" color="primary.100" textAlign="center" mt={4}>
-          Closet
-        </Text>
+        
 
         {/* Hidden File Input */}
         <input

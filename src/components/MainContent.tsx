@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, HStack, Button, Text } from "native-base";
-import ClosetComponent from "./ClosetComponent";
+import ClosetComponent from "./CameraFunctionality";
 import OutfitMakerComponent from "./OutfitMakerComponent";
 import EcoAdviceComponent from "./eco-advice/EcoAdviceComponent";
 import { useState, useCallback } from "react";
