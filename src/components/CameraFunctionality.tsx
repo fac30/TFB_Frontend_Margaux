@@ -2,28 +2,53 @@ import { Box, Spinner, Icon, Button, Text, HStack } from "native-base";
 import { useState, useRef } from "react";
 import { uploadImage } from "../functions/upload";
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
+import CategorySelectionModal from "./CategorySelectionModal";
 import '../styles/CameraFunctionality.css';
 
 export default function CameraFunctionality() {
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelection = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
+  const handleFileSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setShowModal(true);
+      // Reset the input value to allow selecting the same file again
+      event.target.value = '';
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedFile(null);
+  };
+
+  const handleUpload = async (category: string, description: string) => {
+    if (!selectedFile) return;
+    
+    try {
       setUploading(true);
       setUploadSuccess(false);
 
-      const success = await uploadImage(selectedFile);
+      const success = await uploadImage(selectedFile, category, description);
       setUploadSuccess(success);
-      setUploading(false);
 
       if (success) {
         setTimeout(() => {
           setUploadSuccess(false);
         }, 2000);
       }
+    } catch (error) {
+      console.error("Upload error:", error);
+      setUploadSuccess(false);
+    } finally {
+      setUploading(false);
+      setSelectedFile(null);
+      setShowModal(false);
     }
   };
 
@@ -57,11 +82,7 @@ export default function CameraFunctionality() {
           </HStack>
         ) : uploadSuccess ? (
           <HStack space={2} alignItems="center" justifyContent="center">
-            <Icon 
-              as={FaCheckCircle} 
-              size={6} 
-              color="primary.200" 
-            />
+            <Icon as={FaCheckCircle} size={6} color="primary.200" />
             <Text color="primary.200">Upload successful!</Text>
           </HStack>
         ) : (
@@ -72,36 +93,24 @@ export default function CameraFunctionality() {
             borderWidth={1}
             w="100%"
             justifyContent="center"
-            _text={{ 
-              color: "primary.100",
-              fontSize: { base: "sm", md: "md" }
-            }}
+            _text={{ color: "primary.100" }}
             _hover={{
               borderColor: "amber.400",
               _text: { color: "amber.400" },
               _icon: { color: "amber.400" }
             }}
-            _focus={{
-              borderColor: "primary.200",
-              _text: { color: "primary.100" },
-              bg: "transparent",
-            }}
-            _pressed={{
-              bg: "primary.200",
-            }}
-            leftIcon={
-              <Icon 
-                as={FaPlusCircle} 
-                size={5} 
-                color="primary.100"
-                mr={2}
-              />
-            }
+            leftIcon={<Icon as={FaPlusCircle} size={5} color="primary.100" mr={2} />}
           >
             Upload Image
           </Button>
         )}
       </Box>
+
+      <CategorySelectionModal
+        isOpen={showModal}
+        onClose={handleModalClose}
+        onSubmit={handleUpload}
+      />
     </Box>
   );
 }

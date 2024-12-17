@@ -1,7 +1,9 @@
-export const uploadImage = async (file: File) => {
+export const uploadImage = async (file: File, category: string, description: string) => {
   try {
     const formData = new FormData();
     formData.append('image', file);
+    formData.append('category', category);
+    formData.append('description', description);
 
     const response = await fetch('/api/upload', {
       method: 'POST',
@@ -12,7 +14,11 @@ export const uploadImage = async (file: File) => {
       throw new Error('Upload failed');
     }
 
-    console.log("Image uploaded successfully:", file.name);
+    console.log("Image uploaded successfully:", {
+      name: file.name,
+      category,
+      description
+    });
     return true;
   } catch (error: unknown) {
     if (error instanceof Error) {
