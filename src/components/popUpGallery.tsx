@@ -33,7 +33,7 @@ const PopUpGallery: React.FC<PopUpGalleryProps> = ({
         {galleryLinks && galleryLinks.length > 0 ? (
           <FlatList
             data={galleryLinks}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(index) => index.toString()}
             renderItem={({ item }) => (
               <Image source={{ uri: item }} style={styles.image} />
             )}
