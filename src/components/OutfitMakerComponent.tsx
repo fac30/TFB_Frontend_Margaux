@@ -29,18 +29,13 @@ export interface SavedOutfit {
 
 export default function OutfitMakerComponent() {
   const [selectedItems, setSelectedItems] = useState<ClothingItem[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]);
   const [saveButtonText, setSaveButtonText] = useState("Save");
   const [showGallery, setShowGallery] = useState(false);
+  const containerMaxWidth = useBreakpointValue({ base: "100%", md: "80%" });
 
   // Responsive values
-  const containerMaxWidth = useBreakpointValue({
-    base: "100%",
-    md: "768px",
-    lg: "1024px",
-  });
-
   const buttonSize = useBreakpointValue({
     base: "sm",
     md: "md",
@@ -97,9 +92,6 @@ export default function OutfitMakerComponent() {
   };
 
   const handleCloseModal = () => {
-    if (selectedItems.length === 0) {
-      setSelectedCategory(categories[0].name);
-    }
     setShowGallery(false);
   };
 
@@ -120,12 +112,16 @@ export default function OutfitMakerComponent() {
   };
 
   return (
-    <Box 
-      flex={1} 
-      bg="primary.200" 
-      safeArea 
-      alignItems="center" 
-      pb={{ base: "100px", md: "80px" }}
+    <Box
+      flex={1}
+      w={containerMaxWidth}
+      h={{ base: "auto", md: "100vh" }}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      pt={{ base: 4, md: 0 }}
+      pb={{ base: 20, md: 16 }}
+      mx="auto"
     >
       <VStack 
         space={4} 
@@ -134,7 +130,6 @@ export default function OutfitMakerComponent() {
         px={{ base: 2, md: 4 }} 
         alignItems="center"
       >
-        {/* Header */}
         <Text
           fontSize={{ base: "xl", md: "2xl" }}
           fontWeight="bold"
