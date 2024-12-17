@@ -1,19 +1,11 @@
-import { Box, NativeBaseProvider } from 'native-base';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import { theme } from './utils/native-base-config';
+import React from 'react';
+import CameraFunctionality from './components/CameraFunctionality';
 
 function App() {
   return (
-    <NativeBaseProvider theme={theme}>
-      <Box flex={1} bg={theme.colors.gray[50]}>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </Router>
-      </Box>
-    </NativeBaseProvider>
+    <div>
+      <CameraFunctionality />
+    </div>
   );
 }
 
