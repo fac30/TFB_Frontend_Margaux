@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Box, Text, VStack, HStack } from "native-base";
 import { useWindowDimensions, TouchableOpacity } from "react-native";
 import PopUpGallery from "./popUpGallery";
+import CameraFunctionality from "./CameraFunctionality";
 
 export default function ClosetComponent() {
   const { width } = useWindowDimensions();
@@ -80,7 +81,7 @@ export default function ClosetComponent() {
       <Text fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold" color="#395D51" mb={4} style={{ textTransform: "uppercase", letterSpacing: 1 }}>
         my closet
       </Text>
-
+    <CameraFunctionality />
       {/* Wardrobe Container */}
       <VStack borderWidth={8} space={0} width="100%" borderColor="#5E5E5E" bg="#FFFFFF">
         {/* Top Row */}

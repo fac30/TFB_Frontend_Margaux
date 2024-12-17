@@ -1,24 +1,22 @@
 import { Box, Button, Image, Text, VStack, Spinner } from "native-base";
 import { useState } from "react";
-import { uploadImage } from "../functions/upload"; // Import the upload function
+import { seedDB} from "../functions/upload"; // Import the upload function
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
 
 export default function CameraFunctionality() {
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
 
   const handleFileSelection = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setUploading(true);
       setUploadSuccess(false);
-      setFile(selectedFile);
       const imageUrl = URL.createObjectURL(selectedFile);
       setSelectedImage(imageUrl);
 
-      const success = await uploadImage(selectedFile); // Use the upload function
+      const success = await seedDB(selectedFile, 1); // Use the upload function
       setUploadSuccess(success);
       setUploading(false);
     }
@@ -28,8 +26,8 @@ export default function CameraFunctionality() {
     alert("Image uploaded successfully!");
     setUploadSuccess(false);
     setSelectedImage(null);
-    setFile(null);
   };
+  
 
   return (
     <Box flex={1} bg="primary.200" safeArea alignItems="center" pb="80px">
