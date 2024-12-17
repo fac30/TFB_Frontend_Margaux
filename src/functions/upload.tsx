@@ -1,18 +1,27 @@
-import supabase from "../supbaseClient";
-
 export const uploadImage = async (file: File) => {
   try {
-    const { error } = await supabase.storage
-      .from("photo_link") // Replace with your Supabase bucket name
-      .upload(`images/${file.name}`, file);
+    const formData = new FormData();
+    formData.append('image', file);
 
-    if (error) throw error;
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error('Upload failed');
+    }
 
     console.log("Image uploaded successfully:", file.name);
-    return true; // Indicate success
-  } catch (error) {
-    console.error("Upload failed:", error.message);
-    alert("Image upload failed!");
-    return false; // Indicate failure
+    return true;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Upload failed:", error.message);
+      alert(error.message);
+    } else {
+      console.error("Upload failed: An unknown error occurred");
+      alert("Upload failed: An unknown error occurred");
+    }
+    return false;
   }
 };
