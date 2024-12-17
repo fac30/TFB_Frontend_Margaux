@@ -1,24 +1,24 @@
-import { Box, Button, Image, Text, VStack, Spinner } from "native-base";
-import { useState } from "react";
-import { uploadImage } from "../functions/upload"; // Import the upload function
+import { Box, Button, Image, VStack, Spinner, Pressable, Icon } from "native-base";
+import { useState, useRef } from "react";
+import { uploadImage } from "../functions/upload";
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
+import '../styles/CameraFunctionality.css';
 
 export default function CameraFunctionality() {
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelection = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setUploading(true);
       setUploadSuccess(false);
-      setFile(selectedFile);
       const imageUrl = URL.createObjectURL(selectedFile);
       setSelectedImage(imageUrl);
 
-      const success = await uploadImage(selectedFile); // Use the upload function
+      const success = await uploadImage(selectedFile);
       setUploadSuccess(success);
       setUploading(false);
     }
@@ -28,7 +28,6 @@ export default function CameraFunctionality() {
     alert("Image uploaded successfully!");
     setUploadSuccess(false);
     setSelectedImage(null);
-    setFile(null);
   };
 
   return (
@@ -38,21 +37,30 @@ export default function CameraFunctionality() {
           type="file"
           accept="image/*"
           onChange={handleFileSelection}
-          style={{ display: "none" }}
-          id="file-input"
+          ref={fileInputRef}
+          aria-label="Upload image"
+          className="hidden-input"
         />
         <Box mt={4} w="100%" alignItems="center">
           {uploading ? (
-            <Spinner color="amber.400" size="lg" />
+            <Spinner color="primary.100" size="lg" />
           ) : uploadSuccess ? (
-            <FaCheckCircle size={50} color="green" />
-          ) : (
-            <FaPlusCircle
-              size={50}
-              color="blue"
-              style={{ cursor: "pointer" }}
-              onClick={() => document.getElementById("file-input")?.click()}
+            <Icon 
+              as={FaCheckCircle} 
+              size={50} 
+              color="primary.100" 
             />
+          ) : (
+            <Pressable
+              onPress={() => fileInputRef.current?.click()}
+              aria-label="Select image"
+            >
+              <Icon 
+                as={FaPlusCircle} 
+                size={50} 
+                color="primary.100"
+              />
+            </Pressable>
           )}
         </Box>
         {selectedImage && uploadSuccess && (
@@ -60,29 +68,26 @@ export default function CameraFunctionality() {
             <Image
               source={{ uri: selectedImage }}
               alt="Uploaded Image"
-              size="lg"
-              width={200}
-              height={200}
+              size="2xl"
               borderRadius="md"
             />
           </Box>
         )}
         {uploadSuccess && (
-          <Box mt={4} w="100%" alignItems="center">
-            <Button
-              bg="primary.200"
-              borderColor="primary.100"
-              borderWidth={1}
-              _text={{ color: "primary.100", fontWeight: "bold" }}
-              _hover={{
-                borderColor: "amber.400",
-                _text: { color: "amber.400" },
-              }}
-              onPress={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Box>
+          <Button
+            mt={4}
+            w="100%"
+            onPress={handleSubmit}
+            bg="primary.200"
+            borderWidth={1}
+            _text={{ color: "primary.100" }}
+            _hover={{
+              borderColor: "amber.400",
+              _text: { color: "amber.400" },
+            }}
+          >
+            Submit
+          </Button>
         )}
       </VStack>
     </Box>
