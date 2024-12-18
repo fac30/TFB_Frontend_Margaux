@@ -1,7 +1,9 @@
+
 import { useState } from "react";
 import { Box, Text, VStack, HStack, Button } from "native-base";
 import { useWindowDimensions } from "react-native";
 import PopUpGallery from "./PopUpGallery";
+
 
 export default function ClosetComponent() {
   const { width } = useWindowDimensions();
@@ -84,7 +86,7 @@ export default function ClosetComponent() {
       >
         my closet
       </Text>
-
+    <CameraFunctionality />
       {/* Wardrobe Container */}
       <VStack
         borderWidth={8}

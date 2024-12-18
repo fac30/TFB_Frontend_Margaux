@@ -1,6 +1,8 @@
-import { Box, Spinner, Icon, Button, Text, HStack } from "native-base";
-import { useState, useRef } from "react";
-import { uploadImage } from "../functions/upload";
+
+import { Box, Button, Image, Text, VStack, Spinner } from "native-base";
+import { useState } from "react";
+import { seedDB} from "../functions/upload"; // Import the upload function
+ 
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
 import CategorySelectionModal from "./CategorySelectionModal";
 import '../styles/CameraFunctionality.css';
@@ -8,9 +10,11 @@ import '../styles/CameraFunctionality.css';
 export default function CameraFunctionality() {
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
 
   const handleFileSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -34,7 +38,9 @@ export default function CameraFunctionality() {
       setUploading(true);
       setUploadSuccess(false);
 
-      const success = await uploadImage(selectedFile, category, description);
+
+      const success = await seedDB(selectedFile, 1); // Use the upload function
+
       setUploadSuccess(success);
 
       if (success) {
@@ -51,6 +57,14 @@ export default function CameraFunctionality() {
       setShowModal(false);
     }
   };
+
+
+//   const handleSubmit = () => {
+//     alert("Image uploaded successfully!");
+//     setUploadSuccess(false);
+//     setSelectedImage(null);
+//   };
+  
 
   return (
     <Box 
