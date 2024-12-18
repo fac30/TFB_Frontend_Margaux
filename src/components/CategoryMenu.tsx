@@ -2,7 +2,6 @@ import { Box, Text, Pressable, Image, ScrollView, VStack, HStack } from "native-
 import { useState } from "react";
 import { categories } from "../data/categories";
 
-
 interface ClothingItem {
   name: string;
   image: string;

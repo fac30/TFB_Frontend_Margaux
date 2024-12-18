@@ -5,9 +5,7 @@ import App from "./App";
 import { theme } from "./utils/native-base-config";
  
 
-// Call getPublicUrl with the required argument
-  // Pass the correct file path
-
+ 
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

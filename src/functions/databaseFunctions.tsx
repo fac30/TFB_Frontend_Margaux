@@ -20,7 +20,7 @@ const fetchItems = async (
   }
 };
 
-const insertItems = async (table: string, newData: Record<string, string | number >) => {
+const insertItems = async (table: string, newData: Record<string, number>) => {
   try {
     const { status, statusText, error } = await supabase
       .from(table)
@@ -38,7 +38,7 @@ const insertItems = async (table: string, newData: Record<string, string | numbe
 
 const updateItems = async (
   table: string,
-  newData: Record<string, string | number>,
+  newData: Record<string, number>,
   where: string,
   whereValue: string | number
 ) => {
