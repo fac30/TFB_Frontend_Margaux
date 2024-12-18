@@ -43,22 +43,28 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                   setSelectedSubcategory(category.subcategories[0].name);
                 }}
               >
-                <Box
-                  bg={selectedCategory === category.name ? "primary.100" : "primary.200"}
-                  px={3}
-                  py={1}
-                  borderRadius="md"
-                  borderWidth={1}
-                  borderColor="primary.100"
+                <Pressable
+                  _hover={{
+                    borderColor: "amber.400",
+                  }}
                 >
-                  <Text
-                    color={selectedCategory === category.name ? "primary.200" : "primary.100"}
-                    fontWeight="medium"
-                    fontSize="sm"
+                  <Box
+                    bg={selectedCategory === category.name ? "primary.100" : "primary.200"}
+                    px={3}
+                    py={1}
+                    borderRadius="md"
+                    borderWidth={1}
+                    borderColor="primary.100"
                   >
-                    {category.name}
-                  </Text>
-                </Box>
+                    <Text
+                      color={selectedCategory === category.name ? "primary.200" : "primary.100"}
+                      fontWeight="medium"
+                      fontSize="sm"
+                    >
+                      {category.name}
+                    </Text>
+                  </Box>
+                </Pressable>
               </Pressable>
             ))}
           </HStack>
@@ -75,22 +81,28 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                   key={subcategory.name}
                   onPress={() => setSelectedSubcategory(subcategory.name)}
                 >
-                  <Box
-                    bg={selectedSubcategory === subcategory.name ? "primary.100" : "primary.200"}
-                    px={3}
-                    py={1}
-                    borderRadius="md"
-                    borderWidth={1}
-                    borderColor="primary.100"
+                  <Pressable
+                    _hover={{
+                      borderColor: "amber.400",
+                    }}
                   >
-                    <Text
-                      color={selectedSubcategory === subcategory.name ? "primary.200" : "primary.100"}
-                      fontWeight="medium"
-                      fontSize="sm"
+                    <Box
+                      bg={selectedSubcategory === subcategory.name ? "primary.100" : "primary.200"}
+                      px={3}
+                      py={1}
+                      borderRadius="md"
+                      borderWidth={1}
+                      borderColor="primary.100"
                     >
-                      {subcategory.name}
-                    </Text>
-                  </Box>
+                      <Text
+                        color={selectedSubcategory === subcategory.name ? "primary.200" : "primary.100"}
+                        fontWeight="medium"
+                        fontSize="sm"
+                      >
+                        {subcategory.name}
+                      </Text>
+                    </Box>
+                  </Pressable>
                 </Pressable>
               ))}
             </HStack>
@@ -115,32 +127,36 @@ export default function CategoryMenu({ categories, onSelectItem }: CategoryMenuP
                 subcategory: selectedSubcategory
               })}
             >
-              <Box
-                m={1}
-                p={2}
-                borderWidth={1}
-                borderColor="primary.100"
-                borderRadius="md"
-                bg="primary.200"
-                _hover={{ opacity: 0.8 }}
+              <Pressable
+                _hover={{
+                  borderColor: "amber.400",
+                }}
               >
-                <Image
-                  source={{ uri: item.image }}
-                  alt={item.name}
-                  size="sm"
-                  width="80px"
-                  height="80px"
-                  resizeMode="contain"
-                />
-                <Text
-                  color="primary.100"
-                  fontSize="xs"
-                  textAlign="center"
-                  mt={1}
+                <Box
+                  m={1}
+                  p={2}
+                  borderRadius="md"
+                  bg="primary.200"
+                  alignItems="center"
                 >
-                  {item.name}
-                </Text>
-              </Box>
+                  <Image
+                    source={{ uri: item.image }}
+                    alt={item.name}
+                    size="sm"
+                    width="80px"
+                    height="80px"
+                    resizeMode="contain"
+                  />
+                  <Text
+                    color="primary.100"
+                    fontSize="xs"
+                    textAlign="center"
+                    mt={1}
+                  >
+                    {item.name}
+                  </Text>
+                </Box>
+              </Pressable>
             </Pressable>
           ))}
         </Box>

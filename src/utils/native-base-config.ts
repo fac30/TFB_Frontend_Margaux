@@ -84,6 +84,18 @@ export const theme = extendTheme({
       defaultProps: {
         bg: 'primary.200',
         color: 'primary.100'
+      },
+      variants: {
+        hiddenInput: {
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          border: "0",
+          clip: "rect(0,0,0,0)"
+        }
       }
     },
     Text: {
