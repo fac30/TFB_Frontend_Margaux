@@ -1,4 +1,4 @@
-import { Box, HStack, Icon, Text } from 'native-base'
+import { Box, HStack, Icon, Text, VStack } from 'native-base'
 import { useState, useEffect } from 'react'
 import ButtonComponent from './common/ButtonComponent'
 import { IoShare } from 'react-icons/io5'
@@ -54,13 +54,17 @@ export default function PWAInstallPrompt() {
   const handleInstallClick = async () => {
     if (isIOS) {
       setButtonText(
-        <HStack space={1} alignItems="center" justifyContent="center" width="100%" flexWrap="wrap">
-          <Text>Tap</Text>
-          <Icon as={IoShare} size="sm" />
-          <Text>then "Add to Home Screen"</Text>
-        </HStack>
+        <VStack space={1} alignItems="center" justifyContent="center">
+          <HStack space={1} alignItems="center">
+            <Text>Tap</Text>
+            <Icon as={IoShare} size="sm" />
+            <Text>then "Add</Text>
+          </HStack>
+          <Text>to Home Screen"</Text>
+        </VStack>
       )
-      setTimeout(() => {
+
+      const timer = setTimeout(() => {
         setButtonText(
           <HStack space={1} alignItems="center" justifyContent="center">
             <Text>Tap</Text>
@@ -69,12 +73,11 @@ export default function PWAInstallPrompt() {
           </HStack>
         )
       }, 3000)
-      return;
+
+      return () => clearTimeout(timer);
     }
 
-    if (!deferredPrompt) {
-      return;
-    }
+    if (!deferredPrompt) return;
 
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
