@@ -14,7 +14,7 @@ type PopUpGalleryProps = {
   isVisible: boolean; // Controls if the pop-up is visible
   onClose: () => void; // Function to close the pop-up
   sectionName: string; // Name of the section (e.g., Tops, Jumpers)
-  galleryLinks: string[]; // Array of image URLs
+  galleryLinks: { photo_link: string; item_desc: string }[]; // Array of objects with image URLs and descriptions
 };
 
 const PopUpGallery: React.FC<PopUpGalleryProps> = ({
@@ -35,7 +35,10 @@ const PopUpGallery: React.FC<PopUpGalleryProps> = ({
             data={galleryLinks}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-              <Image source={{ uri: item }} style={styles.image} />
+              <View>
+                <Image source={{ uri: item.photo_link }} style={styles.image} />
+                <Text>{item.item_desc}</Text>
+              </View>
             )}
           />
         ) : (

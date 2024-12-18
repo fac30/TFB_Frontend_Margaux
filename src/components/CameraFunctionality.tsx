@@ -57,7 +57,7 @@ export default function CameraFunctionality({ setActiveComponent }) {
 						<Modal.CloseButton />
 						<Modal.Header>Add Product Details</Modal.Header>
 						<Modal.Body>
-							<Box display='flex' flexDirection='column' gap='15px'>
+							<VStack space={4} display='flex' flexDirection='column'>
 								<input
 									type='file'
 									accept='image/*'
@@ -105,7 +105,7 @@ export default function CameraFunctionality({ setActiveComponent }) {
 									<option value='4'>Dresses/Skirts</option>
 									<option value='5'>Jackets/Coats</option>
 								</select>
-							</Box>
+							</VStack>
 						</Modal.Body>
 						<Modal.Footer>
 							<Button onPress={() => setIsModalVisible(false)}>Close</Button>

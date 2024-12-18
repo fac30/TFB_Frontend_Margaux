@@ -2,69 +2,43 @@ import { useState } from 'react';
 import { Box, Text, VStack, HStack } from "native-base";
 import { useWindowDimensions, TouchableOpacity } from "react-native";
 import PopUpGallery from "./popUpGallery";
+import { filterItemsByCategory } from '../functions/getFunction'; // Import the function to fetch items
+
+interface Category {
+  id: number;
+  name: string;
+}
 
 export default function ClosetComponent() {
   const { width } = useWindowDimensions();
-
-  // State to control the pop-up gallery
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [galleryLinks, setGalleryLinks] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [galleryItems, setGalleryItems] = useState<{ photo_link: string; item_desc: string }[]>([]); // State to hold gallery items
 
-  // Sample data for demonstration
-  const topsGalleryLinks = [
-    "https://example.com/top1.jpg",
-    "https://example.com/top2.jpg",
+  // Define categories with their IDs
+  const categories: Category[] = [
+    { id: 1, name: "Tops" },
+    { id: 2, name: "Jumpers" },
+    { id: 3, name: "Trousers" },
+    { id: 4, name: "Dresses/Skirts" },
+    { id: 5, name: "Jackets/Coats" },
   ];
 
-  const jumpersGalleryLinks = [
-    "https://example.com/jumper1.jpg",
-    "https://example.com/jumper2.jpg",
-  ];
+  const openGallery = async (categoryName: string) => {
+    const category = categories.find(c => c.name === categoryName);
+    if (category) {
+      setSelectedCategory(category);
+      setModalVisible(true);
 
-  const dressesGalleryLinks = [
-    "https://example.com/dress1.jpg",
-    "https://example.com/dress2.jpg",
-  ];
-
-  const jacketsGalleryLinks = [
-    "https://example.com/jacket1.jpg",
-    "https://example.com/jacket2.jpg",
-  ];
-
-  const trousersGalleryLinks = [
-    "https://example.com/trouser1.jpg",
-    "https://example.com/trouser2.jpg",
-  ];
-
-  const openGallery = (category: string) => {
-    setSelectedCategory(category);
-    switch (category) {
-      case "Tops":
-        setGalleryLinks(topsGalleryLinks);
-        break;
-      case "Jumpers":
-        setGalleryLinks(jumpersGalleryLinks);
-        break;
-      case "Dresses/Skirts":
-        setGalleryLinks(dressesGalleryLinks);
-        break;
-      case "Jackets/Coats":
-        setGalleryLinks(jacketsGalleryLinks);
-        break;
-      case "Trousers":
-        setGalleryLinks(trousersGalleryLinks);
-        break;
-      default:
-        setGalleryLinks([]);
+      // Fetch items for the selected category
+      const items = await filterItemsByCategory(category.id);
+      setGalleryItems(items); // Set the fetched items to state
     }
-    setModalVisible(true);
   };
 
   const closeGallery = () => {
     setModalVisible(false);
     setSelectedCategory(null);
-    setGalleryLinks([]);
   };
 
   return (
@@ -76,12 +50,10 @@ export default function ClosetComponent() {
       maxWidth="1200px"
       marginX="auto"
     >
-      {/* Title */}
       <Text fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold" color="#395D51" mb={4} style={{ textTransform: "uppercase", letterSpacing: 1 }}>
         my closet
       </Text>
 
-      {/* Wardrobe Container */}
       <VStack borderWidth={8} space={0} width="100%" borderColor="#5E5E5E" bg="#FFFFFF">
         {/* Top Row */}
         <HStack space={0} width="100%" height="20%">
@@ -99,7 +71,6 @@ export default function ClosetComponent() {
 
         {/* Middle Row */}
         <HStack space={0} width="100%">
-          {/* Dresses/Skirts Section */}
           <VStack flex={1} height="250px" borderRightWidth={6} borderColor="#5E5E5E">
             <Box flex={2} bg="#FFFFFF" justifyContent="center" alignItems="center" borderColor="#5E5E5E">
               <TouchableOpacity onPress={() => openGallery("Dresses/Skirts")}>
@@ -108,7 +79,6 @@ export default function ClosetComponent() {
               <Box position="absolute" bottom={160} height="4px" width="100%" bg="#B0B0B0"></Box>
             </Box>
 
-            {/* Drawer Section */}
             <Box flex={0.6} bg="#5E5E5E" borderTopWidth={6} borderColor="#5E5E5E" position="relative">
               {/* Drawer Handles */}
               <Box position="absolute" top="15%" height="2px" width="80%" bg="#FFFFFF" alignSelf="center"></Box>
@@ -118,7 +88,6 @@ export default function ClosetComponent() {
             </Box>
           </VStack>
 
-          {/* Jackets/Coats Section */}
           <Box flex={1} height="250px" bg="#FFFFFF" justifyContent="center" alignItems="center" borderBottomWidth={2} borderColor="#5E5E5E">
             <TouchableOpacity onPress={() => openGallery("Jackets/Coats")}>
               <Text color="#4A4A4A" fontSize="sm" textAlign="center">jackets/ coats</Text>
@@ -134,21 +103,18 @@ export default function ClosetComponent() {
           </TouchableOpacity>
         </Box>
 
-        {/* Bottom Drawer Lines */}
         <Box width="100%" height="130px" borderTopWidth={4} borderColor="#5E5E5E" position="relative"></Box>
       </VStack>
 
       {/* PopUpGallery Component */}
-      {isModalVisible && (
+      {isModalVisible && selectedCategory && (
         <PopUpGallery
           isVisible={isModalVisible}
           onClose={closeGallery}
-          sectionName={selectedCategory || ""}
-          galleryLinks={galleryLinks}
+          sectionName={selectedCategory.name}
+          galleryLinks={galleryItems} // Pass the fetched items here
         />
       )}
     </Box>
   );
 }
-
-

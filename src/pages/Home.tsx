@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Image, useBreakpointValue, VStack } from "native-base";
 import { useState } from "react";
 import MainContent from "../components/MainContent";

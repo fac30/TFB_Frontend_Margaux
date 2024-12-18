@@ -1,4 +1,4 @@
-import supabase from '../supbaseClient';
+import supabase from '../utils/supbaseClient';
 import { insertItems } from './databaseFunctions';
 
 export const uploadImage = async (file: File) => {
