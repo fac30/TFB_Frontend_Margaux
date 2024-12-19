@@ -19,24 +19,24 @@ export default function CameraFunctionality({ setActiveComponent }) {
 		}
 	};
 
-  const handleSubmit = async () => {
-    if (!productDescription || !category || !file) {
-        alert('Please add all product information.');
-        return;
-    }
+	const handleSubmit = async () => {
+		if (!productDescription || !category || !file) {
+			alert('Please add all product information.');
+			return;
+		}
 
-    setUploading(true);
-    const success = await seedDB(file, parseInt(category), productDescription);
-    setUploadSuccess(success);
-    setUploading(false);
+		setUploading(true);
+		const success = await seedDB(file, parseInt(category), productDescription);
+		setUploadSuccess(success);
+		setUploading(false);
 
-    if (success) {
-        alert('Image uploaded successfully!');
-        resetForm();
-    } else {
-        alert('Image upload failed!');
-    }
-};
+		if (success) {
+			alert('Image uploaded successfully!');
+			resetForm();
+		} else {
+			alert('Image upload failed!');
+		}
+	};
 
 	const resetForm = () => {
 		setSelectedImage(null);
@@ -44,25 +44,75 @@ export default function CameraFunctionality({ setActiveComponent }) {
 		setProductDescription('');
 		setCategory('');
 		setIsModalVisible(false);
-		setActiveComponent("");
+		setActiveComponent('');
 	};
 
 	return (
 		<Box flex={1} bg='primary.200' safeArea alignItems='center' pb='80px'>
 			<VStack space={4} w='100%' maxW='400px' px={4} alignItems='center'>
-				<Button onPress={() => setIsModalVisible(true)}>Add Product</Button>
+				<Button
+					onPress={() => setIsModalVisible(true)}
+					bg='transparent'
+					borderColor='#395D51'
+					borderWidth={1.5}
+					rounded='lg'
+					_text={{
+						color: '#395D51',
+						fontSize: 'md',
+						fontWeight: 'medium',
+					}}
+					_hover={{
+						bg: 'transparent',
+						borderColor: '#FFB800',
+						_text: {
+							color: '#FFB800',
+						},
+					}}
+					_pressed={{
+						bg: 'transparent',
+						borderColor: '#FFB800',
+						_text: {
+							color: '#FFB800',
+						},
+					}}
+					px={6}
+					py={2}
+				>
+					Add Product
+				</Button>
 
 				<Modal isOpen={isModalVisible} onClose={() => setIsModalVisible(false)}>
-					<Modal.Content>
+					<Modal.Content
+						maxW='500px'
+						width='90%'
+						bg='white'
+						p={6}
+						borderRadius='xl'
+					>
 						<Modal.CloseButton />
-						<Modal.Header>Add Product Details</Modal.Header>
+						<Modal.Header
+							borderBottomWidth={0}
+							p={0}
+							pb={6}
+							_text={{
+								fontSize: 'xl',
+								fontWeight: 'bold',
+								color: '#395D51',
+							}}
+						>
+							Add Product Details
+						</Modal.Header>
 						<Modal.Body>
 							<VStack space={4} display='flex' flexDirection='column'>
 								<input
 									type='file'
 									accept='image/*'
 									onChange={handleFileSelection}
-									style={{ display: 'block', marginBottom: '10px', width: '100%' }}
+									style={{
+										display: 'block',
+										marginBottom: '10px',
+										width: '100%',
+									}}
 								/>
 								{uploading ? (
 									<Spinner color='amber.400' size='lg' />
@@ -84,7 +134,11 @@ export default function CameraFunctionality({ setActiveComponent }) {
 									placeholder='Product Description'
 									value={productDescription}
 									onChange={(e) => setProductDescription(e.target.value)}
-									style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+									style={{
+										width: '100%',
+										padding: '8px',
+										marginBottom: '10px',
+									}}
 								/>
 
 								<select
@@ -98,7 +152,7 @@ export default function CameraFunctionality({ setActiveComponent }) {
 										border: '1px solid #ccc',
 									}}
 								>
-									<option  >Select Category</option>
+									<option>Select Category</option>
 									<option value='1'>Tops</option>
 									<option value='2'>Jumpers</option>
 									<option value='3'>Trousers</option>
@@ -107,9 +161,37 @@ export default function CameraFunctionality({ setActiveComponent }) {
 								</select>
 							</VStack>
 						</Modal.Body>
-						<Modal.Footer>
-							<Button onPress={() => setIsModalVisible(false)}>Close</Button>
-							<Button onPress={handleSubmit}>Submit</Button>
+						<Modal.Footer borderTopWidth={0}>
+							<Button
+								onPress={handleSubmit}
+								bg='transparent'
+								borderColor='#395D51'
+								borderWidth={1.5}
+								rounded='lg'
+								_text={{
+									color: '#395D51',
+									fontSize: 'md',
+									fontWeight: 'medium',
+								}}
+								_hover={{
+									bg: 'transparent',
+									borderColor: '#FFB800',
+									_text: {
+										color: '#FFB800',
+									},
+								}}
+								_pressed={{
+									bg: 'transparent',
+									borderColor: '#FFB800',
+									_text: {
+										color: '#FFB800',
+									},
+								}}
+								px={6}
+								py={2}
+							>
+								SUBMIT
+							</Button>
 						</Modal.Footer>
 					</Modal.Content>
 				</Modal>
@@ -122,7 +204,7 @@ export default function CameraFunctionality({ setActiveComponent }) {
 							size='lg'
 							width={200}
 							height={200}
-							borderRadius='md'
+							borderRadius='sm'
 						/>
 					</Box>
 				)}
