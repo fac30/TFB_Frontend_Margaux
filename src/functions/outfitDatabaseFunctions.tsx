@@ -94,6 +94,8 @@ export const saveOutfit = async (
   }
 };
 
+// outfitDatabaseFunctions.tsx
+
 export const fetchSavedOutfits = async (userId: number) => {
   try {
     console.log('Fetching outfits for user:', userId);
@@ -112,29 +114,21 @@ export const fetchSavedOutfits = async (userId: number) => {
           )
         )
       `)
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+      .eq('user_id', userId);
 
-    if (error) {
-      console.error('Error fetching outfits:', error);
-      throw error;
-    }
-
-    console.log('Raw outfits data:', data);
+    if (error) throw error;
 
     const transformedOutfits = data?.map(outfit => ({
       ...outfit,
       outfit_items: outfit.outfit_items.filter(item => item.clothing_items !== null)
     })) || [];
 
-    console.log('Transformed outfits:', transformedOutfits);
     return transformedOutfits;
   } catch (error) {
     console.error('Error in fetchSavedOutfits:', error);
     throw error;
   }
 };
-
 export const deleteOutfit = async (outfitId: number) => {
   try {
     console.log('Deleting outfit:', outfitId);
