@@ -1,3 +1,7 @@
+if (typeof global === 'undefined') {
+  window.global = window;
+}
+
 import { 
   Box, 
   VStack, 
@@ -51,34 +55,39 @@ export default function OutfitMakerComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const userId = 1; // Replace with actual user ID
+  const userId = 1;
 
   useEffect(() => {
     loadItemsByCategory();
-    loadSavedOutfits();
-  }, [selectedCategory]);
+  }, [selectedCategory.id]);
+
+  useEffect(() => {
+    if (showSavedOutfits) {
+      loadSavedOutfits();
+    }
+  }, [showSavedOutfits]);
 
   const loadItemsByCategory = async () => {
     try {
       const items = await fetchItemsByCategory(selectedCategory.id, userId);
-      setAvailableItems(items);
+      if (Array.isArray(items)) {
+        setAvailableItems(items);
+      }
     } catch (error) {
-      toast.show({
-        description: "Failed to load items",
-        variant: "solid",
-      });
+      console.error('Error loading items:', error);
+      setAvailableItems([]);
     }
   };
 
   const loadSavedOutfits = async () => {
     try {
       const outfits = await fetchSavedOutfits(userId);
-      setSavedOutfits(outfits);
+      if (Array.isArray(outfits)) {
+        setSavedOutfits(outfits);
+      }
     } catch (error) {
-      toast.show({
-        description: "Failed to load outfits",
-        variant: "solid",
-      });
+      console.error('Error loading outfits:', error);
+      setSavedOutfits([]);
     }
   };
 
@@ -112,8 +121,12 @@ export default function OutfitMakerComponent() {
       setSelectedItems([]);
       setOutfitName("");
       setShowSaveModal(false);
-      loadSavedOutfits();
+      
+      if (showSavedOutfits) {
+        await loadSavedOutfits();
+      }
     } catch (error) {
+      console.error('Error saving outfit:', error);
       toast.show({
         description: "Failed to save outfit",
         variant: "solid",
@@ -125,15 +138,14 @@ export default function OutfitMakerComponent() {
 
   const handleDeleteOutfit = async (outfitId: number) => {
     try {
-      const success = await deleteOutfit(outfitId);
-      if (success) {
-        toast.show({
-          description: "Outfit deleted successfully",
-          variant: "solid",
-        });
-        loadSavedOutfits();
-      }
+      await deleteOutfit(outfitId);
+      toast.show({
+        description: "Outfit deleted successfully",
+        variant: "solid",
+      });
+      await loadSavedOutfits();
     } catch (error) {
+      console.error('Error deleting outfit:', error);
       toast.show({
         description: "Failed to delete outfit",
         variant: "solid",
@@ -142,7 +154,18 @@ export default function OutfitMakerComponent() {
   };
 
   const handleAddItem = (item: ClothingItem) => {
-    if (selectedItems.length >= 6 || selectedItems.some(selected => selected.item_id === item.item_id)) {
+    if (selectedItems.length >= 6) {
+      toast.show({
+        description: "Maximum 6 items allowed",
+        variant: "solid",
+      });
+      return;
+    }
+    if (selectedItems.some(selected => selected.item_id === item.item_id)) {
+      toast.show({
+        description: "Item already selected",
+        variant: "solid",
+      });
       return;
     }
     setSelectedItems(prev => [...prev, item]);
@@ -155,12 +178,10 @@ export default function OutfitMakerComponent() {
   return (
     <Box flex={1} bg="#E6E5DC" safeArea alignItems="center" pb="80px">
       <VStack space={4} w="100%" maxW="400px" px={4} alignItems="center">
-        {/* Title */}
         <Text fontSize="xl" fontWeight="bold" color="#395D51" textAlign="center" mt={4}>
           OUTFIT MAKER
         </Text>
 
-        {/* Category Selection */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} w="100%">
           <HStack space={3} py={2}>
             {categories.map((category) => (
@@ -188,7 +209,6 @@ export default function OutfitMakerComponent() {
           </HStack>
         </ScrollView>
 
-        {/* Available Items */}
         <Box w="100%" minH="150px">
           <Text color="#395D51" fontSize="lg" fontWeight="semibold" mb={2}>
             AVAILABLE {selectedCategory.name}
@@ -225,7 +245,6 @@ export default function OutfitMakerComponent() {
           </ScrollView>
         </Box>
 
-        {/* Selected Items */}
         {selectedItems.length > 0 && (
           <Box w="100%" minH="150px">
             <Text color="#395D51" fontSize="lg" fontWeight="semibold" mb={2}>
@@ -272,7 +291,6 @@ export default function OutfitMakerComponent() {
           </Box>
         )}
 
-        {/* Action Buttons */}
         <HStack space={4} w="100%" justifyContent="center" mt={4}>
           <ButtonComponent
             onPress={() => setShowSaveModal(true)}
@@ -286,7 +304,6 @@ export default function OutfitMakerComponent() {
           />
         </HStack>
 
-        {/* Save Modal */}
         <Modal isOpen={showSaveModal} onClose={() => setShowSaveModal(false)}>
           <Modal.Content bg="#E6E5DC">
             <Modal.CloseButton />
@@ -330,12 +347,12 @@ export default function OutfitMakerComponent() {
               <ButtonComponent 
                 onPress={handleSaveOutfit} 
                 label="SAVE" 
+                isLoading={isLoading}
               />
             </Modal.Footer>
           </Modal.Content>
         </Modal>
 
-        {/* View Saved Outfits Modal */}
         <Modal isOpen={showSavedOutfits} onClose={() => setShowSavedOutfits(false)} size="full">
           <Modal.Content bg="#E6E5DC">
             <Modal.CloseButton />
@@ -387,7 +404,7 @@ export default function OutfitMakerComponent() {
                             >
                               <Image
                                 source={{ uri: item.clothing_items.photo_link }}
-                                alt={item.clothing_items.item_desc}
+                                alt={item.item_desc}
                                 size="md"
                               />
                               <Text fontSize="xs" mt={1} color="#395D51">

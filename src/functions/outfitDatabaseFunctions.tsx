@@ -1,41 +1,74 @@
 import supabase from "../utils/supbaseClient";
 
-// Fetch all items for a specific category
+interface ClothingItem {
+  item_id: number;
+  item_desc: string;
+  photo_link: string;
+  category_id: number;
+}
+
+interface OutfitItem {
+  clothing_items: ClothingItem;
+}
+
+interface SavedOutfit {
+  outfit_id: number;
+  outfit_name: string;
+  outfit_items: OutfitItem[];
+}
+
 export const fetchItemsByCategory = async (categoryId: number, userId: number) => {
   try {
+    console.log('Fetching items for category:', categoryId, 'and user:', userId);
     const { data, error } = await supabase
       .from('clothing_items')
-      .select('item_id, item_desc, photo_link, category_id')
+      .select('*')
       .eq('category_id', categoryId)
       .eq('user_id', userId);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
+
+    console.log('Fetched items:', data);
     return data || [];
   } catch (error) {
-    console.error('Error fetching items:', error);
-    return [];
+    console.error('Error in fetchItemsByCategory:', error);
+    throw error;
   }
 };
 
-// Save a new outfit
 export const saveOutfit = async (
   userId: number,
   outfitName: string,
   itemIds: number[]
 ) => {
   try {
-    // First, create the outfit
+    console.log('Saving outfit:', { userId, outfitName, itemIds });
+
     const { data: outfitData, error: outfitError } = await supabase
       .from('outfits')
       .insert([
-        { user_id: userId, outfit_name: outfitName }
+        {
+          user_id: userId,
+          outfit_name: outfitName
+        }
       ])
-      .select('outfit_id')
+      .select()
       .single();
 
-    if (outfitError) throw outfitError;
+    if (outfitError) {
+      console.error('Error creating outfit:', outfitError);
+      throw outfitError;
+    }
 
-    // Then, create outfit_items entries
+    if (!outfitData) {
+      throw new Error('No outfit data returned after insert');
+    }
+
+    console.log('Created outfit:', outfitData);
+
     const outfitItems = itemIds.map(itemId => ({
       outfit_id: outfitData.outfit_id,
       item_id: itemId
@@ -45,20 +78,27 @@ export const saveOutfit = async (
       .from('outfit_items')
       .insert(outfitItems);
 
-    if (itemsError) throw itemsError;
+    if (itemsError) {
+      console.error('Error creating outfit items:', itemsError);
+      await supabase
+        .from('outfits')
+        .delete()
+        .eq('outfit_id', outfitData.outfit_id);
+      throw itemsError;
+    }
 
-    return outfitData.outfit_id;
+    return true;
   } catch (error) {
-    console.error('Error saving outfit:', error);
-    return null;
+    console.error('Error in saveOutfit:', error);
+    throw error;
   }
 };
 
-// Fetch saved outfits with their items
 export const fetchSavedOutfits = async (userId: number) => {
   try {
-    // First get all outfits for the user
-    const { data: outfits, error: outfitsError } = await supabase
+    console.log('Fetching outfits for user:', userId);
+    
+    const { data, error } = await supabase
       .from('outfits')
       .select(`
         outfit_id,
@@ -72,29 +112,46 @@ export const fetchSavedOutfits = async (userId: number) => {
           )
         )
       `)
-      .eq('user_id', userId);
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
 
-    if (outfitsError) throw outfitsError;
+    if (error) {
+      console.error('Error fetching outfits:', error);
+      throw error;
+    }
 
-    return outfits || [];
+    console.log('Raw outfits data:', data);
+
+    const transformedOutfits = data?.map(outfit => ({
+      ...outfit,
+      outfit_items: outfit.outfit_items.filter(item => item.clothing_items !== null)
+    })) || [];
+
+    console.log('Transformed outfits:', transformedOutfits);
+    return transformedOutfits;
   } catch (error) {
-    console.error('Error fetching outfits:', error);
-    return [];
+    console.error('Error in fetchSavedOutfits:', error);
+    throw error;
   }
 };
 
-// Delete an outfit
 export const deleteOutfit = async (outfitId: number) => {
   try {
+    console.log('Deleting outfit:', outfitId);
+
     const { error } = await supabase
       .from('outfits')
       .delete()
       .eq('outfit_id', outfitId);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error deleting outfit:', error);
+      throw error;
+    }
+
     return true;
   } catch (error) {
-    console.error('Error deleting outfit:', error);
-    return false;
+    console.error('Error in deleteOutfit:', error);
+    throw error;
   }
 };
