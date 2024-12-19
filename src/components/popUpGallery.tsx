@@ -9,12 +9,11 @@ import {
   View,
 } from "react-native";
 
-// Define the types for the props
 type PopUpGalleryProps = {
-  isVisible: boolean; // Controls if the pop-up is visible
-  onClose: () => void; // Function to close the pop-up
-  sectionName: string; // Name of the section (e.g., Tops, Jumpers)
-  galleryLinks: { photo_link: string; item_desc: string }[]; // Array of objects with image URLs and descriptions
+  isVisible: boolean;
+  onClose: () => void;
+  sectionName: string;
+  galleryLinks: { photo_link: string; item_desc: string }[];
 };
 
 const PopUpGallery: React.FC<PopUpGalleryProps> = ({
@@ -26,26 +25,28 @@ const PopUpGallery: React.FC<PopUpGalleryProps> = ({
   return (
     <Modal visible={isVisible} animationType="slide" transparent={false}>
       <View style={styles.container}>
-        {/* Section Title */}
         <Text style={styles.header}>{sectionName}</Text>
 
-        {/* Gallery */}
         {galleryLinks && galleryLinks.length > 0 ? (
           <FlatList
             data={galleryLinks}
             keyExtractor={(item, index) => index.toString()}
+            numColumns={2}
             renderItem={({ item }) => (
-              <View>
-                <Image source={{ uri: item.photo_link }} style={styles.image} />
-                <Text>{item.item_desc}</Text>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: item.photo_link }}
+                  style={styles.image}
+                  // Remove loading states and just use default platform behavior
+                />
+                <Text style={styles.description}>{item.item_desc}</Text>
               </View>
             )}
           />
         ) : (
-          <Text style={styles.noImagesText}>No Images Available</Text>
+          <Text style={styles.noImagesText}>No items found in this category</Text>
         )}
 
-        {/* Close Button */}
         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
           <Text style={styles.closeText}>Close</Text>
         </TouchableOpacity>
@@ -54,23 +55,53 @@ const PopUpGallery: React.FC<PopUpGalleryProps> = ({
   );
 };
 
-export default PopUpGallery;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#FFF",
+    padding: 20,
   },
-  header: { fontSize: 24, fontWeight: "bold", marginVertical: 10 },
-  image: { width: 150, height: 150, margin: 10 },
-  noImagesText: { fontSize: 16, color: "gray" },
-  closeButton: {
-    padding: 10,
-    backgroundColor: "tomato",
-    borderRadius: 5,
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginVertical: 20,
+    textAlign: "center",
+  },
+  imageContainer: {
+    flex: 1,
+    margin: 5,
+    alignItems: "center",
+  },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 8,
+    backgroundColor: "#f0f0f0", // Light gray background while loading
+  },
+  description: {
+    marginTop: 8,
+    textAlign: "center",
+    fontSize: 14,
+    color: "#333",
+  },
+  noImagesText: {
+    fontSize: 16,
+    color: "gray",
+    textAlign: "center",
     marginTop: 20,
   },
-  closeText: { color: "#FFF", fontSize: 16 },
+  closeButton: {
+    padding: 15,
+    backgroundColor: "#395D51",
+    borderRadius: 8,
+    marginTop: 20,
+    alignSelf: "center",
+  },
+  closeText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
+
+export default PopUpGallery;

@@ -8,43 +8,146 @@ import {
   IconButton, 
   Pressable, 
   Button,
-  Modal 
+  Modal,
+  Input,
+  useToast
 } from "native-base";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CloseIcon } from "native-base";
-import { PencilIcon as HeroPencil, TrashIcon as HeroTrash } from "@heroicons/react/16/solid";
-import { Icon } from "native-base";
+import { 
+  fetchItemsByCategory, 
+  saveOutfit, 
+  fetchSavedOutfits, 
+  deleteOutfit 
+} from '../functions/outfitDatabaseFunctions';
 
 interface ClothingItem {
-  name: string;
-  image: string;
-  category: string;
-  subcategory: string;
+  item_id: number;
+  item_desc: string;
+  photo_link: string;
+  category_id: number;
 }
 
 interface SavedOutfit {
-  items: ClothingItem[];
-  date: string;
+  outfit_id: number;
+  outfit_name: string;
+  outfit_items: {
+    clothing_items: ClothingItem;
+  }[];
 }
 
-const PencilIcon = (props: any) => (
-  <Icon as={HeroPencil} size={5} {...props} />
-);
-
-const TrashIcon = (props: any) => (
-  <Icon as={HeroTrash} size={5} {...props} />
-);
+const categories = [
+  { id: 1, name: "Tops" },
+  { id: 2, name: "Jumpers" },
+  { id: 3, name: "Trousers" },
+  { id: 4, name: "Dresses/Skirts" },
+  { id: 5, name: "Jackets/Coats" }
+];
 
 export default function OutfitMakerComponent() {
   const [selectedItems, setSelectedItems] = useState<ClothingItem[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("Placeholder Category");
+  const [selectedCategory, setSelectedCategory] = useState({ id: 1, name: "Tops" });
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]);
   const [showSavedOutfits, setShowSavedOutfits] = useState(false);
-  const [saveButtonText, setSaveButtonText] = useState("Save");
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [outfitName, setOutfitName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [availableItems, setAvailableItems] = useState<ClothingItem[]>([]);
+  const toast = useToast();
+
+  const userId = 1; // Replace with actual user ID
+
+  useEffect(() => {
+    loadItemsByCategory();
+    loadSavedOutfits();
+  }, [selectedCategory]);
+
+  const loadItemsByCategory = async () => {
+    try {
+      const items = await fetchItemsByCategory(selectedCategory.id, userId);
+      setAvailableItems(items);
+    } catch (error) {
+      toast.show({
+        description: "Failed to load items",
+        status: "error"
+      });
+    }
+  };
+
+  const loadSavedOutfits = async () => {
+    try {
+      const outfits = await fetchSavedOutfits(userId);
+      setSavedOutfits(outfits);
+    } catch (error) {
+      toast.show({
+        description: "Failed to load outfits",
+        status: "error"
+      });
+    }
+  };
+
+  const handleSaveOutfit = async () => {
+    if (!outfitName.trim()) {
+      toast.show({
+        description: "Please enter an outfit name",
+        status: "warning"
+      });
+      return;
+    }
+
+    if (selectedItems.length === 0) {
+      toast.show({
+        description: "Please select at least one item",
+        status: "warning"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const itemIds = selectedItems.map(item => item.item_id);
+      await saveOutfit(userId, outfitName, itemIds);
+      
+      toast.show({
+        description: "Outfit saved successfully!",
+        status: "success"
+      });
+      
+      setSelectedItems([]);
+      setOutfitName("");
+      setShowSaveModal(false);
+      loadSavedOutfits();
+    } catch (error) {
+      toast.show({
+        description: "Failed to save outfit",
+        status: "error"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteOutfit = async (outfitId: number) => {
+    try {
+      const success = await deleteOutfit(outfitId);
+      if (success) {
+        toast.show({
+          description: "Outfit deleted successfully",
+          status: "success"
+        });
+        loadSavedOutfits();
+      }
+    } catch (error) {
+      toast.show({
+        description: "Failed to delete outfit",
+        status: "error"
+      });
+    }
+  };
 
   const handleAddItem = (item: ClothingItem) => {
-    if (selectedItems.length >= 6 || selectedItems.some(selected => selected.name === item.name)) {
-      return; // Prevent adding more than 6 items or duplicates
+    if (selectedItems.length >= 6 || selectedItems.some(selected => selected.item_id === item.item_id)) {
+      return;
     }
     setSelectedItems(prev => [...prev, item]);
   };
@@ -53,157 +156,82 @@ export default function OutfitMakerComponent() {
     setSelectedItems(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSaveCollection = () => {
-    if (selectedItems.length > 0) {
-      const newOutfit: SavedOutfit = {
-        items: [...selectedItems],
-        date: new Date().toLocaleDateString()
-      };
-      setSavedOutfits(prev => [...prev, newOutfit]);
-      setSelectedItems([]);
-      setSaveButtonText("Saved!");
-
-      // Reset button state after 1.5 seconds
-      setTimeout(() => {
-        setSaveButtonText("Save");
-      }, 1500);
-    }
-  };
-
-  const handleViewCollections = () => {
-    setShowSavedOutfits(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowSavedOutfits(false);
-  };
-
-  const handleDeleteOutfit = (index: number) => {
-    setSavedOutfits(prev => prev.filter((_, i) => i !== index));
-  };
-
   return (
-    <Box 
-      flex={1} 
-      bg="primary.200" 
-      safeArea 
-      alignItems="center"
-      pb="80px"
-    >
-      <VStack 
-        space={4} 
-        w="100%" 
-        maxW="400px"
-        px={4}
-        alignItems="center"
-      >
-        <Text 
-          fontSize={{ base: "xl", md: "2xl" }}
-          fontWeight="bold" 
-          color="primary.100" 
-          textAlign="center"
-          mt={4}
-        >
+    <Box flex={1} bg="primary.200" safeArea alignItems="center" pb="80px">
+      <VStack space={4} w="100%" maxW="400px" px={4} alignItems="center">
+        <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold" color="primary.100" textAlign="center" mt={4}>
           Outfit Maker
         </Text>
 
-        <HStack space={4} justifyContent="center">
-          <Button
-            onPress={() => setSelectedCategory("Placeholder Category")}
-            bg="primary.200"
-            borderColor="primary.100"
-            borderWidth={1}
-            _text={{ color: "primary.100" }}
-          >
-            Placeholder Category
-          </Button>
+        {/* Category Selection */}
+        <HStack space={4} justifyContent="center" flexWrap="wrap">
+          {categories.map((category) => (
+            <Button
+              key={category.id}
+              onPress={() => setSelectedCategory(category)}
+              bg={selectedCategory.id === category.id ? "primary.100" : "primary.200"}
+              borderColor="primary.100"
+              borderWidth={1}
+              _text={{ 
+                color: selectedCategory.id === category.id ? "white" : "primary.100" 
+              }}
+              mb={2}
+            >
+              {category.name}
+            </Button>
+          ))}
         </HStack>
 
+        {/* Available Items */}
         <Box w="100%" minH="150px">
-          <Text 
-            color="primary.100" 
-            fontSize="lg" 
-            fontWeight="semibold"
-            mb={2}
-          >
-            Available {selectedCategory}
+          <Text color="primary.100" fontSize="lg" fontWeight="semibold" mb={2}>
+            Available {selectedCategory.name}
           </Text>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            minH="120px"
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} minH="120px">
             <HStack space={3} px={2} minH="120px">
-              <Pressable
-                onPress={() => handleAddItem({
-                  name: "Placeholder Item",
-                  image: "https://via.placeholder.com/150",
-                  category: selectedCategory,
-                  subcategory: "Placeholder Subcategory"
-                })}
-              >
-                <Box
-                  p={2}
-                  borderRadius="md"
-                  minH="100px"
+              {availableItems.map((item) => (
+                <Pressable
+                  key={item.item_id}
+                  onPress={() => handleAddItem(item)}
                 >
-                  <Image
-                    source={{ uri: "https://via.placeholder.com/150" }}
-                    alt="Placeholder Item"
-                    size="lg"
-                    width={24}
-                    height={24}
-                  />
-                  <Text
-                    color="primary.100"
-                    fontSize="sm"
-                    textAlign="center"
-                    mt={1}
-                  >
-                    Placeholder Item
-                  </Text>
-                </Box>
-              </Pressable>
+                  <Box p={2} borderRadius="md" minH="100px">
+                    <Image
+                      source={{ uri: item.photo_link }}
+                      alt={item.item_desc}
+                      size="lg"
+                      width={24}
+                      height={24}
+                    />
+                    <Text color="primary.100" fontSize="sm" textAlign="center" mt={1}>
+                      {item.item_desc}
+                    </Text>
+                  </Box>
+                </Pressable>
+              ))}
             </HStack>
           </ScrollView>
         </Box>
 
+        {/* Selected Items */}
         {selectedItems.length > 0 && (
           <Box w="100%" minH="150px">
-            <Text 
-              color="primary.100" 
-              fontSize="lg" 
-              fontWeight="semibold"
-              mb={2}
-            >
+            <Text color="primary.100" fontSize="lg" fontWeight="semibold" mb={2}>
               Your Selection
             </Text>
-            <ScrollView 
-              horizontal 
-              showsHorizontalScrollIndicator={false}
-              minH="120px"
-            >
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} minH="120px">
               <HStack space={3} px={2} minH="120px">
                 {selectedItems.map((item, index) => (
                   <Box key={index} position="relative">
-                    <Box
-                      p={2}
-                      borderRadius="md"
-                    >
+                    <Box p={2} borderRadius="md">
                       <Image
-                        source={{ uri: item.image }}
-                        alt={item.name}
+                        source={{ uri: item.photo_link }}
+                        alt={item.item_desc}
                         size="lg"
                         width={24}
                         height={24}
                       />
-                      <Text
-                        color="primary.100"
-                        fontSize="sm"
-                        textAlign="center"
-                        mt={1}
-                      >
-                        {item.name}
+                      <Text color="primary.100" fontSize="sm" textAlign="center" mt={1}>
+                        {item.item_desc}
                       </Text>
                     </Box>
                     <IconButton
@@ -224,39 +252,119 @@ export default function OutfitMakerComponent() {
           </Box>
         )}
 
+        {/* Action Buttons */}
         <HStack space={4} w="100%" justifyContent="center" mt={4}>
           <Button
-            onPress={handleSaveCollection}
+            onPress={() => setShowSaveModal(true)}
             bg="primary.200"
             borderColor="primary.100"
             borderWidth={1}
             _text={{ color: "primary.100" }}
             w="45%"
+            isDisabled={selectedItems.length === 0}
           >
-            {saveButtonText}
+            Save Outfit
           </Button>
           <Button
-            onPress={handleViewCollections}
+            onPress={() => setShowSavedOutfits(true)}
             bg="primary.200"
             borderColor="primary.100"
             borderWidth={1}
             _text={{ color: "primary.100" }}
             w="45%"
           >
-            View
+            View Outfits
           </Button>
         </HStack>
 
-        {showSavedOutfits && (
-          <Modal 
-            isOpen={showSavedOutfits} 
-            onClose={handleCloseModal}
-            size="full"
-            bg="primary.200"
-          >
-            {/* Modal content goes here */}
-          </Modal>
-        )}
+        {/* Save Modal */}
+        <Modal isOpen={showSaveModal} onClose={() => setShowSaveModal(false)}>
+          <Modal.Content>
+            <Modal.CloseButton />
+            <Modal.Header>Save Outfit</Modal.Header>
+            <Modal.Body>
+              <Input
+                placeholder="Enter outfit name"
+                value={outfitName}
+                onChangeText={setOutfitName}
+                mb={4}
+              />
+              <VStack space={2}>
+                <Text fontWeight="bold">Selected Items:</Text>
+                {selectedItems.map((item, index) => (
+                  <Text key={index}>{item.item_desc}</Text>
+                ))}
+              </VStack>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button.Group space={2}>
+                <Button 
+                  variant="ghost" 
+                  onPress={() => setShowSaveModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onPress={handleSaveOutfit}
+                  isLoading={isLoading}
+                >
+                  Save Outfit
+                </Button>
+              </Button.Group>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
+
+        {/* View Saved Outfits Modal */}
+        <Modal isOpen={showSavedOutfits} onClose={() => setShowSavedOutfits(false)} size="full">
+          <Modal.Content>
+            <Modal.CloseButton />
+            <Modal.Header>My Saved Outfits</Modal.Header>
+            <Modal.Body>
+              <ScrollView>
+                <VStack space={4}>
+                  {savedOutfits.map((outfit) => (
+                    <Box
+                      key={outfit.outfit_id}
+                      borderWidth={1}
+                      borderColor="gray.200"
+                      borderRadius="md"
+                      p={4}
+                    >
+                      <HStack justifyContent="space-between" alignItems="center" mb={2}>
+                        <Text fontSize="lg" fontWeight="bold">
+                          {outfit.outfit_name}
+                        </Text>
+                        <IconButton
+                          icon={<CloseIcon />}
+                          onPress={() => handleDeleteOutfit(outfit.outfit_id)}
+                          variant="ghost"
+                          colorScheme="red"
+                        />
+                      </HStack>
+                      <ScrollView horizontal>
+                        <HStack space={2}>
+                          {outfit.outfit_items.map((item, index) => (
+                            <Box key={index}>
+                              <Image
+                                source={{ uri: item.clothing_items.photo_link }}
+                                alt={item.clothing_items.item_desc}
+                                size="md"
+                              />
+                              <Text fontSize="xs" mt={1}>
+                                {item.clothing_items.item_desc}
+                              </Text>
+                            </Box>
+                          ))}
+                        </HStack>
+                      </ScrollView>
+                    </Box>
+                  ))}
+                </VStack>
+              </ScrollView>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
       </VStack>
     </Box>
   );
