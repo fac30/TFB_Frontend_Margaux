@@ -15,6 +15,7 @@ import {
 import { useState, useEffect } from "react";
 import { CloseIcon } from "native-base";
 import { fetchItemsByCategory, saveOutfit, fetchSavedOutfits, deleteOutfit } from '../functions/outfitDatabaseFunctions';
+import ButtonComponent from "./common/ButtonComponent";
 
 interface ClothingItem {
   item_id: number;
@@ -64,7 +65,7 @@ export default function OutfitMakerComponent() {
     } catch (error) {
       toast.show({
         description: "Failed to load items",
-        status: "error"
+        variant: "solid",
       });
     }
   };
@@ -76,7 +77,7 @@ export default function OutfitMakerComponent() {
     } catch (error) {
       toast.show({
         description: "Failed to load outfits",
-        status: "error"
+        variant: "solid",
       });
     }
   };
@@ -85,7 +86,7 @@ export default function OutfitMakerComponent() {
     if (!outfitName.trim()) {
       toast.show({
         description: "Please enter an outfit name",
-        status: "warning"
+        variant: "solid",
       });
       return;
     }
@@ -93,7 +94,7 @@ export default function OutfitMakerComponent() {
     if (selectedItems.length === 0) {
       toast.show({
         description: "Please select at least one item",
-        status: "warning"
+        variant: "solid",
       });
       return;
     }
@@ -105,7 +106,7 @@ export default function OutfitMakerComponent() {
       
       toast.show({
         description: "Outfit saved successfully!",
-        status: "success"
+        variant: "solid",
       });
       
       setSelectedItems([]);
@@ -115,7 +116,7 @@ export default function OutfitMakerComponent() {
     } catch (error) {
       toast.show({
         description: "Failed to save outfit",
-        status: "error"
+        variant: "solid",
       });
     } finally {
       setIsLoading(false);
@@ -128,14 +129,14 @@ export default function OutfitMakerComponent() {
       if (success) {
         toast.show({
           description: "Outfit deleted successfully",
-          status: "success"
+          variant: "solid",
         });
         loadSavedOutfits();
       }
     } catch (error) {
       toast.show({
         description: "Failed to delete outfit",
-        status: "error"
+        variant: "solid",
       });
     }
   };
@@ -273,45 +274,16 @@ export default function OutfitMakerComponent() {
 
         {/* Action Buttons */}
         <HStack space={4} w="100%" justifyContent="center" mt={4}>
-          <Button
+          <ButtonComponent
             onPress={() => setShowSaveModal(true)}
-            bg="transparent"
-            borderColor="#395D51"
-            borderWidth={1.5}
-            rounded="lg"
-            _text={{ 
-              color: "#395D51",
-              fontSize: "md",
-              fontWeight: "medium"
-            }}
-            _pressed={{
-              bg: "transparent"
-            }}
-            w="45%"
-            py={2}
-            isDisabled={selectedItems.length === 0}
-          >
-            SAVE OUTFIT
-          </Button>
-          <Button
+            label="SAVE OUTFIT"
+            style={{ w: "45%" }}
+          />
+          <ButtonComponent
             onPress={() => setShowSavedOutfits(true)}
-            bg="transparent"
-            borderColor="#395D51"
-            borderWidth={1.5}
-            rounded="lg"
-            _text={{ 
-              color: "#395D51",
-              fontSize: "md",
-              fontWeight: "medium"
-            }}
-            _pressed={{
-              bg: "transparent"
-            }}
-            w="45%"
-            py={2}
-          >
-            VIEW OUTFITS
-          </Button>
+            label="VIEW OUTFITS"
+            style={{ w: "45%" }}
+          />
         </HStack>
 
         {/* Save Modal */}
@@ -351,39 +323,14 @@ export default function OutfitMakerComponent() {
               </VStack>
             </Modal.Body>
             <Modal.Footer borderTopWidth={0} bg="#E6E5DC">
-              <Button.Group space={2}>
-                <Button 
-                  variant="outline"
-                  borderColor="#395D51"
-                  borderWidth={1.5}
-                  rounded="lg"
-                  onPress={() => setShowSaveModal(false)}
-                  _text={{ 
-                    color: "#395D51"
-                  }}
-                  _pressed={{
-                    bg: "transparent"
-                  }}
-                >
-                  CANCEL
-                </Button>
-                <Button 
-                  onPress={handleSaveOutfit}
-                  isLoading={isLoading}
-                  bg="transparent"
-                  borderColor="#395D51"
-                  borderWidth={1.5}
-                  rounded="lg"
-                  _text={{ 
-                    color: "#395D51"
-                  }}
-                  _pressed={{
-                    bg: "transparent"
-                  }}
-                >
-                  SAVE
-                </Button>
-              </Button.Group>
+              <ButtonComponent 
+                onPress={() => setShowSaveModal(false)} 
+                label="CANCEL" 
+              />
+              <ButtonComponent 
+                onPress={handleSaveOutfit} 
+                label="SAVE" 
+              />
             </Modal.Footer>
           </Modal.Content>
         </Modal>

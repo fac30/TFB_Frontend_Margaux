@@ -10,29 +10,25 @@ export default function ButtonComponent({ onPress, label, style }: ButtonCompone
     return (
         <Button
             onPress={onPress}
-            bg="primary.200"
-            borderColor="primary.100"
-            borderWidth={1}
+            bg="transparent"
+            borderColor="#395D51"
+            borderWidth={1.5}
+            rounded="lg"
             _text={{ 
-                color: "primary.100",
-                fontWeight: "bold",
+                color: "#395D51",
+                fontWeight: "medium",
                 textAlign: "center",
-                fontSize: "sm"
+                fontSize: "md"
             }}
             _hover={{
-                bg: "primary.200",
-                borderColor: "amber.400",
-                _text: { color: "amber.400" }
-            }}
-            _focus={{
-                bg: "primary.200",
-                borderColor: "primary.100",
-                _text: { color: "primary.100" }
+                bg: "transparent",
+                borderColor: "#FFB800",
+                _text: { color: "#FFB800" }
             }}
             _pressed={{
-                bg: "primary.200",
-                borderColor: "primary.100",
-                _text: { color: "primary.100" }
+                bg: "transparent",
+                borderColor: "#FFB800",
+                _text: { color: "#FFB800" }
             }}
             w="100%"
             style={{

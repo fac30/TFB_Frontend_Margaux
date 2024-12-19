@@ -1,6 +1,7 @@
-import { Box, Button, Image, VStack, Spinner, Modal } from 'native-base';
+import { Box, Image, VStack, Spinner, Modal } from 'native-base';
 import { useState } from 'react';
 import { seedDB } from '../functions/upload';
+import ButtonComponent from './common/ButtonComponent';
 
 export default function CameraFunctionality({ setActiveComponent }) {
 	const [uploading, setUploading] = useState(false);
@@ -50,36 +51,10 @@ export default function CameraFunctionality({ setActiveComponent }) {
 	return (
 		<Box flex={1} bg='primary.200' safeArea alignItems='center' pb='80px'>
 			<VStack space={4} w='100%' maxW='400px' px={4} alignItems='center'>
-				<Button
+				<ButtonComponent
 					onPress={() => setIsModalVisible(true)}
-					bg='transparent'
-					borderColor='#395D51'
-					borderWidth={1.5}
-					rounded='lg'
-					_text={{
-						color: '#395D51',
-						fontSize: 'md',
-						fontWeight: 'medium',
-					}}
-					_hover={{
-						bg: 'transparent',
-						borderColor: '#FFB800',
-						_text: {
-							color: '#FFB800',
-						},
-					}}
-					_pressed={{
-						bg: 'transparent',
-						borderColor: '#FFB800',
-						_text: {
-							color: '#FFB800',
-						},
-					}}
-					px={6}
-					py={2}
-				>
-					Add Product
-				</Button>
+					label="Add Product"
+				/>
 
 				<Modal isOpen={isModalVisible} onClose={() => setIsModalVisible(false)}>
 					<Modal.Content
@@ -162,36 +137,10 @@ export default function CameraFunctionality({ setActiveComponent }) {
 							</VStack>
 						</Modal.Body>
 						<Modal.Footer borderTopWidth={0}>
-							<Button
+							<ButtonComponent
 								onPress={handleSubmit}
-								bg='transparent'
-								borderColor='#395D51'
-								borderWidth={1.5}
-								rounded='lg'
-								_text={{
-									color: '#395D51',
-									fontSize: 'md',
-									fontWeight: 'medium',
-								}}
-								_hover={{
-									bg: 'transparent',
-									borderColor: '#FFB800',
-									_text: {
-										color: '#FFB800',
-									},
-								}}
-								_pressed={{
-									bg: 'transparent',
-									borderColor: '#FFB800',
-									_text: {
-										color: '#FFB800',
-									},
-								}}
-								px={6}
-								py={2}
-							>
-								SUBMIT
-							</Button>
+								label="SUBMIT"
+							/>
 						</Modal.Footer>
 					</Modal.Content>
 				</Modal>
