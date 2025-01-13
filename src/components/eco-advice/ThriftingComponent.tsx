@@ -10,7 +10,7 @@ export default function ThriftingComponent() {
 
     useEffect(() => {
         setIsLoading(true);
-        parseDoc("https://docs.google.com/document/d/e/2PACX-1vTnVBUYkkXsZmnCZztovNkinxKfNRTgHB_cf5RSVqv_7mx6pmdwV71N2yBSXS-K0ibnsdzd9D6u81r-/pub")
+        parseDoc("https://docs.google.com/document/d/e/2PACX-1vT2Ryq1O1FMz-R8OJ_eU_OtG1a8qcLSLTMp3VodusaQnCTSOOAzpR72l4gIGHDh_gpIhDK2jVeZOg-X/pub")
             .then((content) => {
                 setThriftingContent(content);
                 setError(null);

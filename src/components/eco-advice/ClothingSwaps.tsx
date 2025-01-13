@@ -10,7 +10,7 @@ export default function ClothingSwaps() {
 
     useEffect(() => {
         setIsLoading(true);
-        parseDoc("https://docs.google.com/document/d/e/2PACX-1vTxqRL1IeIdiqAp9QoBtdVY135Hq7PA2BkMooZRGDQ9GWdCnGJGvaWsEJ8RYw-7QGihXj5tI_CFtxXB/pub")
+        parseDoc("https://docs.google.com/document/d/e/2PACX-1vRQ7PRZHFdmAsCLeGT6BwnwzlKR_jbkrpQPHAdgQOOF6FfxgwVRUA_u9lit-Jziw59WtQHpHQPFfarR/pub")
             .then((content) => {
                 setSwapsContent(content);
                 setError(null);

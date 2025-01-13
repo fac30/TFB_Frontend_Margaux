@@ -10,7 +10,7 @@ export default function TalksContainer() {
 
     useEffect(() => {
         setIsLoading(true);
-        parseDoc("https://docs.google.com/document/d/e/2PACX-1vTxqRL1IeIdiqAp9QoBtdVY135Hq7PA2BkMooZRGDQ9GWdCnGJGvaWsEJ8RYw-7QGihXj5tI_CFtxXB/pub")
+        parseDoc("https://docs.google.com/document/d/e/2PACX-1vSFUJ0Tgw3Q6vNMDA7vI9k1WhwDgBhwTx-KvvY39Y-g1nlXtNcJHC1JWK1bm6afjycvGU85UFGL8CBI/pub")
             .then((content) => {
                 setTalks(content);
                 setError(null);

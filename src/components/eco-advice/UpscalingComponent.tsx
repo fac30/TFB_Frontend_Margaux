@@ -10,7 +10,7 @@ export default function UpscalingComponent() {
 
     useEffect(() => {
         setIsLoading(true);
-        parseDoc("https://docs.google.com/document/d/e/2PACX-1vQAoR9rbaWKe8ZlLzGNHX4ZZ4-8Jy4K4B3Gv5b8C1AE39rRUzl4q_uh5aGl6OWZt6hZkq2AYnkUzRJF/pub")
+        parseDoc("https://docs.google.com/document/d/e/2PACX-1vRNiHl8OZzTTUZ2Ao72upV-pO37IaHMJddexiT0em2R1EXhCy5PHTaQlj8bktaEgrJ-YjwGMsz1IiT2/pub")
             .then((content) => {
                 setUpscalingContent(content);
                 setError(null);
