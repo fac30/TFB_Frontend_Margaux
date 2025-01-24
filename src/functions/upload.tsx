@@ -40,20 +40,21 @@ export const seedDB = async (file: File, cat_id: number, item_desc: string) => {
       throw new Error("url failed");
     }
 
-    const user_id = 1; // Hardcoded user_id for now
-
     const newData = {
-      user_id: user_id,
       category_id: cat_id,
       item_desc: item_desc,
       photo_link: url,
     };
 
+    console.log("Attempting to insert:", newData);
     const insert = await insertItems("clothing_items", newData);
+
     if (!insert) {
+      console.error("Insert returned false");
       throw new Error("insert failed");
     }
 
+    console.log("Insert successful:", insert);
     return true;
   } catch (err) {
     console.error("Error in seedDB:", err);
