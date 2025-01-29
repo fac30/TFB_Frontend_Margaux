@@ -1,38 +1,29 @@
 import supabase from "../utils/supbaseClient";
 
-interface ClothingItem {
-  item_id: number;
-  item_desc: string;
-  photo_link: string;
-  category_id: number;
-}
+// interface ClothingItem {
+//   item_id: number;
+//   item_desc: string;
+//   photo_link: string;
+//   category_id: number;
+// }
 
-interface OutfitItem {
-  clothing_items: ClothingItem;
-}
+// interface OutfitItem {
+//   clothing_items: ClothingItem;
+// }
 
-interface SavedOutfit {
-  outfit_id: number;
-  outfit_name: string;
-  outfit_items: OutfitItem[];
-}
+// interface SavedOutfit {
+//   outfit_id: number;
+//   outfit_name: string;
+//   outfit_items: OutfitItem[];
+// }
 
-export const fetchItemsByCategory = async (
-  categoryId: number,
-  userId: number
-) => {
+export const fetchItemsByCategory = async (categoryId: number) => {
   try {
-    console.log(
-      "Fetching items for category:",
-      categoryId,
-      "and user:",
-      userId
-    );
+    console.log("Fetching items for category:", categoryId);
     const { data, error } = await supabase
       .from("clothing_items")
       .select("*")
-      .eq("category_id", categoryId)
-      .eq("user_id", userId);
+      .eq("category_id", categoryId);
 
     if (error) {
       console.error("Supabase error:", error);
@@ -47,19 +38,14 @@ export const fetchItemsByCategory = async (
   }
 };
 
-export const saveOutfit = async (
-  userId: number,
-  outfitName: string,
-  itemIds: number[]
-) => {
+export const saveOutfit = async (outfitName: string, itemIds: number[]) => {
   try {
-    console.log("Saving outfit:", { userId, outfitName, itemIds });
+    console.log("Saving outfit:", { outfitName, itemIds });
 
     const { data: outfitData, error: outfitError } = await supabase
       .from("outfits")
       .insert([
         {
-          user_id: userId,
           outfit_name: outfitName,
         },
       ])
@@ -104,14 +90,12 @@ export const saveOutfit = async (
 
 // outfitDatabaseFunctions.tsx
 
-export const fetchSavedOutfits = async (userId: number) => {
+export const fetchSavedOutfits = async () => {
   try {
-    console.log("Fetching outfits for user:", userId);
+    console.log("Fetching outfits");
 
-    const { data, error } = await supabase
-      .from("outfits")
-      .select(
-        `
+    const { data, error } = await supabase.from("outfits").select(
+      `
         outfit_id,
         outfit_name,
         outfit_items (
@@ -123,8 +107,7 @@ export const fetchSavedOutfits = async (userId: number) => {
           )
         )
       `
-      )
-      .eq("user_id", userId);
+    );
 
     if (error) throw error;
 
@@ -144,19 +127,27 @@ export const fetchSavedOutfits = async (userId: number) => {
 };
 export const deleteOutfit = async (outfitId: number) => {
   try {
-    console.log("Deleting outfit:", outfitId);
+    // First, delete all related outfit items
+    const { error: itemsError } = await supabase
+      .from("outfit_items")
+      .delete()
+      .eq("outfit_id", outfitId);
 
-    const { error } = await supabase
+    if (itemsError) {
+      console.error("Error deleting outfit items:", itemsError);
+      throw itemsError;
+    }
+
+    // Then delete the outfit itself
+    const { error: outfitError } = await supabase
       .from("outfits")
       .delete()
       .eq("outfit_id", outfitId);
 
-    if (error) {
-      console.error("Error deleting outfit:", error);
-      throw error;
+    if (outfitError) {
+      console.error("Error deleting outfit:", outfitError);
+      throw outfitError;
     }
-
-    return true;
   } catch (error) {
     console.error("Error in deleteOutfit:", error);
     throw error;
