@@ -25,27 +25,7 @@ import {
   deleteOutfit,
 } from "../functions/outfitDatabaseFunctions";
 import ButtonComponent from "./common/ButtonComponent";
-
-interface ClothingItem {
-  item_id: number;
-  item_desc: string;
-  photo_link: string;
-  category_id: number;
-}
-
-interface SavedOutfit {
-  outfit_id: number;
-  outfit_name: string;
-  outfit_items: {
-    clothing_items: ClothingItem;
-  }[];
-}
-
-interface OutfitGalleryProps {
-  isVisible: boolean;
-  onClose: () => void;
-  outfit: SavedOutfit | null;
-}
+import { ClothingItem, SavedOutfit, OutfitGalleryProps } from "../utils/types";
 
 const OutfitGallery: React.FC<OutfitGalleryProps> = ({
   isVisible,

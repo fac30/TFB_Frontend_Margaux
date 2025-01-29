@@ -1,4 +1,3 @@
-
 import {
   Modal,
   TouchableOpacity,
@@ -8,27 +7,7 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-
-interface ClothingItem {
-  item_id: number;
-  item_desc: string;
-  photo_link: string;
-  category_id: number;
-}
-
-interface SavedOutfit {
-  outfit_id: number;
-  outfit_name: string;
-  outfit_items: {
-    clothing_items: ClothingItem;
-  }[];
-}
-
-type OutfitGalleryProps = {
-  isVisible: boolean;
-  onClose: () => void;
-  outfit: SavedOutfit | null;
-};
+import { OutfitGalleryProps } from "../utils/types";
 
 const OutfitGallery: React.FC<OutfitGalleryProps> = ({
   isVisible,
@@ -71,13 +50,13 @@ const OutfitGallery: React.FC<OutfitGalleryProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
-    width: '90%',
-    maxHeight: '80%',
+    width: "90%",
+    maxHeight: "80%",
     backgroundColor: "#FFF",
     borderRadius: 12,
     padding: 20,
@@ -98,16 +77,16 @@ const styles = StyleSheet.create({
     color: "#395D51",
   },
   scrollContainer: {
-    maxHeight: '80%',
+    maxHeight: "80%",
   },
   outfitGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
     padding: 5,
   },
   imageContainer: {
-    width: '45%',
+    width: "45%",
     marginBottom: 15,
     alignItems: "center",
   },

@@ -5,12 +5,7 @@ import ClosetComponent from "./ClosetComponent";
 import OutfitMakerComponent from "./OutfitMakerComponent";
 import EcoAdviceComponent from "./eco-advice/EcoAdviceComponent";
 import { useState, useCallback } from "react";
-
-interface MainContentProps {
-  activeComponent: string;
-  setActiveComponent: (component: string) => void;
-}
-
+import { MainContentProps } from "../utils/types";
 export default function MainContent({
   activeComponent,
   setActiveComponent,
@@ -46,9 +41,7 @@ export default function MainContent({
         {activeComponent === "Component1" && <ClosetComponent />}
         {activeComponent === "Component2" && <OutfitMakerComponent />}
         {activeComponent === "Component3" && (
-          <EcoAdviceComponent
-            onRegisterBack={handleRegisterBack}
-          />
+          <EcoAdviceComponent onRegisterBack={handleRegisterBack} />
         )}
       </Box>
 
@@ -68,7 +61,13 @@ export default function MainContent({
         {/* Back Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+            <Text
+              color="primary.100"
+              fontSize="xs"
+              mb={4}
+              position="absolute"
+              bottom="100%"
+            >
               back
             </Text>
           )}
@@ -106,7 +105,13 @@ export default function MainContent({
         {/* Closet Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+            <Text
+              color="primary.100"
+              fontSize="xs"
+              mb={4}
+              position="absolute"
+              bottom="100%"
+            >
               closet
             </Text>
           )}
@@ -119,7 +124,7 @@ export default function MainContent({
             }}
             _focus={{
               opacity: 0.8,
-              bg: "transparent"
+              bg: "transparent",
             }}
           >
             <svg
@@ -146,7 +151,13 @@ export default function MainContent({
         {/* Outfit Maker Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+            <Text
+              color="primary.100"
+              fontSize="xs"
+              mb={4}
+              position="absolute"
+              bottom="100%"
+            >
               outfit
             </Text>
           )}
@@ -159,7 +170,7 @@ export default function MainContent({
             }}
             _focus={{
               opacity: 0.8,
-              bg: "transparent"
+              bg: "transparent",
             }}
           >
             <svg
@@ -186,7 +197,13 @@ export default function MainContent({
         {/* Eco Advice Button */}
         <Box alignItems="center">
           {!activeComponent && (
-            <Text color="primary.100" fontSize="xs" mb={4} position="absolute" bottom="100%">
+            <Text
+              color="primary.100"
+              fontSize="xs"
+              mb={4}
+              position="absolute"
+              bottom="100%"
+            >
               eco
             </Text>
           )}
@@ -199,7 +216,7 @@ export default function MainContent({
             }}
             _focus={{
               opacity: 0.8,
-              bg: "transparent"
+              bg: "transparent",
             }}
           >
             <svg
