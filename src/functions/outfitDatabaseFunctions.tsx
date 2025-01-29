@@ -1,22 +1,5 @@
 import supabase from "../utils/supbaseClient";
 
-// interface ClothingItem {
-//   item_id: number;
-//   item_desc: string;
-//   photo_link: string;
-//   category_id: number;
-// }
-
-// interface OutfitItem {
-//   clothing_items: ClothingItem;
-// }
-
-// interface SavedOutfit {
-//   outfit_id: number;
-//   outfit_name: string;
-//   outfit_items: OutfitItem[];
-// }
-
 export const fetchItemsByCategory = async (categoryId: number) => {
   try {
     console.log("Fetching items for category:", categoryId);
@@ -40,8 +23,6 @@ export const fetchItemsByCategory = async (categoryId: number) => {
 
 export const saveOutfit = async (outfitName: string, itemIds: number[]) => {
   try {
-    console.log("Saving outfit:", { outfitName, itemIds });
-
     const { data: outfitData, error: outfitError } = await supabase
       .from("outfits")
       .insert([
@@ -61,8 +42,6 @@ export const saveOutfit = async (outfitName: string, itemIds: number[]) => {
       throw new Error("No outfit data returned after insert");
     }
 
-    console.log("Created outfit:", outfitData);
-
     const outfitItems = itemIds.map((itemId) => ({
       outfit_id: outfitData.outfit_id,
       item_id: itemId,
@@ -73,7 +52,6 @@ export const saveOutfit = async (outfitName: string, itemIds: number[]) => {
       .insert(outfitItems);
 
     if (itemsError) {
-      console.error("Error creating outfit items:", itemsError);
       await supabase
         .from("outfits")
         .delete()
@@ -83,7 +61,6 @@ export const saveOutfit = async (outfitName: string, itemIds: number[]) => {
 
     return true;
   } catch (error) {
-    console.error("Error in saveOutfit:", error);
     throw error;
   }
 };
@@ -92,8 +69,6 @@ export const saveOutfit = async (outfitName: string, itemIds: number[]) => {
 
 export const fetchSavedOutfits = async () => {
   try {
-    console.log("Fetching outfits");
-
     const { data, error } = await supabase.from("outfits").select(
       `
         outfit_id,
@@ -138,7 +113,6 @@ export const deleteOutfit = async (outfitId: number) => {
       throw itemsError;
     }
 
-    // Then delete the outfit itself
     const { error: outfitError } = await supabase
       .from("outfits")
       .delete()
