@@ -33,6 +33,10 @@ export default defineConfig({
                     },
                 ],
             },
+            workbox: {
+                cleanupOutdatedCaches: true,
+                sourcemap: true
+            },
         }),
     ],
     resolve: {

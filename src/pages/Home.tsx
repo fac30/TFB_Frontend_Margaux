@@ -35,16 +35,16 @@ export default function Home() {
           space={4}
         >
           {/* Logo on green background */}
-          <Box 
-            bg="primary.100" 
-            p={4} 
+          <Box
+            bg="primary.100"
+            p={4}
             borderRadius="xl"
             position="relative"
             shadow="lg"
           >
             <Image
               source={{
-                uri: logo
+                uri: logo,
               }}
               alt="Inside My Closet Logo"
               width="100%"
@@ -54,7 +54,7 @@ export default function Home() {
           </Box>
 
           {/* Upload button below */}
-          <CameraFunctionality />
+          <CameraFunctionality setActiveComponent={undefined} />
         </VStack>
       )}
 
