@@ -20,19 +20,20 @@ const fetchItems = async (
   }
 };
 
-const insertItems = async (table: string, newData: Record<string, number>) => {
+const insertItems = async (table: string, newData: Record<string, any>) => {
   try {
-    const { status, statusText, error } = await supabase
-      .from(table)
-      .insert(newData);
-    if (status !== 201 && error) {
-      throw new Error(
-        `There was an error inserting new data into the table: ${table}`
-      );
+    console.log("Inserting data:", newData); // Debug log
+    const { data, error } = await supabase.from(table).insert(newData).select();
+
+    if (error) {
+      console.error("Insert error details:", error);
+      throw error;
     }
-    return { status, statusText };
+
+    return data;
   } catch (err) {
-    return err.message;
+    console.error("Error in insertItems:", err);
+    return false;
   }
 };
 

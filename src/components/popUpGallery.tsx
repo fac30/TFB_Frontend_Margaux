@@ -30,7 +30,7 @@ const PopUpGallery: React.FC<PopUpGalleryProps> = ({
         {galleryLinks && galleryLinks.length > 0 ? (
           <FlatList
             data={galleryLinks}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(_item, index) => index.toString()}
             numColumns={2}
             renderItem={({ item }) => (
               <View style={styles.imageContainer}>
@@ -44,7 +44,9 @@ const PopUpGallery: React.FC<PopUpGalleryProps> = ({
             )}
           />
         ) : (
-          <Text style={styles.noImagesText}>No items found in this category</Text>
+          <Text style={styles.noImagesText}>
+            No items found in this category
+          </Text>
         )}
 
         <TouchableOpacity onPress={onClose} style={styles.closeButton}>

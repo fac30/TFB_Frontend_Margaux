@@ -1,45 +1,31 @@
-if (typeof global === 'undefined') {
-  window.global = window;}
-import { 
-  Box, 
-  VStack, 
-  HStack, 
-  Text, 
-  ScrollView, 
-  Image, 
-  IconButton, 
-  Pressable, 
+if (typeof global === "undefined") {
+  window.global = window;
+}
+import {
+  Box,
+  VStack,
+  HStack,
+  Text,
+  ScrollView,
+  Image,
+  IconButton,
+  Pressable,
   Button,
   Modal,
   Input,
   useToast,
-  CloseIcon
+  CloseIcon,
 } from "native-base";
 import { useState, useEffect } from "react";
 import { Eye } from "lucide-react-native";
-import { fetchItemsByCategory, saveOutfit, fetchSavedOutfits, deleteOutfit } from '../functions/outfitDatabaseFunctions';
+import {
+  fetchItemsByCategory,
+  saveOutfit,
+  fetchSavedOutfits,
+  deleteOutfit,
+} from "../functions/outfitDatabaseFunctions";
 import ButtonComponent from "./common/ButtonComponent";
-
-interface ClothingItem {
-  item_id: number;
-  item_desc: string;
-  photo_link: string;
-  category_id: number;
-}
-
-interface SavedOutfit {
-  outfit_id: number;
-  outfit_name: string;
-  outfit_items: {
-    clothing_items: ClothingItem;
-  }[];
-}
-
-interface OutfitGalleryProps {
-  isVisible: boolean;
-  onClose: () => void;
-  outfit: SavedOutfit | null;
-}
+import { ClothingItem, SavedOutfit, OutfitGalleryProps } from "../utils/types";
 
 const OutfitGallery: React.FC<OutfitGalleryProps> = ({
   isVisible,
@@ -52,13 +38,13 @@ const OutfitGallery: React.FC<OutfitGalleryProps> = ({
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
       <Modal.Content bg="#E6E5DC">
         <Modal.CloseButton />
-        <Modal.Header 
-          bg="#E6E5DC" 
+        <Modal.Header
+          bg="#E6E5DC"
           borderBottomWidth={0}
           _text={{
             color: "#395D51",
             fontWeight: "bold",
-            fontSize: "lg"
+            fontSize: "lg",
           }}
         >
           {outfit.outfit_name}
@@ -68,7 +54,7 @@ const OutfitGallery: React.FC<OutfitGalleryProps> = ({
             <ScrollView horizontal>
               <HStack space={2} px={2}>
                 {outfit.outfit_items?.map((item, index) => (
-                  <Box 
+                  <Box
                     key={index}
                     borderWidth={1.5}
                     borderColor="#395D51"
@@ -84,7 +70,12 @@ const OutfitGallery: React.FC<OutfitGalleryProps> = ({
                       width="80px"
                       height="80px"
                     />
-                    <Text fontSize="2xs" mt={1} color="#395D51" textAlign="center">
+                    <Text
+                      fontSize="2xs"
+                      mt={1}
+                      color="#395D51"
+                      textAlign="center"
+                    >
                       {item.clothing_items.item_desc}
                     </Text>
                   </Box>
@@ -94,10 +85,7 @@ const OutfitGallery: React.FC<OutfitGalleryProps> = ({
           </VStack>
         </Modal.Body>
         <Modal.Footer borderTopWidth={0} bg="#E6E5DC">
-          <ButtonComponent 
-            onPress={onClose} 
-            label="CLOSE" 
-          />
+          <ButtonComponent onPress={onClose} label="CLOSE" />
         </Modal.Footer>
       </Modal.Content>
     </Modal>
@@ -109,23 +97,26 @@ const categories = [
   { id: 2, name: "JUMPERS" },
   { id: 3, name: "TROUSERS" },
   { id: 4, name: "DRESSES/SKIRTS" },
-  { id: 5, name: "JACKETS/COATS" }
+  { id: 5, name: "JACKETS/COATS" },
 ];
 
 export default function OutfitMakerComponent() {
   const [selectedItems, setSelectedItems] = useState<ClothingItem[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState({ id: 1, name: "TOPS" });
+  const [selectedCategory, setSelectedCategory] = useState({
+    id: 1,
+    name: "TOPS",
+  });
   const [availableItems, setAvailableItems] = useState<ClothingItem[]>([]);
   const [savedOutfits, setSavedOutfits] = useState<SavedOutfit[]>([]);
   const [showSavedOutfits, setShowSavedOutfits] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [outfitName, setOutfitName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedOutfit, setSelectedOutfit] = useState<SavedOutfit | null>(null);
+  const [selectedOutfit, setSelectedOutfit] = useState<SavedOutfit | null>(
+    null
+  );
   const [showOutfitPreview, setShowOutfitPreview] = useState(false);
   const toast = useToast();
-
-  const userId = 1;
 
   useEffect(() => {
     loadItemsByCategory();
@@ -139,24 +130,37 @@ export default function OutfitMakerComponent() {
 
   const loadItemsByCategory = async () => {
     try {
-      const items = await fetchItemsByCategory(selectedCategory.id, userId);
+      const items = await fetchItemsByCategory(selectedCategory.id);
       if (Array.isArray(items)) {
         setAvailableItems(items);
       }
     } catch (error) {
-      console.error('Error loading items:', error);
+      console.error("Error loading items:", error);
       setAvailableItems([]);
     }
   };
 
   const loadSavedOutfits = async () => {
     try {
-      const outfits = await fetchSavedOutfits(userId);
+      const outfits = await fetchSavedOutfits();
       if (Array.isArray(outfits)) {
-        setSavedOutfits(outfits);
+        setSavedOutfits(
+          outfits.map((outfit) => ({
+            outfit_id: outfit.outfit_id,
+            outfit_name: outfit.outfit_name,
+            outfit_items: outfit.outfit_items
+              .map((item) => {
+                if (!item.clothing_items?.[0]) return null;
+                return {
+                  clothing_items: item.clothing_items[0],
+                };
+              })
+              .filter(Boolean),
+          }))
+        );
       }
     } catch (error) {
-      console.error('Error loading outfits:', error);
+      console.error("Error loading outfits:", error);
       setSavedOutfits([]);
     }
   };
@@ -185,19 +189,18 @@ export default function OutfitMakerComponent() {
 
     setIsLoading(true);
     try {
-      const itemIds = selectedItems.map(item => item.item_id);
-      await saveOutfit(userId, outfitName, itemIds);
-      
-     
+      const itemIds = selectedItems.map((item) => item.item_id);
+      await saveOutfit(outfitName, itemIds);
+
       setSelectedItems([]);
       setOutfitName("");
       setShowSaveModal(false);
-      
+
       if (showSavedOutfits) {
         await loadSavedOutfits();
       }
     } catch (error) {
-      console.error('Error saving outfit:', error);
+      console.error("Error saving outfit:", error);
       toast.show({
         description: "Failed to save outfit",
         variant: "solid",
@@ -210,10 +213,10 @@ export default function OutfitMakerComponent() {
   const handleDeleteOutfit = async (outfitId: number) => {
     try {
       await deleteOutfit(outfitId);
-    
+
       await loadSavedOutfits();
     } catch (error) {
-      console.error('Error deleting outfit:', error);
+      console.error("Error deleting outfit:", error);
       toast.show({
         description: "Failed to delete outfit",
         variant: "solid",
@@ -229,26 +232,32 @@ export default function OutfitMakerComponent() {
       });
       return;
     }
-    if (selectedItems.some(selected => selected.item_id === item.item_id)) {
+    if (selectedItems.some((selected) => selected.item_id === item.item_id)) {
       toast.show({
         description: "Item already selected",
         variant: "solid",
       });
       return;
     }
-    setSelectedItems(prev => [...prev, item]);
+    setSelectedItems((prev) => [...prev, item]);
   };
 
   const handleDeleteItem = (index: number) => {
-    setSelectedItems(prev => prev.filter((_, i) => i !== index));
+    setSelectedItems((prev) => prev.filter((_, i) => i !== index));
   };
   return (
     <Box flex={1} bg="#E6E5DC" safeArea alignItems="center" pb="80px">
       <VStack space={4} w="100%" maxW="400px" px={4} alignItems="center">
-        <Text fontSize="xl" fontWeight="bold" color="#395D51" textAlign="center" mt={4}>
+        <Text
+          fontSize="xl"
+          fontWeight="bold"
+          color="#395D51"
+          textAlign="center"
+          mt={4}
+        >
           OUTFIT MAKER
         </Text>
-  
+
         <ScrollView horizontal showsHorizontalScrollIndicator={false} w="100%">
           <HStack space={3} py={2}>
             {categories.map((category) => (
@@ -256,16 +265,19 @@ export default function OutfitMakerComponent() {
                 key={category.id}
                 onPress={() => setSelectedCategory(category)}
                 bg="transparent"
-                borderColor={selectedCategory.id === category.id ? "#FFB800" : "#395D51"}
+                borderColor={
+                  selectedCategory.id === category.id ? "#FFB800" : "#395D51"
+                }
                 borderWidth={1.5}
                 rounded="lg"
-                _text={{ 
-                  color: selectedCategory.id === category.id ? "#FFB800" : "#395D51",
+                _text={{
+                  color:
+                    selectedCategory.id === category.id ? "#FFB800" : "#395D51",
                   fontSize: "md",
-                  fontWeight: "medium"
+                  fontWeight: "medium",
                 }}
                 _pressed={{
-                  bg: "transparent"
+                  bg: "transparent",
                 }}
                 px={6}
                 py={2}
@@ -275,21 +287,25 @@ export default function OutfitMakerComponent() {
             ))}
           </HStack>
         </ScrollView>
-  
+
         <Box w="100%" minH="150px">
           <Text color="#395D51" fontSize="lg" fontWeight="semibold" mb={2}>
             AVAILABLE {selectedCategory.name}
           </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} minH="120px">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            minH="120px"
+          >
             <HStack space={3} px={2} minH="120px">
               {availableItems.map((item) => (
                 <Pressable
                   key={item.item_id}
                   onPress={() => handleAddItem(item)}
                 >
-                  <Box 
-                    p={2} 
-                    borderRadius="md" 
+                  <Box
+                    p={2}
+                    borderRadius="md"
                     minH="100px"
                     bg="white"
                     borderWidth={1.5}
@@ -302,7 +318,12 @@ export default function OutfitMakerComponent() {
                       width={24}
                       height={24}
                     />
-                    <Text color="#395D51" fontSize="sm" textAlign="center" mt={1}>
+                    <Text
+                      color="#395D51"
+                      fontSize="sm"
+                      textAlign="center"
+                      mt={1}
+                    >
                       {item.item_desc}
                     </Text>
                   </Box>
@@ -311,18 +332,22 @@ export default function OutfitMakerComponent() {
             </HStack>
           </ScrollView>
         </Box>
-  
+
         {selectedItems.length > 0 && (
           <Box w="100%" minH="150px">
             <Text color="#395D51" fontSize="lg" fontWeight="semibold" mb={2}>
               YOUR SELECTION
             </Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} minH="120px">
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              minH="120px"
+            >
               <HStack space={3} px={2} minH="120px">
                 {selectedItems.map((item, index) => (
                   <Box key={index} position="relative">
-                    <Box 
-                      p={2} 
+                    <Box
+                      p={2}
                       borderRadius="md"
                       bg="white"
                       borderWidth={1.5}
@@ -335,7 +360,12 @@ export default function OutfitMakerComponent() {
                         width={24}
                         height={24}
                       />
-                      <Text color="#395D51" fontSize="sm" textAlign="center" mt={1}>
+                      <Text
+                        color="#395D51"
+                        fontSize="sm"
+                        textAlign="center"
+                        mt={1}
+                      >
                         {item.item_desc}
                       </Text>
                     </Box>
@@ -357,7 +387,7 @@ export default function OutfitMakerComponent() {
             </ScrollView>
           </Box>
         )}
-  
+
         <HStack space={4} w="100%" justifyContent="center" mt={4}>
           <ButtonComponent
             onPress={() => setShowSaveModal(true)}
@@ -370,16 +400,16 @@ export default function OutfitMakerComponent() {
             style={{ w: "45%" }}
           />
         </HStack>
-  
+
         <Modal isOpen={showSaveModal} onClose={() => setShowSaveModal(false)}>
           <Modal.Content bg="#E6E5DC">
             <Modal.CloseButton />
-            <Modal.Header 
-              bg="#E6E5DC" 
+            <Modal.Header
+              bg="#E6E5DC"
               borderBottomWidth={0}
               _text={{
                 color: "#395D51",
-                fontWeight: "bold"
+                fontWeight: "bold",
               }}
             >
               SAVE OUTFIT
@@ -396,39 +426,47 @@ export default function OutfitMakerComponent() {
                 _focus={{
                   borderColor: "#FFB800",
                   bg: "transparent",
-                  borderWidth: 1.5
+                  borderWidth: 1.5,
                 }}
               />
               <VStack space={2}>
-                <Text fontWeight="bold" color="#395D51">SELECTED ITEMS:</Text>
+                <Text fontWeight="bold" color="#395D51">
+                  SELECTED ITEMS:
+                </Text>
                 {selectedItems.map((item, index) => (
-                  <Text key={index} color="#395D51">{item.item_desc}</Text>
+                  <Text key={index} color="#395D51">
+                    {item.item_desc}
+                  </Text>
                 ))}
               </VStack>
             </Modal.Body>
             <Modal.Footer borderTopWidth={0} bg="#E6E5DC">
-              <ButtonComponent 
-                onPress={() => setShowSaveModal(false)} 
-                label="CANCEL" 
+              <ButtonComponent
+                onPress={() => setShowSaveModal(false)}
+                label="CANCEL"
               />
-              <ButtonComponent 
-                onPress={handleSaveOutfit} 
-                label="SAVE" 
+              <ButtonComponent
+                onPress={handleSaveOutfit}
+                label="SAVE"
                 isLoading={isLoading}
               />
             </Modal.Footer>
           </Modal.Content>
         </Modal>
-  
-        <Modal isOpen={showSavedOutfits} onClose={() => setShowSavedOutfits(false)} size="full">
+
+        <Modal
+          isOpen={showSavedOutfits}
+          onClose={() => setShowSavedOutfits(false)}
+          size="full"
+        >
           <Modal.Content bg="#E6E5DC">
             <Modal.CloseButton />
-            <Modal.Header 
-              bg="#E6E5DC" 
+            <Modal.Header
+              bg="#E6E5DC"
               borderBottomWidth={0}
               _text={{
                 color: "#395D51",
-                fontWeight: "bold"
+                fontWeight: "bold",
               }}
             >
               MY SAVED OUTFITS
@@ -436,7 +474,7 @@ export default function OutfitMakerComponent() {
             <Modal.Body>
               <ScrollView>
                 <VStack space={4}>
-                  {savedOutfits.map((outfit) => (
+                  {savedOutfits.map((outfit) =>
                     outfit && outfit.outfit_id ? (
                       <Box
                         key={outfit.outfit_id}
@@ -446,7 +484,11 @@ export default function OutfitMakerComponent() {
                         p={4}
                         bg="transparent"
                       >
-                        <HStack justifyContent="space-between" alignItems="center" mb={2}>
+                        <HStack
+                          justifyContent="space-between"
+                          alignItems="center"
+                          mb={2}
+                        >
                           <Text fontSize="lg" fontWeight="bold" color="#395D51">
                             {outfit.outfit_name}
                           </Text>
@@ -463,7 +505,9 @@ export default function OutfitMakerComponent() {
                             />
                             <IconButton
                               icon={<CloseIcon size="xs" color="#395D51" />}
-                              onPress={() => handleDeleteOutfit(outfit.outfit_id)}
+                              onPress={() =>
+                                handleDeleteOutfit(outfit.outfit_id)
+                              }
                               bg="transparent"
                               borderWidth={1.5}
                               borderColor="#395D51"
@@ -471,10 +515,13 @@ export default function OutfitMakerComponent() {
                             />
                           </HStack>
                         </HStack>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <ScrollView
+                          horizontal
+                          showsHorizontalScrollIndicator={false}
+                        >
                           <HStack space={2}>
                             {outfit.outfit_items?.map((item, index) => (
-                              <Box 
+                              <Box
                                 key={index}
                                 borderWidth={1.5}
                                 borderColor="#395D51"
@@ -484,13 +531,20 @@ export default function OutfitMakerComponent() {
                                 w="100px"
                               >
                                 <Image
-                                  source={{ uri: item.clothing_items.photo_link }}
+                                  source={{
+                                    uri: item.clothing_items.photo_link,
+                                  }}
                                   alt={item.clothing_items.item_desc}
                                   size="md"
                                   width="80px"
                                   height="80px"
                                 />
-                                <Text fontSize="2xs" mt={1} color="#395D51" textAlign="center">
+                                <Text
+                                  fontSize="2xs"
+                                  mt={1}
+                                  color="#395D51"
+                                  textAlign="center"
+                                >
                                   {item.clothing_items.item_desc}
                                 </Text>
                               </Box>
@@ -499,13 +553,13 @@ export default function OutfitMakerComponent() {
                         </ScrollView>
                       </Box>
                     ) : null
-                  ))}
+                  )}
                 </VStack>
               </ScrollView>
             </Modal.Body>
           </Modal.Content>
         </Modal>
-  
+
         <OutfitGallery
           isVisible={showOutfitPreview}
           onClose={() => setShowOutfitPreview(false)}
